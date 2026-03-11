@@ -3175,8 +3175,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 14px;
-        padding: 24px 32px 28px;
+        gap: 10px;
+        padding: 20px 32px 22px;
         background: rgba(99,102,241,0.04);
         border: 2px dashed rgba(99,102,241,0.25);
         border-radius: 18px;
@@ -3203,7 +3203,7 @@
         background: rgba(255,255,255,0.05);
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 10px;
-        margin-bottom: 0;
+        margin-bottom: 6px;
     }
     .tv2-mode-tab {
         display: inline-flex;
@@ -3252,13 +3252,13 @@
 
     .tv2-upload-icon {
         flex-shrink: 0;
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
         background: rgba(99,102,241,0.1);
-        border-radius: 14px;
+        border-radius: 12px;
     }
     .tv2-upload-text {
         display: flex;
@@ -3281,44 +3281,34 @@
         font-size: 0.8rem;
         color: var(--text-faint);
     }
-    /* 上传框内分隔线 */
-    .tv2-upload-divider {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        width: 100%;
-        max-width: 320px;
-    }
-    .tv2-upload-divider-line {
-        flex: 1;
-        height: 1px;
-        background: rgba(255,255,255,0.08);
-    }
-    .tv2-upload-divider-text {
-        font-size: 0.72rem;
-        color: var(--text-dim);
-        font-weight: 500;
-    }
-    /* 云点播内联按钮 */
-    .tv2-vod-pick-inline {
+    /* 云点播纯文本链接 */
+    .tv2-vod-pick-link {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 8px 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 10px;
+        gap: 4px;
+        padding: 0;
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: var(--text-faint);
+        background: none;
+        border: none;
         cursor: pointer;
-        transition: all 0.25s;
+        transition: color 0.2s;
         font-family: inherit;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: rgba(255,255,255,0.15);
     }
-    .tv2-vod-pick-inline:hover {
-        color: #818cf8;
-        border-color: rgba(99,102,241,0.35);
-        background: rgba(99,102,241,0.08);
+    .tv2-vod-pick-link:hover {
+        color: #a78bfa;
+        text-decoration-color: rgba(167,139,250,0.4);
+    }
+    .tv2-vod-pick-link svg {
+        opacity: 0.5;
+        flex-shrink: 0;
+    }
+    .tv2-vod-pick-link:hover svg {
+        opacity: 0.8;
     }
 
     /* ===== 导入已完成任务 — 按钮区域 ===== */
@@ -5054,49 +5044,42 @@
 
                 <!-- ===== V7: Tab 面板 A — 从零开始 ===== -->
                 <div class="tv2-path-panel active" id="pathPanelNew" data-panel="new">
-                    <!-- 主操作区：上传（Mode Tabs 内嵌） -->
+                    <!-- 主操作区：Mode Tabs + 上传 -->
                     <div class="tv2-landing-primary-action">
+                        <!-- 功能切换 Tabs（上传框外部，作为标题行） -->
+                        <div class="tv2-mode-tabs" id="tv2ModeTabs">
+                            <button class="tv2-mode-tab active" data-mode="full">
+                                <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10L8 3L12 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 17L14 10L18 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 15H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <span>一键译制</span>
+                            </button>
+                            <button class="tv2-mode-tab" data-mode="erase">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V5C19 3.89543 18.1046 3 17 3Z" stroke="currentColor" stroke-width="1.5"/><path d="M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg>
+                                <span>擦除字幕</span>
+                            </button>
+                            <button class="tv2-mode-tab" data-mode="subtitle">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 18V6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18Z" stroke="currentColor" stroke-width="1.5"/><rect x="6" y="14" width="12" height="4" rx="1" fill="rgba(6,182,212,0.15)" stroke="currentColor" stroke-width="1"/></svg>
+                                <span>添加字幕</span>
+                            </button>
+                            <button class="tv2-mode-tab" data-mode="voice">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2C10.3431 2 9 3.34315 9 5V12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V5C15 3.34315 13.6569 2 12 2Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 10V12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                <span>克隆配音</span>
+                            </button>
+                        </div>
+                        <!-- 上传区（精简：图标 + 文字 + 云点播链接） -->
                         <div class="tv2-upload-zone" id="tv2UploadZone">
                             <input type="file" id="tv2LandingFileInput" accept="video/*" hidden>
-                            <!-- 功能切换 Tabs（融入上传区顶部） -->
-                            <div class="tv2-mode-tabs" id="tv2ModeTabs">
-                                <button class="tv2-mode-tab active" data-mode="full">
-                                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M4 10L8 3L12 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 8H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 17L14 10L18 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 15H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                                    <span>一键译制</span>
-                                </button>
-                                <button class="tv2-mode-tab" data-mode="erase">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 3H7C5.89543 3 5 3.89543 5 5V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V5C19 3.89543 18.1046 3 17 3Z" stroke="currentColor" stroke-width="1.5"/><path d="M8 8L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.6"/></svg>
-                                    <span>擦除字幕</span>
-                                </button>
-                                <button class="tv2-mode-tab" data-mode="subtitle">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 18V6C4 4.89543 4.89543 4 6 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18Z" stroke="currentColor" stroke-width="1.5"/><rect x="6" y="14" width="12" height="4" rx="1" fill="rgba(6,182,212,0.15)" stroke="currentColor" stroke-width="1"/></svg>
-                                    <span>添加字幕</span>
-                                </button>
-                                <button class="tv2-mode-tab" data-mode="voice">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2C10.3431 2 9 3.34315 9 5V12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V5C15 3.34315 13.6569 2 12 2Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 10V12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                                    <span>克隆配音</span>
-                                </button>
-                            </div>
                             <div class="tv2-upload-icon">
-                                <svg width="32" height="32" viewBox="0 0 36 36" fill="none"><path d="M18 6V22M18 6L24 12M18 6L12 12" stroke="url(#upGrad)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 24V28C6 29.1046 6.89543 30 8 30H28C29.1046 30 30 29.1046 30 28V24" stroke="url(#upGrad)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="upGrad" x1="6" y1="6" x2="30" y2="30"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg>
+                                <svg width="26" height="26" viewBox="0 0 36 36" fill="none"><path d="M18 6V22M18 6L24 12M18 6L12 12" stroke="url(#upGrad)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 24V28C6 29.1046 6.89543 30 8 30H28C29.1046 30 30 29.1046 30 28V24" stroke="url(#upGrad)" stroke-width="2.2" stroke-linecap="round"/><defs><linearGradient id="upGrad" x1="6" y1="6" x2="30" y2="30"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg>
                             </div>
                             <div class="tv2-upload-text">
                                 <span class="tv2-upload-main" id="tv2UploadMain">拖拽视频到此处，或 <em>点击上传</em></span>
                                 <span class="tv2-upload-hint" id="tv2UploadHint">支持 MP4 / MOV / AVI / MKV 格式，最大 2GB</span>
                             </div>
-                            <!-- 分隔线 -->
-                            <div class="tv2-upload-divider">
-                                <span class="tv2-upload-divider-line"></span>
-                                <span class="tv2-upload-divider-text">或</span>
-                                <span class="tv2-upload-divider-line"></span>
-                            </div>
-                            <!-- 从云点播选择 -->
-                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:center;">
-                                <button class="tv2-vod-pick-inline" id="tv2VodPickBtn" type="button">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 6C3 4.89543 3.89543 4 5 4H9L11 6H19C20.1046 6 21 6.89543 21 8V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 12L15 15L10 18V12Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                                    从腾讯云点播选择
-                                </button>
-                            </div>
+                            <!-- 云点播：纯文本链接风格 -->
+                            <button class="tv2-vod-pick-link" id="tv2VodPickBtn" type="button">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 6C3 4.89543 3.89543 4 5 4H9L11 6H19C20.1046 6 21 6.89543 21 8V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 12L15 15L10 18V12Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                                从云点播选择 ›
+                            </button>
                         </div>
                         <!-- 已选视频信息 + 开始按钮（初始隐藏） -->
                         <div class="tv2-upload-selected" id="tv2UploadSelected" style="display:none;">
@@ -9295,9 +9278,8 @@
         // Click upload zone → open file picker (不再直接进编辑器)
         uploadZone.addEventListener('click', function(e) {
             if (e.target === landingFileInput) return;
-            // 点击云点播按钮或 Mode Tabs 时不触发文件选择
-            if (e.target.closest('.tv2-vod-pick-inline')) return;
-            if (e.target.closest('.tv2-mode-tabs')) return;
+            // 点击云点播链接时不触发文件选择
+            if (e.target.closest('.tv2-vod-pick-link')) return;
             landingFileInput.click();
         });
 
