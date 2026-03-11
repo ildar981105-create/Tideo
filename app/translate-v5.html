@@ -921,31 +921,6 @@
     }
     .tv2-tl-time .current { color: var(--text-primary); font-weight: 500; }
 
-    /* Processing steps indicator below timeline */
-    .tv2-steps {
-        display: flex; align-items: center; justify-content: center;
-        gap: 8px; padding: 6px 20px 8px;
-        border-top: 1px solid rgba(255,255,255,0.03);
-        display: none;
-    }
-    .tv2-steps.active { display: flex; }
-    .pstep {
-        display: flex; align-items: center; gap: 5px;
-        padding: 4px 12px; border-radius: 6px;
-        font-size: 0.7rem; font-weight: 500;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.06);
-        color: var(--text-faint); transition: all 0.3s;
-    }
-    .pstep.active { color: #818cf8; background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.25); }
-    .pstep.done { color: #10b981; border-color: rgba(16,185,129,0.25); }
-    .pstep-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-    .pstep.active .pstep-dot { animation: pulse-step 1.5s infinite; }
-    @keyframes pulse-step {
-        0%,100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); }
-        50% { box-shadow: 0 0 0 4px rgba(99,102,241,0); }
-    }
-
     /* ===== Right: Chat Panel ===== */
     .tv2-right {
         width: 380px;
@@ -5506,13 +5481,6 @@
                             <span class="current">00:00</span> / 01:30
                         </span>
                     </div>
-                    <!-- Processing steps -->
-                    <div class="tv2-steps" id="processingSteps">
-                        <div class="pstep" data-ps="erase"><span class="pstep-dot"></span>擦除</div>
-                        <div class="pstep" data-ps="subtitle"><span class="pstep-dot"></span>翻译</div>
-                        <div class="pstep" data-ps="voice"><span class="pstep-dot"></span>配音</div>
-                        <div class="pstep" data-ps="merge"><span class="pstep-dot"></span>合成</div>
-                    </div>
                 </div>
             </div>
 
@@ -6434,9 +6402,6 @@
             playing = false;
             // Reset burntSub state
             burntSub.classList.remove('erased', 'erasing');
-            // Reset processing steps indicators
-            document.querySelectorAll('.pstep').forEach(s => s.classList.remove('active', 'done'));
-            document.getElementById('processingSteps').classList.remove('active');
             buildConfigChat();
         }
         // Expose for landing page script
@@ -6501,33 +6466,11 @@
                 subtitleOverlay.classList.add('active');
             }
 
-            // Reset processing steps indicators
-            document.querySelectorAll('.pstep').forEach(s => {
-                s.classList.remove('active');
-                s.classList.add('done');
-            });
-            document.getElementById('processingSteps').classList.add('active');
-
-            // Hide all tracks, then prepare them
-            document.querySelectorAll('.tv2-tl-track').forEach(t => {
-                t.classList.remove('track-visible', 'track-placeholder', 'track-ft-active', 'track-ft-dim');
-                t.style.opacity = '';
-            });
-            // Show tracks for completed features
-            activeSteps.forEach(step => {
-                const trk = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
-                if (trk) {
-                    trk.classList.add('track-visible');
-                    syncTimelineSegments(step);
-                }
-            });
-
             // Set phase to done
             phase = 'done';
             playing = true;
             document.getElementById('tlPlay').classList.add('playing');
             document.getElementById('globalExportBtn').style.display = '';
-            document.getElementById('timeline').classList.add('visible');
 
             // Build import chat
             chatFlow.innerHTML = '';
@@ -6945,13 +6888,6 @@
                 </div>`;
                 scrollChat();
 
-                // Show timeline track for this step
-                const previewTrack = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
-                if (previewTrack) {
-                    setTimeout(() => previewTrack.classList.add('track-visible'), 300);
-                }
-                syncTimelineSegments(step);
-
                 // Bind erase region line clicks
                 setTimeout(() => {
                     scanEl.querySelectorAll('.chat-erase-line').forEach(line => {
@@ -7024,11 +6960,6 @@
                     ${voiceListHtml}
                 </div>`;
                 scrollChat();
-
-                // Show timeline track for this step
-                const previewTrack = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
-                if (previewTrack) setTimeout(() => previewTrack.classList.add('track-visible'), 300);
-                syncTimelineSegments(step);
 
                 // Bind voice line clicks
                 setTimeout(() => {
@@ -7226,13 +7157,6 @@
                 </div>`;
                 scrollChat();
 
-                // Show timeline track for this step
-                const previewTrack = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
-                if (previewTrack) {
-                    setTimeout(() => previewTrack.classList.add('track-visible'), 300);
-                }
-                syncTimelineSegments(step);
-
                 // Bind subtitle line clicks
                 setTimeout(() => {
                     transScanEl.querySelectorAll('.chat-trans-line').forEach(line => {
@@ -7326,13 +7250,6 @@
             appendBubble('ai', bubbleHtml, 0);
             scrollChat();
 
-            // Show timeline track for this step
-            const previewTrack = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
-            if (previewTrack) {
-                setTimeout(() => previewTrack.classList.add('track-visible'), 300);
-            }
-            syncTimelineSegments(step);
-
             if (step === 'erase') renderEraseOverlays();
 
             // Auto-confirm and advance to next step
@@ -7356,28 +7273,11 @@
                 // ===== Unlock the corresponding Tab =====
                 unlockTab(step);
 
-                // Timeline track already visible from preview, ensure it stays
-                const track = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
-                if (track) {
-                    track.classList.add('track-visible');
-                }
-
-                // Sync timeline segments with data (refresh)
-                syncTimelineSegments(step);
-
-                // Render erase overlays so they preview in chat mode
-                if (step === 'erase') renderEraseOverlays();
-
-                // === NEW: Immediately process this step on the left side ===
+                // === Immediately process this step on the left side ===
                 processStepOnLeft(step);
 
             } else {
                 appendBubble('user', `跳过此步骤`, 0);
-                // Hide track
-                const track = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
-                if (track) track.classList.remove('track-visible');
-                // Hide erase overlays if skipped
-                if (step === 'erase') renderEraseOverlays();
                 scrollChat();
                 // Next step after brief delay
                 setTimeout(() => advanceStep(), 600);
@@ -7414,24 +7314,6 @@
             phaseLabel.textContent = processingTexts[step];
             phaseIndicator.className = 'tv2-phase-indicator phase-processing';
 
-            // Show processing step indicators
-            const stepsEl = document.getElementById('processingSteps');
-            stepsEl.classList.add('active');
-            const psteps = document.querySelectorAll('.pstep');
-            psteps.forEach(s => s.classList.remove('active', 'done'));
-            const currentPs = document.querySelector(`.pstep[data-ps="${step}"]`);
-            if (currentPs) currentPs.classList.add('active');
-
-            // Mark previous steps as done in step indicators
-            const stepOrder = ['erase', 'subtitle', 'voice'];
-            const curIdx = stepOrder.indexOf(step);
-            stepOrder.forEach((s, i) => {
-                if (i < curIdx && features[s]) {
-                    const ps = document.querySelector(`.pstep[data-ps="${s}"]`);
-                    if (ps) ps.classList.add('done');
-                }
-            });
-
             // Chat: tell user processing is happening
             appendBubble('ai', `正在左侧执行 <strong>${{erase:'字幕擦除',subtitle:'字幕生成',voice:'配音生成'}[step]}</strong>，请稍候...`, 0);
             scrollChat();
@@ -7465,24 +7347,11 @@
                 clearInterval(progressTimer);
                 pvBar.style.width = '100%';
 
-                // Mark this step done in step indicators
-                if (currentPs) {
-                    currentPs.classList.remove('active');
-                    currentPs.classList.add('done');
-                }
-
                 // Step-specific completion effects on the left
                 if (step === 'erase') {
                     // Erase complete: hide burntSub permanently
                     burntSub.classList.remove('visible', 'erasing');
                     burntSub.classList.add('erased');
-                }
-                if (step === 'subtitle') {
-                    // Show subtitle preview on video
-                    // (updateSubtitlePreview will handle this since features.subtitle is true)
-                }
-                if (step === 'voice') {
-                    // Voice preview indicator will auto-show via updateVoicePreview
                 }
 
                 // Show completion state briefly
@@ -7535,12 +7404,8 @@
             const labelMap = { erase: '擦除设置', subtitle: '字幕翻译', voice: '配音设置' };
             appendBubble('user', `进入${labelMap[step]}精调 →`, 0);
 
-            // Unlock tab + show track
+            // Unlock tab
             unlockTab(step);
-            const track = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
-            if (track) {
-                setTimeout(() => track.classList.add('track-visible'), 200);
-            }
 
             // Sync timeline segments with data
             syncTimelineSegments(step);
@@ -7740,19 +7605,10 @@
                 tl.classList.remove('ft-tl-exit');
                 document.querySelectorAll('.tv2-ft-panel').forEach(p => p.classList.remove('active'));
 
-                // Reset timeline tracks — restore all enabled feature tracks
+                // Reset timeline tracks — hide all tracks on exit
                 document.querySelectorAll('.tv2-tl-track').forEach(track => {
                     track.style.opacity = '';
-                    track.classList.remove('track-ft-active', 'track-ft-dim');
-                    const trackStep = track.dataset.track;
-                    if (features[trackStep]) {
-                        // Enabled feature: make visible again
-                        track.classList.add('track-visible');
-                        track.classList.remove('track-placeholder');
-                    } else {
-                        // Not enabled: hide
-                        track.classList.remove('track-visible', 'track-placeholder');
-                    }
+                    track.classList.remove('track-visible', 'track-ft-active', 'track-ft-dim', 'track-placeholder');
                 });
 
                 // Remove glowing border
@@ -7901,11 +7757,6 @@
 
             // All steps already processed on the left side, directly show result
             appendBubble('ai', `${activeSteps.length > 1 ? '全部步骤已完成！' : '处理完成！'}已执行：<strong>${enabledFeats.join(' + ')}</strong>`, 0);
-            scrollChat();
-
-            // Mark merge step as done
-            const mergePs = document.querySelector('.pstep[data-ps="merge"]');
-            if (mergePs) mergePs.classList.add('done');
 
             // Directly show result after brief delay
             setTimeout(() => showResult(), 800);
@@ -7938,10 +7789,6 @@
             phaseLabel.textContent = '处理中 · 请耐心等待...';
             phaseIndicator.className = 'tv2-phase-indicator phase-processing';
 
-            // Show steps
-            const stepsEl = document.getElementById('processingSteps');
-            stepsEl.classList.add('active');
-
             // AI bubble — auto-start
             appendBubble('ai', '全部就绪，自动开始处理...', 0);
             scrollChat();
@@ -7958,7 +7805,6 @@
             if (features.voice) steps.push({ key: 'voice', text: '正在生成配音...' });
             steps.push({ key: 'merge', text: '正在合成视频...' });
 
-            const psteps = document.querySelectorAll('.pstep');
             const bar = document.getElementById('pvBar');
             const text = document.getElementById('pvText');
             let i = 0;
@@ -7967,20 +7813,12 @@
                 if (i >= steps.length) {
                     bar.style.width = '100%';
                     text.textContent = '处理完成！';
-                    psteps.forEach(s => { s.classList.remove('active'); s.classList.add('done'); });
                     setTimeout(showResult, 600);
                     return;
                 }
                 const step = steps[i];
                 text.textContent = step.text;
                 bar.style.width = ((i + 1) / steps.length * 100) + '%';
-                psteps.forEach(s => s.classList.remove('active'));
-                const ps = document.querySelector(`.pstep[data-ps="${step.key}"]`);
-                if (ps) ps.classList.add('active');
-                if (i > 0) {
-                    const prev = document.querySelector(`.pstep[data-ps="${steps[i-1].key}"]`);
-                    if (prev) { prev.classList.remove('active'); prev.classList.add('done'); }
-                }
                 i++;
                 setTimeout(next, 1200 + Math.random() * 800);
             }
@@ -7998,15 +7836,6 @@
             playing = true;
             document.getElementById('tlPlay').classList.add('playing');
             document.getElementById('globalExportBtn').style.display = '';
-            // Show timeline for result playback
-            document.getElementById('timeline').classList.add('visible');
-
-            // Mark all processing steps as done
-            document.querySelectorAll('.pstep').forEach(s => {
-                s.classList.remove('active');
-                s.classList.add('done');
-            });
-            document.getElementById('processingSteps').classList.add('active');
 
             // Chat: done bubble with export actions
             const resultHtml = `
