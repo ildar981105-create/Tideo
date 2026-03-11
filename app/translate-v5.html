@@ -865,6 +865,40 @@
     .tv2-tl-segment--subtitle { background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.35); color: #3b82f6; }
     .tv2-tl-segment--voice { background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.35); color: #a855f7; }
 
+    /* Segment drag handles */
+    .tv2-tl-seg-handle {
+        position: absolute; top: 0; bottom: 0; width: 6px;
+        cursor: col-resize; z-index: 3;
+        opacity: 0; transition: opacity 0.15s;
+    }
+    .tv2-tl-seg-handle::after {
+        content: ''; position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%,-50%); width: 2px; height: 60%;
+        border-radius: 1px; background: currentColor; opacity: 0.6;
+    }
+    .tv2-tl-seg-handle--l { left: -3px; }
+    .tv2-tl-seg-handle--r { right: -3px; }
+    .tv2-tl-segment:hover .tv2-tl-seg-handle { opacity: 1; }
+    .tv2-tl-segment.seg-dragging { z-index: 10; filter: brightness(1.4); }
+    .tv2-tl-segment.seg-dragging .tv2-tl-seg-handle { opacity: 1; }
+
+    /* Segment selected state (for editing) */
+    .tv2-tl-segment.seg-selected {
+        filter: brightness(1.3); z-index: 6;
+        box-shadow: 0 0 0 1px currentColor, 0 0 8px rgba(255,255,255,0.1);
+    }
+
+    /* Multi-row track for overlapping segments */
+    .tv2-tl-track.track-multirow {
+        height: auto !important; min-height: 26px;
+    }
+    .tv2-tl-track.track-multirow .tv2-tl-track-content {
+        display: flex; flex-direction: column; gap: 2px;
+    }
+    .tv2-tl-track-sublane {
+        position: relative; height: 22px; flex-shrink: 0;
+    }
+
     .tv2-tl-playhead {
         position: absolute; top: 0; bottom: 0; width: 2px; z-index: 10;
         pointer-events: none;
@@ -1792,6 +1826,88 @@
         background: rgba(239,68,68,0.25);
         transform: scale(1.1);
     }
+
+    /* ===== Inline Edit Panel (shared by erase/subtitle/voice) ===== */
+    .ft-inline-edit {
+        max-height: 0; overflow: hidden; opacity: 0;
+        transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
+        padding: 0 10px;
+        background: rgba(255,255,255,0.015);
+        border-top: 1px solid transparent;
+    }
+    .ft-region-card.active + .ft-inline-edit,
+    .ft-sub-item.editing + .ft-inline-edit,
+    .ft-voice-item.editing + .ft-inline-edit,
+    .ft-inline-edit.expanded {
+        max-height: 300px; opacity: 1;
+        padding: 10px;
+        border-top-color: rgba(255,255,255,0.04);
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+        border-radius: 0 0 8px 8px;
+        margin-bottom: 4px;
+    }
+    .ft-inline-edit-row {
+        display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    }
+    .ft-inline-edit-row:last-child { margin-bottom: 0; }
+    .ft-inline-edit-label {
+        font-size: 0.62rem; color: var(--text-faint); min-width: 48px;
+        flex-shrink: 0; font-weight: 500;
+    }
+    .ft-inline-edit-time {
+        display: flex; align-items: center; gap: 4px;
+    }
+    .ft-inline-edit-time input {
+        width: 56px; padding: 4px 6px;
+        font-size: 0.7rem; font-family: 'JetBrains Mono', monospace;
+        background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px; color: var(--text-primary); outline: none;
+        text-align: center; transition: border-color 0.2s;
+    }
+    .ft-inline-edit-time input:focus {
+        border-color: rgba(99,102,241,0.5); box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+    }
+    .ft-inline-edit-time .time-sep {
+        font-size: 0.68rem; color: var(--text-faint);
+    }
+    .ft-inline-edit-input {
+        flex: 1; min-width: 0; padding: 4px 8px;
+        font-size: 0.72rem; font-family: inherit;
+        background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px; color: var(--text-primary); outline: none;
+        transition: border-color 0.2s;
+    }
+    .ft-inline-edit-input:focus {
+        border-color: rgba(99,102,241,0.5); box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+    }
+    .ft-inline-edit textarea.ft-inline-edit-input {
+        min-height: 36px; resize: vertical; line-height: 1.4;
+    }
+    .ft-inline-edit-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px;
+    }
+    .ft-inline-edit-field {
+        display: flex; align-items: center; gap: 4px;
+    }
+    .ft-inline-edit-field label {
+        font-size: 0.58rem; color: var(--text-faint); min-width: 12px;
+    }
+    .ft-inline-edit-field input {
+        width: 40px; padding: 3px 4px;
+        font-size: 0.65rem; font-family: 'JetBrains Mono', monospace;
+        background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 4px; color: var(--text-primary); outline: none;
+        text-align: center;
+    }
+
+    /* Subtitle/Voice item editing state */
+    .ft-sub-item.editing,
+    .ft-voice-item.editing {
+        background: rgba(99,102,241,0.08);
+        border-radius: 8px 8px 0 0;
+    }
+    .ft-sub-item.editing { background: rgba(59,130,246,0.08); }
+    .ft-voice-item.editing { background: rgba(99,102,241,0.08); }
 
     /* Add region button */
     .ft-region-add-btn {
@@ -5441,7 +5557,7 @@
                             <div class="ft-section-icon ft-section-icon--red">
                                 <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M16 4L8 12L4 16H10L18 8L16 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M2 18H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                             </div>
-                            <div><h3>擦除字幕</h3><p>AI 检测到 7 处字幕区域</p></div>
+                            <div><h3>擦除字幕</h3><p>AI 检测到 8 处字幕区域</p></div>
                         </div>
 
                         <!-- Config section (top) -->
@@ -5508,63 +5624,7 @@
                             </div>
                         </div>
                         <span class="ft-config-label">字幕列表</span>
-                        <div class="ft-sub-list">
-                            <div class="ft-sub-item active">
-                                <span class="ft-sub-time">00:03</span>
-                                <div class="ft-sub-texts">
-                                    <span class="ft-sub-orig">大家好，欢迎来到今天的分享</span>
-                                    <span class="ft-sub-trans">Hello everyone, welcome to today's sharing</span>
-                                </div>
-                                <button class="ft-sub-edit-btn"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 2L12 4L5 11H3V9L10 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
-                            </div>
-                            <div class="ft-sub-item">
-                                <span class="ft-sub-time">00:09</span>
-                                <div class="ft-sub-texts">
-                                    <span class="ft-sub-orig">今天我们来聊一聊 AI 视频翻译</span>
-                                    <span class="ft-sub-trans">Today let's talk about AI video translation</span>
-                                </div>
-                                <button class="ft-sub-edit-btn"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 2L12 4L5 11H3V9L10 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
-                            </div>
-                            <div class="ft-sub-item">
-                                <span class="ft-sub-time">00:16</span>
-                                <div class="ft-sub-texts">
-                                    <span class="ft-sub-orig">这项技术可以自动擦除原有字幕</span>
-                                    <span class="ft-sub-trans">This technology can automatically erase subtitles</span>
-                                </div>
-                                <button class="ft-sub-edit-btn"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 2L12 4L5 11H3V9L10 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
-                            </div>
-                            <div class="ft-sub-item">
-                                <span class="ft-sub-time">00:24</span>
-                                <div class="ft-sub-texts">
-                                    <span class="ft-sub-orig">并且重新生成目标语言的配音</span>
-                                    <span class="ft-sub-trans">And regenerate dubbing in the target language</span>
-                                </div>
-                                <button class="ft-sub-edit-btn"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 2L12 4L5 11H3V9L10 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
-                            </div>
-                            <div class="ft-sub-item">
-                                <span class="ft-sub-time">00:38</span>
-                                <div class="ft-sub-texts">
-                                    <span class="ft-sub-orig">整个流程完全自动化</span>
-                                    <span class="ft-sub-trans">The entire process is fully automated</span>
-                                </div>
-                                <button class="ft-sub-edit-btn"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 2L12 4L5 11H3V9L10 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
-                            </div>
-                            <div class="ft-sub-item">
-                                <span class="ft-sub-time">00:55</span>
-                                <div class="ft-sub-texts">
-                                    <span class="ft-sub-orig">声音克隆让配音听起来非常自然</span>
-                                    <span class="ft-sub-trans">Voice cloning makes dubbing sound very natural</span>
-                                </div>
-                                <button class="ft-sub-edit-btn"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 2L12 4L5 11H3V9L10 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
-                            </div>
-                            <div class="ft-sub-item">
-                                <span class="ft-sub-time">01:15</span>
-                                <div class="ft-sub-texts">
-                                    <span class="ft-sub-orig">希望这个功能对大家有帮助</span>
-                                    <span class="ft-sub-trans">Hope this feature is helpful to everyone</span>
-                                </div>
-                                <button class="ft-sub-edit-btn"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 2L12 4L5 11H3V9L10 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
-                            </div>
+                        <div class="ft-sub-list" id="subtitleList">
                         </div>
                     </div>
 
@@ -5601,42 +5661,7 @@
                             </div>
                         </div>
                         <span class="ft-config-label">配音片段</span>
-                        <div class="ft-voice-list">
-                            <div class="ft-voice-item active">
-                                <span class="ft-voice-time">00:03</span>
-                                <span class="ft-voice-text">Hello everyone, welcome to today's sharing</span>
-                                <button class="ft-voice-play"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1.5L10 6L3 10.5V1.5Z" fill="currentColor"/></svg></button>
-                            </div>
-                            <div class="ft-voice-item">
-                                <span class="ft-voice-time">00:09</span>
-                                <span class="ft-voice-text">Today let's talk about AI video translation</span>
-                                <button class="ft-voice-play"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1.5L10 6L3 10.5V1.5Z" fill="currentColor"/></svg></button>
-                            </div>
-                            <div class="ft-voice-item">
-                                <span class="ft-voice-time">00:16</span>
-                                <span class="ft-voice-text">This technology can automatically erase subtitles</span>
-                                <button class="ft-voice-play"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1.5L10 6L3 10.5V1.5Z" fill="currentColor"/></svg></button>
-                            </div>
-                            <div class="ft-voice-item">
-                                <span class="ft-voice-time">00:24</span>
-                                <span class="ft-voice-text">And regenerate dubbing in the target language</span>
-                                <button class="ft-voice-play"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1.5L10 6L3 10.5V1.5Z" fill="currentColor"/></svg></button>
-                            </div>
-                            <div class="ft-voice-item">
-                                <span class="ft-voice-time">00:38</span>
-                                <span class="ft-voice-text">The entire process is fully automated</span>
-                                <button class="ft-voice-play"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1.5L10 6L3 10.5V1.5Z" fill="currentColor"/></svg></button>
-                            </div>
-                            <div class="ft-voice-item">
-                                <span class="ft-voice-time">00:55</span>
-                                <span class="ft-voice-text">Voice cloning makes dubbing sound very natural</span>
-                                <button class="ft-voice-play"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1.5L10 6L3 10.5V1.5Z" fill="currentColor"/></svg></button>
-                            </div>
-                            <div class="ft-voice-item">
-                                <span class="ft-voice-time">01:15</span>
-                                <span class="ft-voice-text">Hope this feature is helpful to everyone</span>
-                                <button class="ft-voice-play"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1.5L10 6L3 10.5V1.5Z" fill="currentColor"/></svg></button>
-                            </div>
+                        <div class="ft-voice-list" id="voiceList">
                         </div>
                     </div>
 
@@ -7678,6 +7703,11 @@
             const panel = document.querySelector(`.tv2-ft-panel[data-ft-panel="${step}"]`);
             if (panel) panel.classList.add('active');
 
+            // Re-render panel list for latest data
+            if (step === 'erase') renderEraseRegionList();
+            else if (step === 'subtitle') { editingSubId = null; renderSubtitleList(); }
+            else if (step === 'voice') { editingVoiceId = null; renderVoiceList(); }
+
             // Expand middle column
             middleCol.classList.add('active');
 
@@ -8075,36 +8105,168 @@
             });
         });
 
-        // Bind subtitle items click-to-seek
-        document.querySelectorAll('#ftPanelSubtitle .ft-sub-item').forEach((item, idx) => {
-            item.style.cursor = 'pointer';
-            item.addEventListener('click', () => {
-                if (idx < subtitleItems.length) {
-                    videoTime = subtitleItems[idx].startSec;
-                    needsVideoSync = true;
-                    document.querySelectorAll('#ftPanelSubtitle .ft-sub-item').forEach(i => i.classList.remove('active'));
-                    item.classList.add('active');
-                }
-            });
-        });
+        /* ===== Data-driven Subtitle & Voice List Rendering ===== */
+        const subtitleListEl = document.getElementById('subtitleList');
+        const voiceListEl = document.getElementById('voiceList');
+        let editingSubId = null;
+        let editingVoiceId = null;
 
-        // Bind voice items click-to-seek
-        document.querySelectorAll('#ftPanelVoice .ft-voice-item').forEach((item, idx) => {
-            item.style.cursor = 'pointer';
-            item.addEventListener('click', e => {
-                if (e.target.closest('.ft-voice-play')) return;
-                if (idx < voiceItems.length) {
-                    videoTime = voiceItems[idx].startSec;
-                    document.querySelectorAll('#ftPanelVoice .ft-voice-item').forEach(i => i.classList.remove('active'));
-                    item.classList.add('active');
-                }
+        function renderSubtitleList() {
+            subtitleListEl.innerHTML = subtitleItems.map(s => `
+                <div class="ft-sub-item${s.id === editingSubId ? ' editing active' : ''}" data-sid="${s.id}" style="cursor:pointer;">
+                    <span class="ft-sub-time">${fmtTime(s.startSec)}</span>
+                    <div class="ft-sub-texts">
+                        <span class="ft-sub-orig">${escHtml(s.orig)}</span>
+                        <span class="ft-sub-trans">${escHtml(s.trans)}</span>
+                    </div>
+                    <button class="ft-sub-edit-btn"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M10 2L12 4L5 11H3V9L10 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
+                </div>
+                <div class="ft-inline-edit${s.id === editingSubId ? ' expanded' : ''}" data-edit-sid="${s.id}">
+                    <div class="ft-inline-edit-row">
+                        <span class="ft-inline-edit-label">时间范围</span>
+                        <div class="ft-inline-edit-time">
+                            <input type="text" class="ie-start" value="${fmtTime(s.startSec)}" data-field="startSec" data-sid="${s.id}">
+                            <span class="time-sep">—</span>
+                            <input type="text" class="ie-end" value="${fmtTime(s.endSec)}" data-field="endSec" data-sid="${s.id}">
+                        </div>
+                    </div>
+                    <div class="ft-inline-edit-row">
+                        <span class="ft-inline-edit-label">原文</span>
+                        <input type="text" class="ft-inline-edit-input" value="${escAttr(s.orig)}" data-field="orig" data-sid="${s.id}">
+                    </div>
+                    <div class="ft-inline-edit-row">
+                        <span class="ft-inline-edit-label">译文</span>
+                        <input type="text" class="ft-inline-edit-input" value="${escAttr(s.trans)}" data-field="trans" data-sid="${s.id}">
+                    </div>
+                </div>
+            `).join('');
+            bindSubtitleListEvents();
+        }
+
+        function bindSubtitleListEvents() {
+            subtitleListEl.querySelectorAll('.ft-sub-item').forEach(item => {
+                item.addEventListener('click', e => {
+                    if (e.target.closest('.ft-sub-edit-btn')) {
+                        // Toggle edit mode
+                        const sid = item.dataset.sid;
+                        editingSubId = (editingSubId === sid) ? null : sid;
+                        renderSubtitleList();
+                        return;
+                    }
+                    const sid = item.dataset.sid;
+                    const s = subtitleItems.find(x => x.id === sid);
+                    if (s) {
+                        videoTime = s.startSec;
+                        needsVideoSync = true;
+                        subtitleListEl.querySelectorAll('.ft-sub-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                    }
+                });
             });
-        });
+            // Bind inline edit inputs
+            subtitleListEl.querySelectorAll('.ft-inline-edit input').forEach(inp => {
+                inp.addEventListener('change', e => {
+                    e.stopPropagation();
+                    const sid = inp.dataset.sid;
+                    const field = inp.dataset.field;
+                    const s = subtitleItems.find(x => x.id === sid);
+                    if (!s) return;
+                    if (field === 'startSec' || field === 'endSec') {
+                        const sec = parseTimeInput(inp.value);
+                        if (sec !== null) { s[field] = sec; inp.value = fmtTime(sec); }
+                    } else {
+                        s[field] = inp.value;
+                    }
+                    syncAllViews('subtitle');
+                });
+                inp.addEventListener('click', e => e.stopPropagation());
+            });
+        }
+
+        function renderVoiceList() {
+            voiceListEl.innerHTML = voiceItems.map(v => `
+                <div class="ft-voice-item${v.id === editingVoiceId ? ' editing active' : ''}" data-vid="${v.id}" style="cursor:pointer;">
+                    <span class="ft-voice-time">${fmtTime(v.startSec)}</span>
+                    <span class="ft-voice-text">${escHtml(v.text)}</span>
+                    <button class="ft-voice-play"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 1.5L10 6L3 10.5V1.5Z" fill="currentColor"/></svg></button>
+                </div>
+                <div class="ft-inline-edit${v.id === editingVoiceId ? ' expanded' : ''}" data-edit-vid="${v.id}">
+                    <div class="ft-inline-edit-row">
+                        <span class="ft-inline-edit-label">时间范围</span>
+                        <div class="ft-inline-edit-time">
+                            <input type="text" class="ie-start" value="${fmtTime(v.startSec)}" data-field="startSec" data-vid="${v.id}">
+                            <span class="time-sep">—</span>
+                            <input type="text" class="ie-end" value="${fmtTime(v.endSec)}" data-field="endSec" data-vid="${v.id}">
+                        </div>
+                    </div>
+                    <div class="ft-inline-edit-row">
+                        <span class="ft-inline-edit-label">配音文本</span>
+                        <input type="text" class="ft-inline-edit-input" value="${escAttr(v.text)}" data-field="text" data-vid="${v.id}">
+                    </div>
+                </div>
+            `).join('');
+            bindVoiceListEvents();
+        }
+
+        function bindVoiceListEvents() {
+            voiceListEl.querySelectorAll('.ft-voice-item').forEach(item => {
+                item.addEventListener('click', e => {
+                    if (e.target.closest('.ft-voice-play')) return;
+                    const vid = item.dataset.vid;
+                    // Double-click or edit-btn toggles editing
+                    const v = voiceItems.find(x => x.id === vid);
+                    if (v) {
+                        videoTime = v.startSec;
+                        needsVideoSync = true;
+                        voiceListEl.querySelectorAll('.ft-voice-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                    }
+                });
+                item.addEventListener('dblclick', e => {
+                    if (e.target.closest('.ft-voice-play')) return;
+                    const vid = item.dataset.vid;
+                    editingVoiceId = (editingVoiceId === vid) ? null : vid;
+                    renderVoiceList();
+                });
+            });
+            voiceListEl.querySelectorAll('.ft-inline-edit input').forEach(inp => {
+                inp.addEventListener('change', e => {
+                    e.stopPropagation();
+                    const vid = inp.dataset.vid;
+                    const field = inp.dataset.field;
+                    const v = voiceItems.find(x => x.id === vid);
+                    if (!v) return;
+                    if (field === 'startSec' || field === 'endSec') {
+                        const sec = parseTimeInput(inp.value);
+                        if (sec !== null) { v[field] = sec; inp.value = fmtTime(sec); }
+                    } else {
+                        v[field] = inp.value;
+                    }
+                    syncAllViews('voice');
+                });
+                inp.addEventListener('click', e => e.stopPropagation());
+            });
+        }
+
+        // Initial render
+        renderSubtitleList();
+        renderVoiceList();
 
         /* ===== Erase Region Management ===== */
         function fmtTime(sec) {
             const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
             return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+        }
+        function escHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+        function escAttr(str) { return str.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;'); }
+        function parseTimeInput(val) {
+            const parts = val.trim().split(':');
+            if (parts.length === 2) {
+                const m = parseInt(parts[0]), s = parseInt(parts[1]);
+                if (!isNaN(m) && !isNaN(s)) return m * 60 + s;
+            }
+            const n = parseFloat(val);
+            return isNaN(n) ? null : n;
         }
 
         const eraseRegions = [
@@ -8115,9 +8277,10 @@
             { id: 'E5', title: '底部字幕区域', x: 8, y: 82, w: 84, h: 12, startSec: 42,  endSec: 49 },
             { id: 'E6', title: '底部字幕区域', x: 6, y: 82, w: 88, h: 12, startSec: 55,  endSec: 63 },
             { id: 'E7', title: '底部字幕区域', x: 8, y: 82, w: 84, h: 12, startSec: 68,  endSec: 76 },
+            { id: 'E8', title: '顶部水印', x: 70, y: 3, w: 28, h: 8, startSec: 0,  endSec: 90 },
         ];
         let activeEraseRegion = 'E1';
-        let eraseRegionCounter = 7;
+        let eraseRegionCounter = 8;
         let lastVisibleEraseId = null;
         let eraseTrackHidden = false; // set by eye-button on erase track
 
@@ -8132,7 +8295,7 @@
                 <div class="ft-region-card${r.id === activeEraseRegion ? ' active' : ''}" data-region="${r.id}">
                     <span class="ft-region-idx">${r.id}</span>
                     <div class="ft-region-info">
-                        <span class="ft-region-title">${r.title}</span>
+                        <span class="ft-region-title">${escHtml(r.title)}</span>
                         <span class="ft-region-meta"><span>x:${r.x}% y:${r.y}% w:${r.w}% h:${r.h}%</span></span>
                     </div>
                     <span class="ft-region-time">${fmtTime(r.startSec)} – ${fmtTime(r.endSec)}</span>
@@ -8140,8 +8303,32 @@
                         <svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     </button>
                 </div>
+                <div class="ft-inline-edit${r.id === activeEraseRegion ? ' expanded' : ''}" data-edit-eid="${r.id}">
+                    <div class="ft-inline-edit-row">
+                        <span class="ft-inline-edit-label">时间范围</span>
+                        <div class="ft-inline-edit-time">
+                            <input type="text" class="ie-start" value="${fmtTime(r.startSec)}" data-field="startSec" data-eid="${r.id}">
+                            <span class="time-sep">—</span>
+                            <input type="text" class="ie-end" value="${fmtTime(r.endSec)}" data-field="endSec" data-eid="${r.id}">
+                        </div>
+                    </div>
+                    <div class="ft-inline-edit-row">
+                        <span class="ft-inline-edit-label">标题</span>
+                        <input type="text" class="ft-inline-edit-input" value="${escAttr(r.title)}" data-field="title" data-eid="${r.id}">
+                    </div>
+                    <div class="ft-inline-edit-row">
+                        <span class="ft-inline-edit-label">位置/尺寸</span>
+                        <div class="ft-inline-edit-grid">
+                            <div class="ft-inline-edit-field"><label>x</label><input type="text" value="${r.x}" data-field="x" data-eid="${r.id}"></div>
+                            <div class="ft-inline-edit-field"><label>y</label><input type="text" value="${r.y}" data-field="y" data-eid="${r.id}"></div>
+                            <div class="ft-inline-edit-field"><label>w</label><input type="text" value="${r.w}" data-field="w" data-eid="${r.id}"></div>
+                            <div class="ft-inline-edit-field"><label>h</label><input type="text" value="${r.h}" data-field="h" data-eid="${r.id}"></div>
+                        </div>
+                    </div>
+                </div>
             `).join('');
             bindRegionCardClicks();
+            bindEraseInlineEdits();
         }
 
         function renderEraseOverlays() {
@@ -8239,9 +8426,10 @@
                 subPreview.classList.add('visible');
 
                 if (inFinetune && currentFinetuneStep === 'subtitle') {
-                    const items = document.querySelectorAll('#ftPanelSubtitle .ft-sub-item');
-                    const idx = subtitleItems.indexOf(cur);
-                    items.forEach((item, i) => item.classList.toggle('active', i === idx));
+                    subtitleListEl.querySelectorAll('.ft-sub-item').forEach(item =>
+                        item.classList.toggle('active', item.dataset.sid === cur.id));
+                    const activeItem = subtitleListEl.querySelector(`.ft-sub-item[data-sid="${cur.id}"]`);
+                    if (activeItem) activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
                 }
             } else {
                 subPreview.classList.remove('visible');
@@ -8270,9 +8458,10 @@
                     lastVoiceId = cur.id;
                 }
                 if (inFinetune && currentFinetuneStep === 'voice') {
-                    const items = document.querySelectorAll('#ftPanelVoice .ft-voice-item');
-                    const idx = voiceItems.indexOf(cur);
-                    items.forEach((item, i) => item.classList.toggle('active', i === idx));
+                    voiceListEl.querySelectorAll('.ft-voice-item').forEach(item =>
+                        item.classList.toggle('active', item.dataset.vid === cur.id));
+                    const activeItem = voiceListEl.querySelector(`.ft-voice-item[data-vid="${cur.id}"]`);
+                    if (activeItem) activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
                 }
             } else {
                 voicePreview.classList.remove('visible');
@@ -8294,6 +8483,9 @@
                     activeEraseRegion = rid;
                     eraseRegionListEl.querySelectorAll('.ft-region-card').forEach(c => c.classList.remove('active'));
                     card.classList.add('active');
+                    // Toggle inline edit panels
+                    eraseRegionListEl.querySelectorAll('.ft-inline-edit').forEach(el =>
+                        el.classList.toggle('expanded', el.dataset.editEid === rid));
                     highlightOverlayBox(rid);
                     const r = eraseRegions.find(r => r.id === rid);
                     if (r) {
@@ -8316,6 +8508,51 @@
             eraseOverlayContainer.querySelectorAll('.erase-region-box').forEach(box => {
                 box.classList.toggle('active', box.dataset.rid === rid);
             });
+        }
+
+        function bindEraseInlineEdits() {
+            eraseRegionListEl.querySelectorAll('.ft-inline-edit input').forEach(inp => {
+                inp.addEventListener('change', e => {
+                    e.stopPropagation();
+                    const eid = inp.dataset.eid;
+                    const field = inp.dataset.field;
+                    const r = eraseRegions.find(x => x.id === eid);
+                    if (!r) return;
+                    if (field === 'startSec' || field === 'endSec') {
+                        const sec = parseTimeInput(inp.value);
+                        if (sec !== null) { r[field] = sec; inp.value = fmtTime(sec); }
+                    } else if (['x','y','w','h'].includes(field)) {
+                        const val = parseFloat(inp.value);
+                        if (!isNaN(val)) r[field] = val;
+                    } else {
+                        r[field] = inp.value;
+                    }
+                    syncAllViews('erase');
+                });
+                inp.addEventListener('click', e => e.stopPropagation());
+            });
+        }
+
+        function syncAllViews(step) {
+            syncTimelineSegments(step);
+            if (step === 'erase') {
+                renderEraseOverlays();
+                updateEraseOverlayVisibility();
+                // Update card display without full re-render to preserve edit state
+                eraseRegionListEl.querySelectorAll('.ft-region-card').forEach(card => {
+                    const r = eraseRegions.find(x => x.id === card.dataset.region);
+                    if (r) {
+                        const timeEl = card.querySelector('.ft-region-time');
+                        if (timeEl) timeEl.textContent = fmtTime(r.startSec) + ' – ' + fmtTime(r.endSec);
+                        const titleEl = card.querySelector('.ft-region-title');
+                        if (titleEl) titleEl.textContent = r.title;
+                        const metaEl = card.querySelector('.ft-region-meta span');
+                        if (metaEl) metaEl.textContent = `x:${r.x}% y:${r.y}% w:${r.w}% h:${r.h}%`;
+                    }
+                });
+            }
+            if (step === 'subtitle') updateSubtitlePreview();
+            if (step === 'voice') updateVoicePreview();
         }
 
         function addEraseRegion() {
@@ -8464,7 +8701,6 @@
                 content.className = 'tv2-tl-track-content';
                 track.appendChild(content);
             }
-            content.innerHTML = '<div class="tv2-tl-track-bg"></div>';
 
             let items;
             if (step === 'erase') items = eraseRegions.map(r => ({ id: r.id, startSec: r.startSec, endSec: r.endSec }));
@@ -8472,17 +8708,70 @@
             else if (step === 'voice') items = voiceItems.map(v => ({ id: v.id, startSec: v.startSec, endSec: v.endSec }));
             else return;
 
-            items.forEach(item => {
-                const leftPct = (item.startSec / videoDuration) * 100;
-                const widthPct = ((item.endSec - item.startSec) / videoDuration) * 100;
-                const seg = document.createElement('div');
-                seg.className = `tv2-tl-segment tv2-tl-segment--${step}`;
-                seg.style.left = leftPct + '%';
-                seg.style.width = widthPct + '%';
-                seg.innerHTML = `<span class="tv2-tl-seg-label">${item.id}</span>`;
-                seg.dataset.startSec = item.startSec;
-                content.appendChild(seg);
+            // Detect overlaps and assign lanes
+            const lanes = assignLanes(items);
+            const needMultiRow = lanes.length > 1;
+            track.classList.toggle('track-multirow', needMultiRow);
+
+            if (needMultiRow) {
+                content.innerHTML = '';
+                lanes.forEach((lane, li) => {
+                    const sublane = document.createElement('div');
+                    sublane.className = 'tv2-tl-track-sublane';
+                    if (li === 0) {
+                        const bg = document.createElement('div');
+                        bg.className = 'tv2-tl-track-bg';
+                        sublane.appendChild(bg);
+                    }
+                    lane.forEach(item => {
+                        sublane.appendChild(createSegmentEl(item, step));
+                    });
+                    content.appendChild(sublane);
+                });
+            } else {
+                content.innerHTML = '<div class="tv2-tl-track-bg"></div>';
+                items.forEach(item => {
+                    content.appendChild(createSegmentEl(item, step));
+                });
+            }
+        }
+
+        function createSegmentEl(item, step) {
+            const leftPct = (item.startSec / videoDuration) * 100;
+            const widthPct = ((item.endSec - item.startSec) / videoDuration) * 100;
+            const seg = document.createElement('div');
+            seg.className = `tv2-tl-segment tv2-tl-segment--${step}`;
+            seg.style.left = leftPct + '%';
+            seg.style.width = widthPct + '%';
+            seg.dataset.startSec = item.startSec;
+            seg.dataset.endSec = item.endSec;
+            seg.dataset.itemId = item.id;
+            seg.dataset.trackType = step;
+            seg.innerHTML = `
+                <span class="tv2-tl-seg-handle tv2-tl-seg-handle--l" data-handle="left"></span>
+                <span class="tv2-tl-seg-label">${item.id}</span>
+                <span class="tv2-tl-seg-handle tv2-tl-seg-handle--r" data-handle="right"></span>
+            `;
+            return seg;
+        }
+
+        function assignLanes(items) {
+            if (!items.length) return [[]];
+            const sorted = [...items].sort((a, b) => a.startSec - b.startSec);
+            const lanes = [];
+            sorted.forEach(item => {
+                let placed = false;
+                for (const lane of lanes) {
+                    const last = lane[lane.length - 1];
+                    if (item.startSec >= last.endSec) {
+                        lane.push(item);
+                        placed = true;
+                        break;
+                    }
+                }
+                if (!placed) lanes.push([item]);
             });
+            return lanes.length ? lanes : [[]];
         }
 
         /* ===== Timeline Track Label Buttons (eye/lock) ===== */
@@ -8604,38 +8893,252 @@
             needsVideoSync = true;
         }
 
+        /* ===== Segment Drag State ===== */
+        let segDrag = null; // { el, type:'left'|'right'|'move', itemId, trackType, startX, origStart, origEnd }
+
+        function getDataArray(trackType) {
+            if (trackType === 'erase') return eraseRegions;
+            if (trackType === 'subtitle') return subtitleItems;
+            if (trackType === 'voice') return voiceItems;
+            return [];
+        }
+
+        function getTrackContentWidth() {
+            const rect = tlTracks.getBoundingClientRect();
+            return rect.width - 80 - 20; // label=80, right-pad=20
+        }
+        function getTrackContentLeft() {
+            return tlTracks.getBoundingClientRect().left + 80;
+        }
+
+        function pxToSec(px) {
+            return (px / getTrackContentWidth()) * videoDuration;
+        }
+
         tlTracks.addEventListener('mousedown', e => {
             if (phase === 'upload') return;
             e.preventDefault();
-            tlDragging = true;
 
-            // Check if a segment was clicked
+            // Check if a drag handle was clicked
+            const handle = e.target.closest('.tv2-tl-seg-handle');
             const segment = e.target.closest('.tv2-tl-segment');
-            if (segment) {
+
+            if (handle && segment) {
+                // Start handle drag (resize)
+                const itemId = segment.dataset.itemId;
+                const trackType = segment.dataset.trackType;
+                const handleDir = handle.dataset.handle; // 'left' or 'right'
+                const item = getDataArray(trackType).find(x => x.id === itemId);
+                if (!item) return;
+                segDrag = {
+                    el: segment, type: handleDir === 'left' ? 'left' : 'right',
+                    itemId, trackType, startX: e.clientX,
+                    origStart: item.startSec, origEnd: item.endSec
+                };
+                segment.classList.add('seg-dragging');
+                document.body.style.cursor = 'col-resize';
+                return;
+            }
+
+            if (segment && !handle) {
+                // Check if in finetune mode — allow move drag
+                if (inFinetune) {
+                    const itemId = segment.dataset.itemId;
+                    const trackType = segment.dataset.trackType;
+                    const item = getDataArray(trackType).find(x => x.id === itemId);
+                    if (!item) { seekTimeline(e.clientX); return; }
+                    segDrag = {
+                        el: segment, type: 'move',
+                        itemId, trackType, startX: e.clientX,
+                        origStart: item.startSec, origEnd: item.endSec
+                    };
+                    segment.classList.add('seg-dragging');
+                    document.body.style.cursor = 'grabbing';
+
+                    // Also highlight and seek
+                    document.querySelectorAll('.tv2-tl-segment.seg-active').forEach(s => s.classList.remove('seg-active'));
+                    segment.classList.add('seg-active');
+                    videoTime = item.startSec;
+                    needsVideoSync = true;
+
+                    // Select corresponding panel card
+                    selectPanelItem(trackType, itemId);
+                    return;
+                }
+
+                // Normal click: seek to segment start
                 document.querySelectorAll('.tv2-tl-segment.seg-active').forEach(s => s.classList.remove('seg-active'));
                 segment.classList.add('seg-active');
                 setTimeout(() => segment.classList.remove('seg-active'), 600);
-
-                // Seek to segment start
                 const startSec = parseFloat(segment.dataset.startSec);
                 if (!isNaN(startSec)) {
                     videoTime = startSec;
+                    needsVideoSync = true;
                 } else {
                     seekTimeline(e.clientX);
                 }
-            } else {
-                seekTimeline(e.clientX);
+
+                // Select corresponding panel card
+                if (segment.dataset.trackType && segment.dataset.itemId) {
+                    selectPanelItem(segment.dataset.trackType, segment.dataset.itemId);
+                }
+                return;
             }
+
+            // No segment — regular timeline seek + drag
+            tlDragging = true;
+            seekTimeline(e.clientX);
         });
 
         document.addEventListener('mousemove', e => {
+            if (segDrag) {
+                const dx = e.clientX - segDrag.startX;
+                const dSec = pxToSec(dx);
+                const item = getDataArray(segDrag.trackType).find(x => x.id === segDrag.itemId);
+                if (!item) return;
+                const minDur = 0.5; // minimum segment duration
+
+                if (segDrag.type === 'left') {
+                    let newStart = Math.max(0, segDrag.origStart + dSec);
+                    newStart = Math.min(newStart, segDrag.origEnd - minDur);
+                    // Snap
+                    newStart = snapToNearby(newStart, segDrag.itemId, segDrag.trackType);
+                    item.startSec = Math.round(newStart * 2) / 2; // 0.5s precision
+                } else if (segDrag.type === 'right') {
+                    let newEnd = Math.min(videoDuration, segDrag.origEnd + dSec);
+                    newEnd = Math.max(newEnd, segDrag.origStart + minDur);
+                    newEnd = snapToNearby(newEnd, segDrag.itemId, segDrag.trackType);
+                    item.endSec = Math.round(newEnd * 2) / 2;
+                } else if (segDrag.type === 'move') {
+                    const dur = segDrag.origEnd - segDrag.origStart;
+                    let newStart = segDrag.origStart + dSec;
+                    newStart = Math.max(0, Math.min(videoDuration - dur, newStart));
+                    newStart = snapToNearby(newStart, segDrag.itemId, segDrag.trackType);
+                    item.startSec = Math.round(newStart * 2) / 2;
+                    item.endSec = item.startSec + dur;
+                }
+
+                // Live update segment position
+                const leftPct = (item.startSec / videoDuration) * 100;
+                const widthPct = ((item.endSec - item.startSec) / videoDuration) * 100;
+                segDrag.el.style.left = leftPct + '%';
+                segDrag.el.style.width = widthPct + '%';
+                segDrag.el.dataset.startSec = item.startSec;
+                segDrag.el.dataset.endSec = item.endSec;
+
+                // Seek video to show current position
+                videoTime = segDrag.type === 'right' ? item.endSec : item.startSec;
+                needsVideoSync = true;
+                return;
+            }
             if (!tlDragging) return;
             seekTimeline(e.clientX);
         });
 
         document.addEventListener('mouseup', () => {
+            if (segDrag) {
+                segDrag.el.classList.remove('seg-dragging');
+                document.body.style.cursor = '';
+                // Full sync after drag
+                syncAllViews(segDrag.trackType);
+                // Update panel card if editing
+                updatePanelAfterDrag(segDrag.trackType, segDrag.itemId);
+                segDrag = null;
+                return;
+            }
             tlDragging = false;
         });
+
+        /* Snap to nearby segment edges (within ±0.5s) */
+        function snapToNearby(sec, excludeId, trackType) {
+            const items = getDataArray(trackType);
+            const SNAP_THRESHOLD = 0.5;
+            let best = sec;
+            let bestDist = SNAP_THRESHOLD;
+            items.forEach(item => {
+                if (item.id === excludeId) return;
+                [item.startSec, item.endSec].forEach(edge => {
+                    const dist = Math.abs(sec - edge);
+                    if (dist < bestDist) { bestDist = dist; best = edge; }
+                });
+            });
+            return best;
+        }
+
+        /* Select panel item when segment is clicked */
+        function selectPanelItem(trackType, itemId) {
+            if (trackType === 'erase' && inFinetune && currentFinetuneStep === 'erase') {
+                activeEraseRegion = itemId;
+                eraseRegionListEl.querySelectorAll('.ft-region-card').forEach(c => c.classList.remove('active'));
+                const card = eraseRegionListEl.querySelector(`.ft-region-card[data-region="${itemId}"]`);
+                if (card) { card.classList.add('active'); card.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+                // Expand inline edit
+                eraseRegionListEl.querySelectorAll('.ft-inline-edit').forEach(el => el.classList.remove('expanded'));
+                const editPanel = eraseRegionListEl.querySelector(`.ft-inline-edit[data-edit-eid="${itemId}"]`);
+                if (editPanel) editPanel.classList.add('expanded');
+                highlightOverlayBox(itemId);
+            } else if (trackType === 'subtitle' && inFinetune && currentFinetuneStep === 'subtitle') {
+                subtitleListEl.querySelectorAll('.ft-sub-item').forEach(i => i.classList.remove('active', 'editing'));
+                const item = subtitleListEl.querySelector(`.ft-sub-item[data-sid="${itemId}"]`);
+                if (item) { item.classList.add('active'); item.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+            } else if (trackType === 'voice' && inFinetune && currentFinetuneStep === 'voice') {
+                voiceListEl.querySelectorAll('.ft-voice-item').forEach(i => i.classList.remove('active', 'editing'));
+                const item = voiceListEl.querySelector(`.ft-voice-item[data-vid="${itemId}"]`);
+                if (item) { item.classList.add('active'); item.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+            }
+        }
+
+        /* Update panel inline edit inputs after drag */
+        function updatePanelAfterDrag(trackType, itemId) {
+            if (trackType === 'erase') {
+                const r = eraseRegions.find(x => x.id === itemId);
+                if (!r) return;
+                const editPanel = eraseRegionListEl.querySelector(`.ft-inline-edit[data-edit-eid="${itemId}"]`);
+                if (editPanel) {
+                    const startInp = editPanel.querySelector('.ie-start');
+                    const endInp = editPanel.querySelector('.ie-end');
+                    if (startInp) startInp.value = fmtTime(r.startSec);
+                    if (endInp) endInp.value = fmtTime(r.endSec);
+                }
+                // Update card time display
+                const card = eraseRegionListEl.querySelector(`.ft-region-card[data-region="${itemId}"]`);
+                if (card) {
+                    const timeEl = card.querySelector('.ft-region-time');
+                    if (timeEl) timeEl.textContent = fmtTime(r.startSec) + ' – ' + fmtTime(r.endSec);
+                }
+            } else if (trackType === 'subtitle') {
+                const s = subtitleItems.find(x => x.id === itemId);
+                if (!s) return;
+                const editPanel = subtitleListEl.querySelector(`.ft-inline-edit[data-edit-sid="${itemId}"]`);
+                if (editPanel) {
+                    const startInp = editPanel.querySelector('.ie-start');
+                    const endInp = editPanel.querySelector('.ie-end');
+                    if (startInp) startInp.value = fmtTime(s.startSec);
+                    if (endInp) endInp.value = fmtTime(s.endSec);
+                }
+                // Update sub time display
+                const itemEl = subtitleListEl.querySelector(`.ft-sub-item[data-sid="${itemId}"]`);
+                if (itemEl) {
+                    const timeEl = itemEl.querySelector('.ft-sub-time');
+                    if (timeEl) timeEl.textContent = fmtTime(s.startSec);
+                }
+            } else if (trackType === 'voice') {
+                const v = voiceItems.find(x => x.id === itemId);
+                if (!v) return;
+                const editPanel = voiceListEl.querySelector(`.ft-inline-edit[data-edit-vid="${itemId}"]`);
+                if (editPanel) {
+                    const startInp = editPanel.querySelector('.ie-start');
+                    const endInp = editPanel.querySelector('.ie-end');
+                    if (startInp) startInp.value = fmtTime(v.startSec);
+                    if (endInp) endInp.value = fmtTime(v.endSec);
+                }
+                const itemEl = voiceListEl.querySelector(`.ft-voice-item[data-vid="${itemId}"]`);
+                if (itemEl) {
+                    const timeEl = itemEl.querySelector('.ft-voice-time');
+                    if (timeEl) timeEl.textContent = fmtTime(v.startSec);
+                }
+            }
+        }
 
         /* Also support ruler area click-to-seek */
         document.querySelector('.tv2-tl-ruler').addEventListener('mousedown', e => {
