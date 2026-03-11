@@ -2885,32 +2885,327 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* V7: 导入面板 — 两栏布局 */
-    .tv2-import-methods {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+    /* V8: 导入面板 — 三段平铺 */
+    .tv2-import-flat {
         margin-top: 4px;
     }
-    @media (max-width: 700px) {
-        .tv2-import-methods { grid-template-columns: 1fr; }
+
+    /* 分区标题行 */
+    .tv2-import-section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        position: relative;
     }
-    .tv2-import-method {
-        padding: 24px;
-        background: rgba(255,255,255,0.02);
-        border: 1.5px solid rgba(255,255,255,0.08);
-        border-radius: 16px;
-        transition: border-color 0.3s;
+    .tv2-import-section-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        white-space: nowrap;
     }
-    .tv2-import-method:hover {
-        border-color: rgba(99,102,241,0.25);
+    .tv2-import-section-line {
+        flex: 1;
+        height: 1px;
+        background: rgba(255,255,255,0.06);
     }
-    .tv2-import-method-head {
+
+    /* ⓘ 信息按钮 */
+    .tv2-import-info-btn {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        color: var(--text-dim);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.2s;
+        position: relative;
+        font-family: inherit;
+    }
+    .tv2-import-info-btn:hover {
+        color: #818cf8;
+        border-color: rgba(99,102,241,0.3);
+        background: rgba(99,102,241,0.08);
+    }
+
+    /* Tooltip */
+    .tv2-import-tooltip {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 320px;
+        padding: 14px 16px;
+        background: rgba(20,20,32,0.97);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        z-index: 50;
+        display: none;
+        backdrop-filter: blur(16px);
+    }
+    .tv2-import-tooltip.visible {
+        display: block;
+        animation: tooltipFadeIn 0.2s ease;
+    }
+    @keyframes tooltipFadeIn {
+        from { opacity: 0; transform: translateY(-4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .tv2-import-tooltip-arrow {
+        position: absolute;
+        top: -5px;
+        right: 8px;
+        width: 10px;
+        height: 10px;
+        background: rgba(20,20,32,0.97);
+        border-top: 1px solid rgba(255,255,255,0.1);
+        border-left: 1px solid rgba(255,255,255,0.1);
+        transform: rotate(45deg);
+    }
+    .tv2-import-tooltip code {
+        background: rgba(99,102,241,0.1);
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 0.68rem;
+        color: #a78bfa;
+    }
+    .tv2-import-tooltip div + div {
+        margin-top: 4px;
+    }
+
+    /* ID 导入行（V8 样式） */
+    .tv2-import-id-row-v8 {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+    .tv2-import-platform-select {
+        padding: 10px 12px;
+        font-size: 0.82rem;
+        color: var(--text-primary);
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        font-family: inherit;
+        outline: none;
+        cursor: pointer;
+        transition: border-color 0.2s;
+        min-width: 88px;
+    }
+    .tv2-import-platform-select:focus {
+        border-color: rgba(99,102,241,0.5);
+    }
+
+    /* 文件行列表 */
+    .tv2-import-file-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .tv2-import-file-row {
         display: flex;
         align-items: center;
         gap: 10px;
-        margin-bottom: 6px;
+        padding: 10px 14px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 10px;
+        transition: all 0.2s;
     }
+    .tv2-import-file-row:hover {
+        border-color: rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.03);
+    }
+    .tv2-import-file-row.has-file {
+        border-color: rgba(99,102,241,0.25);
+        background: rgba(99,102,241,0.04);
+    }
+    .tv2-import-file-row-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+        width: 22px;
+        text-align: center;
+    }
+    .tv2-import-file-row-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        min-width: 80px;
+    }
+    .tv2-import-file-row-tag {
+        font-size: 0.62rem;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        flex-shrink: 0;
+    }
+    .tv2-import-file-row-tag.tag-required {
+        color: #f97316;
+        background: rgba(249,115,22,0.1);
+        border: 1px solid rgba(249,115,22,0.2);
+    }
+    .tv2-import-file-row-tag.tag-optional {
+        color: var(--text-dim);
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.06);
+    }
+    .tv2-import-file-row-btn {
+        padding: 5px 12px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #818cf8;
+        background: rgba(99,102,241,0.08);
+        border: 1px solid rgba(99,102,241,0.2);
+        border-radius: 7px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .tv2-import-file-row-btn:hover {
+        background: rgba(99,102,241,0.15);
+        border-color: rgba(99,102,241,0.35);
+    }
+    .tv2-import-file-row-filename {
+        flex: 1;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        min-width: 0;
+    }
+    .tv2-import-file-row-filename.has-file {
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+    .tv2-import-file-row-remove {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: rgba(255,255,255,0.06);
+        border: none;
+        color: var(--text-dim);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.2s;
+    }
+    .tv2-import-file-row-remove:hover {
+        background: rgba(239,68,68,0.15);
+        color: #ef4444;
+    }
+
+    /* FrameX 历史任务列表（内联） */
+    .tv2-import-history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-height: 220px;
+        overflow-y: auto;
+    }
+    .tv2-import-history-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .tv2-import-history-item:hover {
+        border-color: rgba(99,102,241,0.2);
+        background: rgba(99,102,241,0.03);
+    }
+    .tv2-import-history-item.selected {
+        border-color: rgba(99,102,241,0.45);
+        background: rgba(99,102,241,0.06);
+    }
+    .tv2-import-history-radio {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255,255,255,0.2);
+        flex-shrink: 0;
+        position: relative;
+        transition: all 0.2s;
+    }
+    .tv2-import-history-item.selected .tv2-import-history-radio {
+        border-color: #6366f1;
+        background: #6366f1;
+    }
+    .tv2-import-history-item.selected .tv2-import-history-radio::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #fff;
+    }
+    .tv2-import-history-body {
+        flex: 1;
+        min-width: 0;
+    }
+    .tv2-import-history-name {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .tv2-import-history-meta {
+        display: flex;
+        gap: 14px;
+        font-size: 0.68rem;
+        color: var(--text-dim);
+        margin-top: 2px;
+    }
+    .tv2-import-history-go-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: #fff;
+        box-shadow: 0 0 20px rgba(16,185,129,0.2);
+        transition: all 0.3s;
+    }
+    .tv2-import-history-go-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 28px rgba(16,185,129,0.3);
+    }
+    .tv2-import-history-go-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* 旧的导入样式保留兼容：tv2-import-method-icon 占位 */
     .tv2-import-method-icon {
         width: 36px;
         height: 36px;
@@ -2998,88 +3293,13 @@
         transform: none;
         box-shadow: none;
     }
-    /* 文件上传区 */
-    .tv2-import-file-drop {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 32px 20px;
-        border: 2px dashed rgba(6,182,212,0.25);
-        border-radius: 14px;
-        background: rgba(6,182,212,0.03);
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-    .tv2-import-file-drop:hover {
-        border-color: rgba(6,182,212,0.5);
-        background: rgba(6,182,212,0.06);
-    }
-    .tv2-import-file-drop.dragover {
-        border-color: #06b6d4;
-        background: rgba(6,182,212,0.1);
-    }
-    .tv2-import-file-drop-icon {
-        font-size: 1.5rem;
-    }
-    .tv2-import-file-drop-text {
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: var(--text-primary);
-    }
-    .tv2-import-file-drop-text em {
-        color: #06b6d4;
-        font-style: normal;
-    }
-    .tv2-import-file-drop-hint {
-        font-size: 0.68rem;
-        color: var(--text-dim);
-    }
-    /* 已选文件显示 */
-    .tv2-import-file-selected {
-        display: none;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 14px;
-        background: rgba(6,182,212,0.06);
-        border: 1px solid rgba(6,182,212,0.2);
-        border-radius: 10px;
-        margin-top: 10px;
-    }
-    .tv2-import-file-selected.visible { display: flex; }
-    .tv2-import-file-selected-name {
-        flex: 1;
-        font-size: 0.78rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .tv2-import-file-selected-remove {
-        width: 22px; height: 22px;
-        border-radius: 6px;
-        background: rgba(255,255,255,0.06);
-        border: none;
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        flex-shrink: 0;
-        transition: all 0.2s;
-    }
-    .tv2-import-file-selected-remove:hover {
-        background: rgba(239,68,68,0.15);
-        color: #ef4444;
-    }
+    /* V8: "开始精调"按钮（文件上传区） */
     .tv2-import-file-go-btn {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 10px 20px;
-        font-size: 0.82rem;
+        padding: 9px 20px;
+        font-size: 0.8rem;
         font-weight: 600;
         color: #fff;
         background: linear-gradient(135deg, #06b6d4, #3b82f6);
@@ -3088,10 +3308,7 @@
         cursor: pointer;
         font-family: inherit;
         box-shadow: 0 0 16px rgba(6,182,212,0.2);
-        transition: all 0.2s;
-        margin-top: 12px;
-        width: 100%;
-        justify-content: center;
+        transition: all 0.3s;
     }
     .tv2-import-file-go-btn:hover {
         transform: translateY(-1px);
@@ -3102,24 +3319,6 @@
         cursor: not-allowed;
         transform: none;
         box-shadow: none;
-    }
-    /* 导入方式分隔 "或" */
-    .tv2-import-or-divider {
-        display: none; /* 只在移动端显示 */
-        align-items: center;
-        gap: 12px;
-        font-size: 0.72rem;
-        color: var(--text-dim);
-    }
-    .tv2-import-or-divider::before,
-    .tv2-import-or-divider::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: rgba(255,255,255,0.06);
-    }
-    @media (max-width: 700px) {
-        .tv2-import-or-divider { display: flex; }
     }
 
     .tv2-landing {
@@ -5186,55 +5385,129 @@
                     </div>
                 </div>
 
-                <!-- ===== V7: Tab 面板 B — 导入已有任务 ===== -->
+                <!-- ===== V8: Tab 面板 B — 导入已有任务（三段平铺） ===== -->
                 <div class="tv2-path-panel" id="pathPanelImport" data-panel="import">
-                    <div class="tv2-import-methods">
-                        <!-- 方式一：输入任务ID -->
-                        <div class="tv2-import-method">
-                            <div class="tv2-import-method-head">
-                                <div class="tv2-import-method-icon tv2-import-method-icon--id">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M16 3V8H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3L16 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                                </div>
-                                <div class="tv2-import-method-title">输入任务 ID</div>
-                            </div>
-                            <div class="tv2-import-method-desc">输入 MPS / 云点播 / FrameX 任务 ID，导入已完成的任务直接精调</div>
-                            <div class="tv2-import-id-row">
-                                <input type="text" class="tv2-import-id-input" id="tv2ImportIdInput" placeholder="输入任务 ID，例如 125xxxx">
-                                <button class="tv2-import-id-btn" id="tv2ImportIdBtn" type="button">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M16 3V8H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3L16 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                                    导入
-                                </button>
+                    <div class="tv2-import-flat">
+
+                        <!-- ── 第一段：通过任务 ID 导入 ── -->
+                        <div class="tv2-import-section-header">
+                            <span class="tv2-import-section-label">通过任务 ID 导入</span>
+                            <span class="tv2-import-section-line"></span>
+                            <button class="tv2-import-info-btn" id="importIdInfoBtn" type="button" aria-label="说明">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="currentColor"/></svg>
+                            </button>
+                            <div class="tv2-import-tooltip" id="importIdTooltip">
+                                <div class="tv2-import-tooltip-arrow"></div>
+                                <div><strong>MPS</strong>：任务管理 → 复制 TaskId<br>格式如 <code>2600xxx-TranscodeTask-xxxx</code></div>
+                                <div style="margin-top:6px;"><strong>云点播</strong>：任务管理 → 复制 TaskId<br>格式如 <code>125xxx-proceduretask-xxxx</code></div>
                             </div>
                         </div>
+                        <div class="tv2-import-id-row-v8">
+                            <select class="tv2-import-platform-select" id="tv2ImportPlatformSelect">
+                                <option value="mps">MPS</option>
+                                <option value="vod">云点播</option>
+                            </select>
+                            <input type="text" class="tv2-import-id-input" id="tv2ImportIdInput" placeholder="粘贴任务 ID…">
+                            <button class="tv2-import-id-btn" id="tv2ImportIdBtn" type="button">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M16 3V8H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3L16 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                导入
+                            </button>
+                        </div>
 
-                        <div class="tv2-import-or-divider">或</div>
-
-                        <!-- 方式二：上传中间文件 -->
-                        <div class="tv2-import-method">
-                            <div class="tv2-import-method-head">
-                                <div class="tv2-import-method-icon tv2-import-method-icon--file">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                                </div>
-                                <div class="tv2-import-method-title">上传中间文件</div>
+                        <!-- ── 第二段：上传已处理文件 ── -->
+                        <div class="tv2-import-section-header" style="margin-top:28px;">
+                            <span class="tv2-import-section-label">上传已处理文件</span>
+                            <span class="tv2-import-section-line"></span>
+                            <button class="tv2-import-info-btn" id="importFileInfoBtn" type="button" aria-label="说明">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="currentColor"/></svg>
+                            </button>
+                            <div class="tv2-import-tooltip" id="importFileTooltip">
+                                <div class="tv2-import-tooltip-arrow"></div>
+                                <div><strong>📹 视频</strong>：需要精调的视频源文件</div>
+                                <div><strong>📝 字幕</strong>：从 ASR / OCR 平台导出的 .srt / .vtt / .ass</div>
+                                <div><strong>🎙 配音</strong>：已合成的 TTS 配音音频片段</div>
+                                <div><strong>📋 JSON</strong>：说话人分离 (speaker diarization) 结果</div>
                             </div>
-                            <div class="tv2-import-method-desc">从其他平台下载的已处理文件，上传后直接进入精调模式</div>
-                            <div class="tv2-import-file-drop" id="tv2ImportFileDrop">
-                                <input type="file" id="tv2ImportFileInput" accept=".mp4,.mov,.avi,.mkv,.json,.srt,.vtt,.ass" hidden>
-                                <div class="tv2-import-file-drop-icon">📂</div>
-                                <div class="tv2-import-file-drop-text">拖拽文件或 <em>点击上传</em></div>
-                                <div class="tv2-import-file-drop-hint">支持视频、Speaker JSON、字幕文件</div>
-                            </div>
-                            <div class="tv2-import-file-selected" id="tv2ImportFileSelected">
-                                <span class="tv2-import-file-selected-name" id="tv2ImportFileName"></span>
-                                <button class="tv2-import-file-selected-remove" id="tv2ImportFileRemove" title="移除">
+                        </div>
+                        <div class="tv2-import-file-rows">
+                            <!-- 视频 — 必须 -->
+                            <div class="tv2-import-file-row" data-slot="video">
+                                <span class="tv2-import-file-row-icon">📹</span>
+                                <span class="tv2-import-file-row-name">原始视频</span>
+                                <span class="tv2-import-file-row-tag tag-required">必须</span>
+                                <button class="tv2-import-file-row-btn" data-slot="video" type="button">选择文件</button>
+                                <input type="file" class="tv2-import-file-row-input" data-slot="video" accept=".mp4,.mov,.mkv,.avi,.webm" hidden>
+                                <span class="tv2-import-file-row-filename" data-slot="video">—</span>
+                                <button class="tv2-import-file-row-remove" data-slot="video" type="button" style="display:none;" title="移除">
                                     <svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                                 </button>
                             </div>
+                            <!-- 字幕 — 可选 -->
+                            <div class="tv2-import-file-row" data-slot="subtitle">
+                                <span class="tv2-import-file-row-icon">📝</span>
+                                <span class="tv2-import-file-row-name">字幕文件</span>
+                                <span class="tv2-import-file-row-tag tag-optional">可选</span>
+                                <button class="tv2-import-file-row-btn" data-slot="subtitle" type="button">选择文件</button>
+                                <input type="file" class="tv2-import-file-row-input" data-slot="subtitle" accept=".srt,.vtt,.ass" multiple hidden>
+                                <span class="tv2-import-file-row-filename" data-slot="subtitle">—</span>
+                                <button class="tv2-import-file-row-remove" data-slot="subtitle" type="button" style="display:none;" title="移除">
+                                    <svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+                            <!-- 配音 — 可选 -->
+                            <div class="tv2-import-file-row" data-slot="audio">
+                                <span class="tv2-import-file-row-icon">🎙</span>
+                                <span class="tv2-import-file-row-name">配音音频</span>
+                                <span class="tv2-import-file-row-tag tag-optional">可选</span>
+                                <button class="tv2-import-file-row-btn" data-slot="audio" type="button">选择文件</button>
+                                <input type="file" class="tv2-import-file-row-input" data-slot="audio" accept=".mp3,.wav,.m4a,.aac,.flac" multiple hidden>
+                                <span class="tv2-import-file-row-filename" data-slot="audio">—</span>
+                                <button class="tv2-import-file-row-remove" data-slot="audio" type="button" style="display:none;" title="移除">
+                                    <svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+                            <!-- Speaker JSON — 可选 -->
+                            <div class="tv2-import-file-row" data-slot="json">
+                                <span class="tv2-import-file-row-icon">📋</span>
+                                <span class="tv2-import-file-row-name">Speaker JSON</span>
+                                <span class="tv2-import-file-row-tag tag-optional">可选</span>
+                                <button class="tv2-import-file-row-btn" data-slot="json" type="button">选择文件</button>
+                                <input type="file" class="tv2-import-file-row-input" data-slot="json" accept=".json" hidden>
+                                <span class="tv2-import-file-row-filename" data-slot="json">—</span>
+                                <button class="tv2-import-file-row-remove" data-slot="json" type="button" style="display:none;" title="移除">
+                                    <svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="display:flex;justify-content:flex-end;margin-top:14px;">
                             <button class="tv2-import-file-go-btn" id="tv2ImportFileGoBtn" disabled>
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4L12 8L6 12V4Z" fill="currentColor"/></svg>
-                                进入精调
+                                开始精调
                             </button>
                         </div>
+
+                        <!-- ── 第三段：FrameX 历史任务 ── -->
+                        <div class="tv2-import-section-header" style="margin-top:28px;">
+                            <span class="tv2-import-section-label">FrameX 历史任务</span>
+                            <span class="tv2-import-section-line"></span>
+                            <button class="tv2-import-info-btn" id="importHistoryInfoBtn" type="button" aria-label="说明">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="currentColor"/></svg>
+                            </button>
+                            <div class="tv2-import-tooltip" id="importHistoryTooltip">
+                                <div class="tv2-import-tooltip-arrow"></div>
+                                <div>在 FrameX 中已经处理完成的译制任务，直接选择即可进入精调模式。</div>
+                            </div>
+                        </div>
+                        <div class="tv2-import-history-list" id="tv2ImportHistoryList">
+                            <!-- JS 动态填充 -->
+                        </div>
+                        <div style="display:flex;justify-content:flex-end;margin-top:14px;">
+                            <button class="tv2-import-history-go-btn" id="tv2ImportHistoryGoBtn" disabled>
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4L12 8L6 12V4Z" fill="currentColor"/></svg>
+                                导入选中
+                            </button>
+                        </div>
+
                     </div>
                 </div>
 
@@ -5896,287 +6169,16 @@
     })();
     </script>
     <script>
-    // === Task Import Picker Logic ===
-    (function initTaskImportPicker() {
-        const modal = document.getElementById('taskImportModal');
+    // === V8: Task Import Button — 直接跳转到导入 Tab（不再打开弹窗） ===
+    (function initTaskImportRedirect() {
         const openBtn = document.getElementById('tv2ImportTaskBtn');
-        const closeBtn = document.getElementById('taskImportClose');
-        const cancelBtn = document.getElementById('taskImportCancel');
-        const confirmBtn = document.getElementById('taskImportConfirm');
-        const selectedLabel = document.getElementById('taskImportSelectedLabel');
+        if (!openBtn) return;
 
-        // Tab elements
-        const tabs = document.querySelectorAll('.task-import-tab[data-tab]');
-
-        // ID panel elements
-        const idPanel = document.getElementById('taskImportIdPanel');
-        const idPlatformSel = document.getElementById('taskImportIdPlatform');
-        const idInput = document.getElementById('taskImportIdInput');
-        const idFetchBtn = document.getElementById('taskImportIdFetch');
-        const idResult = document.getElementById('taskImportIdResult');
-        const idEmpty = document.getElementById('taskImportIdEmpty');
-
-        // FrameX panel elements
-        const framexPanel = document.getElementById('taskImportFramexPanel');
-        const listEl = document.getElementById('taskImportList');
-        const searchInput = document.getElementById('taskImportSearch');
-
-        if (!openBtn || !modal) return;
-
-        let currentTab = 'id'; // 'id' | 'framex'
-        let idFetchedTask = null;
-        let selectedTaskId = null;
-
-        // FrameX mock data only
-        const framexTasks = [
-            { id:'ft001', name:'出海短视频素材-东南亚篇 — 英文', video:'出海短视频素材-东南亚篇.mp4', lang:'中→英', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-07', duration:'1:32' },
-            { id:'ft002', name:'UI 动效设计教程 — 日语版', video:'UI 动效设计教程.mp4', lang:'中→日', steps:{ erase:true, subtitle:true, voice:false }, date:'2026-03-04', duration:'20:34' },
-            { id:'ft003', name:'品牌宣传片 — 韩语版', video:'品牌宣传片2026.mp4', lang:'中→韩', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-03', duration:'5:16' },
-        ];
-
-        /* ===== Tab 切换 ===== */
-        function switchTab(tab) {
-            currentTab = tab;
-            tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-
-            if (tab === 'id') {
-                idPanel.classList.add('active');
-                framexPanel.style.display = 'none';
-                // Restore ID state
-                if (idFetchedTask) {
-                    selectedLabel.textContent = '已查到: ' + idFetchedTask.name;
-                    confirmBtn.disabled = false;
-                } else {
-                    selectedLabel.textContent = '请输入任务 ID';
-                    confirmBtn.disabled = true;
-                }
-            } else {
-                idPanel.classList.remove('active');
-                framexPanel.style.display = 'flex';
-                searchInput.value = '';
-                renderFramexTasks();
-            }
-        }
-
-        tabs.forEach(t => {
-            t.addEventListener('click', () => switchTab(t.dataset.tab));
-        });
-
-        /* ===== FrameX 列表渲染 ===== */
-        function renderFramexTasks(filter) {
-            const q = (filter || '').toLowerCase();
-            listEl.innerHTML = '';
-
-            const filtered = framexTasks.filter(t => !q || t.name.toLowerCase().includes(q) || t.video.toLowerCase().includes(q));
-
-            if (filtered.length === 0) {
-                listEl.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-dim);font-size:0.82rem;">暂无已完成的 FrameX 任务</div>';
-                return;
-            }
-
-            filtered.forEach(t => {
-                const card = document.createElement('div');
-                card.className = 'task-import-card' + (selectedTaskId === t.id ? ' selected' : '');
-
-                const stepLabels = [];
-                if (t.steps.erase) stepLabels.push({ label: '擦除', active: true });
-                else stepLabels.push({ label: '擦除', active: false });
-                if (t.steps.subtitle) stepLabels.push({ label: '字幕', active: true });
-                else stepLabels.push({ label: '字幕', active: false });
-                if (t.steps.voice) stepLabels.push({ label: '配音', active: true });
-                else stepLabels.push({ label: '配音', active: false });
-
-                const stepsHtml = stepLabels.map(s =>
-                    `<span class="task-import-step${s.active ? ' active' : ''}">${s.active ? '✓ ' : ''}${s.label}</span>`
-                ).join('');
-
-                card.innerHTML = `
-                    <div class="task-import-card-radio"><div class="task-import-card-radio-dot"></div></div>
-                    <div class="task-import-card-body">
-                        <div class="task-import-card-name">${t.name}</div>
-                        <div class="task-import-card-meta">
-                            <span>${t.lang}</span>
-                            <span>${t.duration}</span>
-                            <span>${t.date}</span>
-                        </div>
-                    </div>
-                    <div class="task-import-step-tags">${stepsHtml}</div>
-                    <span class="task-import-tag task-import-tag--done">✓ 已完成</span>
-                `;
-
-                card.addEventListener('click', () => {
-                    selectedTaskId = t.id;
-                    renderFramexTasks(searchInput.value);
-                });
-
-                listEl.appendChild(card);
-            });
-
-            // Update footer
-            if (selectedTaskId) {
-                const task = framexTasks.find(t => t.id === selectedTaskId);
-                selectedLabel.textContent = task ? `已选: ${task.name}` : '请选择一个任务';
-                confirmBtn.disabled = !task;
-            } else {
-                selectedLabel.textContent = '请选择一个任务';
-                confirmBtn.disabled = true;
-            }
-        }
-
-        /* ===== ID 导入逻辑 ===== */
-        idInput.addEventListener('input', () => {
-            const val = idInput.value.trim();
-            idFetchBtn.disabled = val.length < 3;
-            // Show/hide empty state
-            if (val.length > 0) {
-                idEmpty.style.display = 'none';
-            } else {
-                idEmpty.style.display = 'flex';
-            }
-            // Clear previous result if input changes
-            if (idFetchedTask) {
-                idFetchedTask = null;
-                idResult.classList.remove('active', 'error');
-                confirmBtn.disabled = true;
-                selectedLabel.textContent = '请输入任务 ID';
-            }
-        });
-
-        idInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !idFetchBtn.disabled) {
-                idFetchBtn.click();
-            }
-        });
-
-        // Fetch by ID (mock)
-        idFetchBtn.addEventListener('click', () => {
-            const taskId = idInput.value.trim();
-            const platform = idPlatformSel.value;
-            if (!taskId) return;
-
-            idFetchBtn.disabled = true;
-            idFetchBtn.textContent = '查询中…';
-            idResult.classList.remove('active', 'error');
-            idEmpty.style.display = 'none';
-
-            // Simulate API call
-            setTimeout(() => {
-                idFetchBtn.textContent = '查询';
-                idFetchBtn.disabled = false;
-
-                const mockResults = {
-                    vod: {
-                        name: '云点播任务 — ' + taskId,
-                        video: '产品发布会完整版.mp4',
-                        lang: '中→英',
-                        steps: { erase: true, subtitle: true, voice: true },
-                        date: '2026-03-10',
-                        duration: '1:04:02',
-                        status: 'done'
-                    },
-                    mps: {
-                        name: 'MPS 任务 — ' + taskId,
-                        video: '电商直播精选.mp4',
-                        lang: '中→泰/越',
-                        steps: { erase: true, subtitle: true, voice: false },
-                        date: '2026-03-09',
-                        duration: '31:00',
-                        status: 'done'
-                    }
-                };
-
-                // Simulate "not found" for short IDs
-                if (taskId.length < 5) {
-                    idResult.innerHTML = `
-                        <div class="task-import-id-result-header">
-                            <span class="icon">❌</span>
-                            <span class="title">未找到任务</span>
-                        </div>
-                        <div class="task-import-id-result-meta">
-                            <span>平台：${platform === 'vod' ? '云点播' : 'MPS'} · ID：${taskId}</span>
-                        </div>
-                        <div style="margin-top:8px;font-size:0.75rem;color:var(--text-dim);">请检查任务 ID 是否正确，或该任务是否已处理完成。</div>`;
-                    idResult.classList.add('active', 'error');
-                    idFetchedTask = null;
-                    confirmBtn.disabled = true;
-                    selectedLabel.textContent = '未找到任务';
-                    return;
-                }
-
-                const mock = mockResults[platform];
-                const stepsArr = [];
-                if (mock.steps.erase) stepsArr.push('✓ 擦除');
-                if (mock.steps.subtitle) stepsArr.push('✓ 字幕');
-                if (mock.steps.voice) stepsArr.push('✓ 配音');
-
-                idResult.innerHTML = `
-                    <div class="task-import-id-result-header">
-                        <span class="icon">✅</span>
-                        <span class="title">${mock.name}</span>
-                    </div>
-                    <div class="task-import-id-result-meta">
-                        <span>📄 ${mock.video}</span>
-                        <span>🌐 ${mock.lang}</span>
-                        <span>⏱ ${mock.duration}</span>
-                        <span>📅 ${mock.date}</span>
-                    </div>
-                    <div style="margin-top:8px;display:flex;gap:6px;">
-                        ${stepsArr.map(s => `<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;font-size:0.65rem;font-weight:600;border-radius:6px;color:#818cf8;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);">${s}</span>`).join('')}
-                    </div>`;
-                idResult.classList.remove('error');
-                idResult.classList.add('active');
-
-                idFetchedTask = {
-                    id: 'id-' + taskId,
-                    ...mock,
-                    platform: platform
-                };
-                confirmBtn.disabled = false;
-                selectedLabel.textContent = '已查到: ' + mock.name;
-            }, 800);
-        });
-
-        /* ===== 打开/关闭弹窗 ===== */
-        function openModal() {
-            modal.style.display = 'flex';
-            // Reset state
-            selectedTaskId = null;
-            idFetchedTask = null;
-            idInput.value = '';
-            idFetchBtn.disabled = true;
-            idResult.classList.remove('active', 'error');
-            idEmpty.style.display = 'flex';
-            // Default to ID tab
-            switchTab('id');
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-        }
-
-        openBtn.addEventListener('click', function(e) { e.stopPropagation(); openModal(); });
-        closeBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-        searchInput.addEventListener('input', () => renderFramexTasks(searchInput.value));
-
-        // Confirm — import task and enter finetune
-        confirmBtn.addEventListener('click', () => {
-            if (currentTab === 'id') {
-                if (!idFetchedTask) return;
-                closeModal();
-                if (typeof window._tv2ImportTask === 'function') {
-                    window._tv2ImportTask(idFetchedTask, idFetchedTask.platform);
-                }
-                return;
-            }
-            // FrameX list mode
-            if (!selectedTaskId) return;
-            const task = framexTasks.find(t => t.id === selectedTaskId);
-            if (!task) return;
-            closeModal();
-            if (typeof window._tv2ImportTask === 'function') {
-                window._tv2ImportTask(task, 'framex');
+        openBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // 直接切换到 landing 页的"导入已有任务" Tab
+            if (typeof window._tv2SwitchToImportTab === 'function') {
+                window._tv2SwitchToImportTab();
             }
         });
     })();
@@ -9073,6 +9075,13 @@
             }
         }
 
+        // 全局方法：供左侧 "导入已完成任务" 按钮调用
+        window._tv2SwitchToImportTab = function() {
+            switchPathTab('import');
+            // 滚动到顶部确保可见
+            if (landingEl) landingEl.scrollTop = 0;
+        };
+
         // Tab 点击事件
         pathTabs.forEach(function(tab) {
             tab.addEventListener('click', function() {
@@ -9089,9 +9098,10 @@
             switchPathTab('new');
         }
 
-        // ===== V7: 导入面板 — 任务ID导入 =====
+        // ===== V8: 导入面板 — 通过任务 ID 导入 =====
         var importIdInput = document.getElementById('tv2ImportIdInput');
         var importIdBtn = document.getElementById('tv2ImportIdBtn');
+        var importPlatformSelect = document.getElementById('tv2ImportPlatformSelect');
 
         if (importIdBtn && importIdInput) {
             importIdBtn.addEventListener('click', function() {
@@ -9102,92 +9112,96 @@
                     setTimeout(function() { importIdInput.style.borderColor = ''; }, 1500);
                     return;
                 }
-                // 模拟按任务ID导入，创建任务对象后进入精调
+                var platform = importPlatformSelect ? importPlatformSelect.value : 'mps';
                 var taskInfo = {
-                    name: 'Task-' + taskId,
+                    name: (platform === 'vod' ? '云点播' : 'MPS') + '任务 — ' + taskId,
                     video: 'imported-' + taskId + '.mp4',
                     lang: '中→英',
                     steps: { erase: true, subtitle: true, voice: true },
                     date: new Date().toISOString().slice(0,10),
                     duration: '00:00',
                     status: 'done',
-                    platform: 'mps',
+                    platform: platform,
                     taskId: taskId
                 };
                 if (typeof window._tv2ImportTask === 'function') {
-                    window._tv2ImportTask(taskInfo, 'mps');
+                    window._tv2ImportTask(taskInfo, platform);
                 }
             });
-            // 回车也触发导入
             importIdInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') importIdBtn.click();
             });
         }
 
-        // ===== V7: 导入面板 — 上传中间文件 =====
-        var importFileDrop = document.getElementById('tv2ImportFileDrop');
-        var importFileInput = document.getElementById('tv2ImportFileInput');
-        var importFileSelected = document.getElementById('tv2ImportFileSelected');
-        var importFileName = document.getElementById('tv2ImportFileName');
-        var importFileRemove = document.getElementById('tv2ImportFileRemove');
+        // ===== V8: 导入面板 — 分类文件上传 =====
         var importFileGoBtn = document.getElementById('tv2ImportFileGoBtn');
-        var importedFile = null;
+        var importFileSlots = { video: null, subtitle: null, audio: null, json: null };
 
-        function showImportedFile(file) {
-            if (!file) return;
-            importedFile = file;
-            if (importFileName) importFileName.textContent = '📄 ' + file.name;
-            if (importFileSelected) importFileSelected.classList.add('visible');
-            if (importFileGoBtn) importFileGoBtn.disabled = false;
-            if (importFileDrop) importFileDrop.style.display = 'none';
+        // 绑定每一行的"选择文件"按钮
+        document.querySelectorAll('.tv2-import-file-row-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var slot = btn.dataset.slot;
+                var input = document.querySelector('.tv2-import-file-row-input[data-slot="' + slot + '"]');
+                if (input) input.click();
+            });
+        });
+
+        // 文件选择变化
+        document.querySelectorAll('.tv2-import-file-row-input').forEach(function(input) {
+            input.addEventListener('change', function() {
+                var slot = input.dataset.slot;
+                if (input.files.length === 0) return;
+                var fileNames = [];
+                for (var i = 0; i < input.files.length; i++) {
+                    fileNames.push(input.files[i].name);
+                }
+                importFileSlots[slot] = input.files;
+                var nameEl = document.querySelector('.tv2-import-file-row-filename[data-slot="' + slot + '"]');
+                var removeBtn = document.querySelector('.tv2-import-file-row-remove[data-slot="' + slot + '"]');
+                var rowEl = input.closest('.tv2-import-file-row');
+                if (nameEl) {
+                    nameEl.textContent = fileNames.join(', ');
+                    nameEl.classList.add('has-file');
+                }
+                if (removeBtn) removeBtn.style.display = '';
+                if (rowEl) rowEl.classList.add('has-file');
+                updateFileGoBtn();
+            });
+        });
+
+        // 移除文件
+        document.querySelectorAll('.tv2-import-file-row-remove').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var slot = btn.dataset.slot;
+                importFileSlots[slot] = null;
+                var input = document.querySelector('.tv2-import-file-row-input[data-slot="' + slot + '"]');
+                var nameEl = document.querySelector('.tv2-import-file-row-filename[data-slot="' + slot + '"]');
+                var rowEl = btn.closest('.tv2-import-file-row');
+                if (input) input.value = '';
+                if (nameEl) { nameEl.textContent = '—'; nameEl.classList.remove('has-file'); }
+                btn.style.display = 'none';
+                if (rowEl) rowEl.classList.remove('has-file');
+                updateFileGoBtn();
+            });
+        });
+
+        function updateFileGoBtn() {
+            if (importFileGoBtn) {
+                importFileGoBtn.disabled = !importFileSlots.video;
+            }
         }
 
-        function clearImportedFile() {
-            importedFile = null;
-            if (importFileInput) importFileInput.value = '';
-            if (importFileSelected) importFileSelected.classList.remove('visible');
-            if (importFileGoBtn) importFileGoBtn.disabled = true;
-            if (importFileDrop) importFileDrop.style.display = '';
-        }
-
-        // 拖放区点击 → 打开文件选择
-        if (importFileDrop) {
-            importFileDrop.addEventListener('click', function() {
-                if (importFileInput) importFileInput.click();
-            });
-            importFileDrop.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                importFileDrop.classList.add('dragover');
-            });
-            importFileDrop.addEventListener('dragleave', function() {
-                importFileDrop.classList.remove('dragover');
-            });
-            importFileDrop.addEventListener('drop', function(e) {
-                e.preventDefault();
-                importFileDrop.classList.remove('dragover');
-                if (e.dataTransfer.files.length) showImportedFile(e.dataTransfer.files[0]);
-            });
-        }
-        if (importFileInput) {
-            importFileInput.addEventListener('change', function() {
-                if (importFileInput.files.length) showImportedFile(importFileInput.files[0]);
-            });
-        }
-
-        // 移除已选文件
-        if (importFileRemove) {
-            importFileRemove.addEventListener('click', clearImportedFile);
-        }
-
-        // 「进入精调」按钮
+        // "开始精调"按钮
         if (importFileGoBtn) {
             importFileGoBtn.addEventListener('click', function() {
-                if (!importedFile) return;
+                if (!importFileSlots.video) return;
+                var videoFile = importFileSlots.video[0];
                 var taskInfo = {
-                    name: 'file-import — ' + importedFile.name,
-                    video: importedFile.name,
+                    name: 'file-import — ' + videoFile.name,
+                    video: videoFile.name,
                     lang: '中→英',
-                    steps: { erase: true, subtitle: true, voice: true },
+                    steps: { erase: true, subtitle: !!importFileSlots.subtitle, voice: !!importFileSlots.audio },
                     date: new Date().toISOString().slice(0,10),
                     duration: '00:00',
                     status: 'done',
@@ -9198,6 +9212,91 @@
                 }
             });
         }
+
+        // ===== V8: 导入面板 — FrameX 历史任务（内联列表） =====
+        var historyListEl = document.getElementById('tv2ImportHistoryList');
+        var historyGoBtn = document.getElementById('tv2ImportHistoryGoBtn');
+        var selectedHistoryId = null;
+
+        var framexHistoryTasks = [
+            { id:'ft001', name:'出海短视频素材-东南亚篇 — 英文', lang:'中→英', duration:'1:32', date:'03-07' },
+            { id:'ft002', name:'UI 动效设计教程 — 日语版', lang:'中→日', duration:'20:34', date:'03-04' },
+            { id:'ft003', name:'品牌宣传片 — 韩语版', lang:'中→韩', duration:'5:16', date:'03-03' },
+        ];
+
+        function renderHistoryList() {
+            if (!historyListEl) return;
+            historyListEl.innerHTML = '';
+            framexHistoryTasks.forEach(function(t) {
+                var item = document.createElement('div');
+                item.className = 'tv2-import-history-item' + (selectedHistoryId === t.id ? ' selected' : '');
+                item.innerHTML =
+                    '<div class="tv2-import-history-radio"><div class="tv2-import-history-radio-dot"></div></div>' +
+                    '<div class="tv2-import-history-body">' +
+                        '<div class="tv2-import-history-name">' + t.name + '</div>' +
+                        '<div class="tv2-import-history-meta">' +
+                            '<span>' + t.lang + '</span>' +
+                            '<span>' + t.duration + '</span>' +
+                            '<span>' + t.date + '</span>' +
+                        '</div>' +
+                    '</div>';
+                item.addEventListener('click', function() {
+                    selectedHistoryId = t.id;
+                    renderHistoryList();
+                });
+                historyListEl.appendChild(item);
+            });
+            if (historyGoBtn) {
+                historyGoBtn.disabled = !selectedHistoryId;
+            }
+        }
+        renderHistoryList();
+
+        // "导入选中"按钮
+        if (historyGoBtn) {
+            historyGoBtn.addEventListener('click', function() {
+                if (!selectedHistoryId) return;
+                var task = framexHistoryTasks.find(function(t) { return t.id === selectedHistoryId; });
+                if (!task) return;
+                var taskInfo = {
+                    name: task.name,
+                    video: task.name + '.mp4',
+                    lang: task.lang,
+                    steps: { erase: true, subtitle: true, voice: true },
+                    date: task.date,
+                    duration: task.duration,
+                    status: 'done',
+                    platform: 'framex'
+                };
+                if (typeof window._tv2ImportTask === 'function') {
+                    window._tv2ImportTask(taskInfo, 'framex');
+                }
+            });
+        }
+
+        // ===== V8: Tooltip 信息按钮 =====
+        document.querySelectorAll('.tv2-import-info-btn').forEach(function(btn) {
+            var tooltip = btn.nextElementSibling;
+            if (!tooltip || !tooltip.classList.contains('tv2-import-tooltip')) return;
+
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var isVisible = tooltip.classList.contains('visible');
+                // 关闭所有其他 tooltip
+                document.querySelectorAll('.tv2-import-tooltip.visible').forEach(function(t) {
+                    t.classList.remove('visible');
+                });
+                if (!isVisible) {
+                    tooltip.classList.add('visible');
+                }
+            });
+        });
+        // 点击其他地方关闭 tooltip
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.tv2-import-tooltip.visible').forEach(function(t) {
+                t.classList.remove('visible');
+            });
+        });
 
         // === 显示已选状态 ===
         function showSelected(name, meta, source) {
