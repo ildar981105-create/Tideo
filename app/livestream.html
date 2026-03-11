@@ -31,7 +31,7 @@
     </button>
 
     <main class="main-content" id="mainContent">
-        <!-- ===== 初始状态：链接输入 + 配置 ===== -->
+        <!-- ===== 初始状态：链接输入 ===== -->
         <div id="landingView">
             <!-- 顶部栏 -->
             <header class="topbar">
@@ -39,7 +39,7 @@
                     <a href="create.html" class="topbar-back" title="返回首页">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </a>
-                    <h1 class="page-title">直播智能剪辑</h1>
+                    <h1 class="page-title">直播剪辑</h1>
                 </div>
                 <div class="topbar-right">
                     <div class="credits-badge">
@@ -49,13 +49,13 @@
                 </div>
             </header>
 
-            <!-- ★ 首屏：核心操作区（独占一屏） -->
+            <!-- ★ 首屏：链接输入 -->
             <section class="ls-first-screen">
                 <div class="ls-hero">
                     <div class="ls-hero-glow"></div>
                     <div class="ls-hero-content">
-                        <h1 class="ls-hero-title">粘贴直播链接，<span class="gradient-text">AI 自动捕捉高光</span></h1>
-                        <p class="ls-hero-desc">支持抖音 · 快手 · B站 · 淘宝等平台，实时监控 · 自动剪辑</p>
+                        <h1 class="ls-hero-title">粘贴直播链接，<span class="gradient-text">实时监控剪辑</span></h1>
+                        <p class="ls-hero-desc">支持抖音 · 快手 · B站 · 淘宝等平台，实时监控 · 手动标记 · 快速导出</p>
 
                         <div class="ls-input-group">
                             <div class="ls-input-box">
@@ -76,7 +76,7 @@
                             </div>
                         </div>
 
-                        <!-- 快速配置（折叠面板）— 内嵌首屏 -->
+                        <!-- 快速配置 -->
                         <div class="ls-config-section">
                             <button class="ls-config-toggle" id="configToggle">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2V14M2 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -85,23 +85,6 @@
                             </button>
                             <div class="ls-config-panel" id="configPanel">
                                 <div class="config-row">
-                                    <div class="config-field">
-                                        <label>剪辑模式</label>
-                                        <select id="cfgMode">
-                                            <option>智能高光（AI 全自动）</option>
-                                            <option>带货切片</option>
-                                            <option>精彩时刻合集</option>
-                                            <option>全程录制</option>
-                                        </select>
-                                    </div>
-                                    <div class="config-field">
-                                        <label>单条片段时长</label>
-                                        <select id="cfgDuration">
-                                            <option>15-60 秒（短视频）</option>
-                                            <option>1-3 分钟（中视频）</option>
-                                            <option>自动判断</option>
-                                        </select>
-                                    </div>
                                     <div class="config-field">
                                         <label>输出比例</label>
                                         <select id="cfgRatio">
@@ -118,177 +101,198 @@
                                             <option>否</option>
                                         </select>
                                     </div>
+                                    <div class="config-field">
+                                        <label>视频质量</label>
+                                        <select id="cfgQuality">
+                                            <option>高清 1080p</option>
+                                            <option>标清 720p</option>
+                                            <option>超清 4K</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 向下滚动提示 -->
-                <div class="ls-scroll-hint">
-                    <span>了解使用场景</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </div>
             </section>
-
-            <!-- ★ 第二屏：场景介绍 + 数据 -->
-            <section class="ls-second-screen">
-                <div class="ls-second-header">
-                    <h2>适用场景</h2>
-                    <p>覆盖电商、游戏、知识等多种直播场景</p>
-                </div>
-            <!-- 场景介绍 -->
-            <section class="ls-scenes">
-                <div class="ls-scenes-grid">
-                    <div class="ls-scene-card">
-                        <div class="ls-scene-img">
-                            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=380&h=220&fit=crop" alt="电商直播">
-                            <div class="ls-scene-overlay"></div>
-                            <span class="ls-scene-badge">🛒 电商直播</span>
-                        </div>
-                        <div class="ls-scene-body">
-                            <h4>带货切片自动生成</h4>
-                            <p>AI 识别商品讲解、限时优惠、互动高潮，自动剪辑带字幕的竖屏短视频</p>
-                        </div>
-                    </div>
-                    <div class="ls-scene-card">
-                        <div class="ls-scene-img">
-                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=380&h=220&fit=crop" alt="游戏直播">
-                            <div class="ls-scene-overlay"></div>
-                            <span class="ls-scene-badge">🎮 游戏直播</span>
-                        </div>
-                        <div class="ls-scene-body">
-                            <h4>精彩操作集锦</h4>
-                            <p>根据弹幕热度和游戏事件，自动捕捉五杀、翻盘等高能时刻</p>
-                        </div>
-                    </div>
-                    <div class="ls-scene-card">
-                        <div class="ls-scene-img">
-                            <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=380&h=220&fit=crop" alt="知识直播">
-                            <div class="ls-scene-overlay"></div>
-                            <span class="ls-scene-badge">📚 知识直播</span>
-                        </div>
-                        <div class="ls-scene-body">
-                            <h4>金句合集自动提取</h4>
-                            <p>识别干货金句、互动问答环节，智能分段生成知识短视频</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 数据亮点 -->
-            <section class="ls-stats">
-                <div class="ls-stat"><span class="ls-stat-num">25+</span><span class="ls-stat-label">平均每场识别高光</span></div>
-                <div class="ls-stat-div"></div>
-                <div class="ls-stat"><span class="ls-stat-num">50x</span><span class="ls-stat-label">剪辑效率提升</span></div>
-                <div class="ls-stat-div"></div>
-                <div class="ls-stat"><span class="ls-stat-num">9:16</span><span class="ls-stat-label">一键竖屏输出</span></div>
-            </section>
-            </section><!-- /ls-second-screen -->
         </div>
 
-        <!-- ===== 工作状态：直播画面 + 时间轴 + 高光片段 ===== -->
-        <div id="workView" style="display:none;">
-            <!-- 顶部信息栏 -->
-            <div class="ls-work-topbar">
-                <div class="ls-work-left">
-                    <span class="ls-live-indicator"><span class="ls-live-dot-sm"></span>LIVE</span>
-                    <span class="ls-work-title" id="workTitle">抖音直播</span>
-                    <span class="ls-work-duration" id="workDuration">00:00:00</span>
+        <!-- ===== 沉浸式工作台 ===== -->
+        <div id="workView" style="display:none;" class="ls-workbench">
+            <!-- ★ 顶部栏 — 对齐 editor-v2 / translate-v6 -->
+            <header class="ls-topbar">
+                <div class="ls-topbar-left">
+                    <button class="ls-back-btn" id="workBackBtn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        返回
+                    </button>
+                    <div class="ls-topbar-divider"></div>
+                    <span class="ls-live-badge"><span class="ls-live-dot-sm"></span>LIVE</span>
+                    <span class="ls-topbar-title" id="workTitle">抖音直播</span>
+                    <span class="ls-topbar-duration" id="workDuration">00:00:00</span>
                 </div>
-                <div class="ls-work-right">
-                    <div class="ls-work-stat"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1Z" stroke="currentColor" stroke-width="1.2"/><path d="M7 4V7H9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg><span id="viewerCount">12,847</span></div>
-                    <div class="ls-work-stat"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L8.5 5.5L12 6L9.5 8.5L10 12L7 10.5L4 12L4.5 8.5L2 6L5.5 5.5L7 2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg><span id="highlightNum">0 个高光</span></div>
-                    <button class="ls-stop-btn" id="stopBtn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="8" rx="1" fill="currentColor"/></svg>停止监控</button>
+                <div class="ls-topbar-right">
+                    <button class="ls-topbar-btn" id="panelToggle" title="收起/展开片段面板">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M10 2V14" stroke="currentColor" stroke-width="1.2"/></svg>
+                    </button>
+                    <button class="ev2-btn-export" id="exportBtn">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2V9M8 9L11 6M8 9L5 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 11V13C3 13.5523 3.44772 14 4 14H12C12.5523 14 13 13.5523 13 13V11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                        导出
+                    </button>
+                    <button class="ls-stop-btn" id="stopBtn">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="8" rx="1" fill="currentColor"/></svg>
+                        停止监控
+                    </button>
                 </div>
-            </div>
+            </header>
 
-            <!-- 主体：视频 + 侧面板 -->
-            <div class="ls-work-body">
-                <!-- 左侧：视频 + 时间轴 -->
-                <div class="ls-work-main">
-                    <!-- 视频画面 -->
-                    <div class="ls-video-container" id="videoContainer">
-                        <!-- 模拟直播画面 -->
-                        <canvas class="ls-video-canvas" id="liveCanvas"></canvas>
-                        <!-- 弹幕层 -->
-                        <div class="ls-danmaku-layer" id="danmakuLayer"></div>
-                        <!-- 实时数据 HUD -->
-                        <div class="ls-hud">
-                            <div class="ls-hud-item"><span class="ls-hud-label">弹幕热度</span><div class="ls-hud-bar"><div class="ls-hud-bar-fill" id="hudDanmaku" style="width:35%"></div></div></div>
-                            <div class="ls-hud-item"><span class="ls-hud-label">互动指数</span><div class="ls-hud-bar"><div class="ls-hud-bar-fill ls-hud-bar-cyan" id="hudInteract" style="width:42%"></div></div></div>
+            <!-- ★ 主体区域：左（视频+控制+时间轴） + 右（片段面板） -->
+            <div class="ls-main">
+                <!-- 左侧：视频 + 播放控制 + 时间轴 -->
+                <div class="ls-left">
+                    <!-- 视频区域：上下分屏 -->
+                    <div class="ls-video-area">
+                        <!-- 主直播画面 -->
+                        <div class="ls-video-primary" id="videoContainer">
+                            <canvas class="ls-video-canvas" id="liveCanvas"></canvas>
+                            <!-- 弹幕层 -->
+                            <div class="ls-danmaku-layer" id="danmakuLayer"></div>
+                            <!-- 主播信息 -->
+                            <div class="ls-streamer-info">
+                                <div class="ls-streamer-avatar">🎙️</div>
+                                <div class="ls-streamer-meta">
+                                    <span class="ls-streamer-name" id="streamerName">主播直播中</span>
+                                    <span class="ls-streamer-viewers"><span id="liveViewers">12,847</span> 观看</span>
+                                </div>
+                            </div>
+                            <!-- 直播信号源标识 -->
+                            <div class="ls-source-badge">
+                                <span class="ls-live-dot-sm"></span>
+                                直播信号源
+                            </div>
+                            <!-- 片段生成提示 -->
+                            <div class="ls-clip-alert" id="clipAlert">
+                                <div class="ls-clip-alert-icon">✂️</div>
+                                <span>片段已生成</span>
+                            </div>
                         </div>
-                        <!-- AI 检测提示 -->
-                        <div class="ls-ai-alert" id="aiAlert">
-                            <div class="ls-ai-alert-icon">⚡</div>
-                            <span>AI 检测到高光时刻</span>
-                        </div>
-                        <!-- 主播信息 -->
-                        <div class="ls-streamer-info">
-                            <div class="ls-streamer-avatar">🎙️</div>
-                            <div class="ls-streamer-meta">
-                                <span class="ls-streamer-name" id="streamerName">主播直播中</span>
-                                <span class="ls-streamer-viewers"><span id="liveViewers">12,847</span> 观看</span>
+                        <!-- 片段预览区 -->
+                        <div class="ls-video-preview" id="previewArea">
+                            <div class="ls-preview-empty">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 5L19 12L8 19V5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                                <span>选择片段以预览</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ★ 时间轴 -->
-                    <div class="ls-timeline">
-                        <div class="ls-tl-header">
-                            <div class="ls-tl-left">
-                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 1V3M10 1V3M1 6H13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                                <span>时间轴 · AI 智能标记</span>
+                    <!-- ★ 播放控制栏 -->
+                    <div class="ls-playback-bar">
+                        <div class="ls-pb-left">
+                            <div class="ls-pb-source">
+                                <span class="ls-live-dot-sm"></span>
+                                <span>直播信号源</span>
                             </div>
-                            <div class="ls-tl-right">
-                                <button class="ls-tl-zoom" id="tlZoomOut">−</button>
-                                <span class="ls-tl-scale" id="tlScale">1x</span>
-                                <button class="ls-tl-zoom" id="tlZoomIn">+</button>
+                            <button class="ls-pb-btn" id="playPauseBtn" title="播放/暂停">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" id="playIcon"><path d="M4 2L12 7L4 12V2Z" fill="currentColor"/></svg>
+                            </button>
+                            <span class="ls-pb-time" id="currentTime">00:00:00</span>
+                        </div>
+                        <div class="ls-pb-progress">
+                            <div class="ls-pb-progress-bar" id="progressBar">
+                                <div class="ls-pb-progress-fill" id="progressFill"></div>
+                                <div class="ls-pb-playhead" id="progressPlayhead"></div>
+                                <!-- 入点/出点标记 -->
+                                <div class="ls-pb-inpoint" id="inpointMark" style="display:none;"></div>
+                                <div class="ls-pb-outpoint" id="outpointMark" style="display:none;"></div>
+                                <div class="ls-pb-selection" id="selectionRange" style="display:none;"></div>
                             </div>
                         </div>
+                        <div class="ls-pb-right">
+                            <button class="ls-pb-btn ls-pb-vol-btn" id="volBtn" title="音量">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5.5H4L7 3V11L4 8.5H2V5.5Z" fill="currentColor"/><path d="M9.5 4.5C10.3 5.3 10.8 6.5 10.8 7C10.8 7.5 10.3 8.7 9.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                            </button>
+                            <div class="ls-pb-vol-slider">
+                                <div class="ls-pb-vol-track">
+                                    <div class="ls-pb-vol-fill" id="volFill" style="width:75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ★ 操作按钮行 -->
+                    <div class="ls-action-bar">
+                        <div class="ls-action-left">
+                            <button class="ls-action-btn ls-action-inpoint" id="setInpointBtn">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3 3H10L7 7L10 11H3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                                设置入点
+                            </button>
+                            <button class="ls-action-btn ls-action-outpoint" id="setOutpointBtn">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 2V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M11 3H4L7 7L4 11H11" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                                设置出点
+                            </button>
+                            <button class="ls-action-btn ls-action-generate" id="generateClipBtn">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V12M2 7H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                生成片段
+                            </button>
+                        </div>
+                        <div class="ls-action-right">
+                            <label class="ls-action-check">
+                                <input type="checkbox" id="showRulerCheck" checked>
+                                <span>显示时间刻度</span>
+                            </label>
+                            <div class="ls-zoom-group">
+                                <button class="ls-zoom-btn" id="tlZoomOut">−</button>
+                                <span class="ls-zoom-label" id="tlScale">1x</span>
+                                <button class="ls-zoom-btn" id="tlZoomIn">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ★ 时间轴 — 帧缩略图风格 -->
+                    <div class="ls-timeline" id="timelineArea">
+                        <!-- 时间刻度尺 -->
+                        <div class="ls-tl-ruler" id="tlRuler"></div>
+                        <!-- 帧缩略图轨道 -->
                         <div class="ls-tl-track" id="tlTrack">
-                            <!-- 时间刻度 -->
-                            <div class="ls-tl-ruler" id="tlRuler"></div>
-                            <!-- 热度曲线 -->
-                            <canvas class="ls-tl-heatmap" id="tlHeatmap"></canvas>
-                            <!-- 高光标记 -->
+                            <!-- 帧缩略图 -->
+                            <div class="ls-tl-frames" id="tlFrames"></div>
+                            <!-- 片段标记 -->
                             <div class="ls-tl-markers" id="tlMarkers"></div>
+                            <!-- 入点/出点选区 -->
+                            <div class="ls-tl-selection" id="tlSelection" style="display:none;"></div>
                             <!-- 播放头 -->
-                            <div class="ls-tl-playhead" id="tlPlayhead"></div>
-                        </div>
-                        <!-- 时间轴下方操作 -->
-                        <div class="ls-tl-actions">
-                            <button class="ls-tl-action-btn" id="tlManualClip"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L5 1L8 4M10 8L7 11L4 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="5" y1="1" x2="5" y2="8" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="4" x2="7" y2="11" stroke="currentColor" stroke-width="1.2"/></svg>手动剪辑</button>
-                            <button class="ls-tl-action-btn" id="tlAutoHighlight"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L7.2 4.4H10.8L7.8 6.6L9 10L6 7.8L3 10L4.2 6.6L1.2 4.4H4.8L6 1Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg>自动标记高光</button>
-                            <button class="ls-tl-action-btn" id="tlSplitClip"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 4L6 1L9 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 8L6 11L9 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>拆分片段</button>
+                            <div class="ls-tl-playhead" id="tlPlayhead">
+                                <div class="ls-tl-playhead-head"></div>
+                                <div class="ls-tl-playhead-line"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 右侧：高光片段面板 -->
-                <div class="ls-work-sidebar">
-                    <div class="ls-ws-header">
-                        <h3>🔥 AI 高光片段</h3>
-                        <span class="ls-ws-count" id="clipCount">0</span>
+                <!-- ★ 右侧：直播片段面板 -->
+                <aside class="ls-aside" id="clipsPanel">
+                    <div class="ls-aside-header">
+                        <h3>直播片段</h3>
+                        <span class="ls-aside-count" id="clipCount">0</span>
                     </div>
-                    <div class="ls-ws-list" id="clipList">
-                        <div class="ls-ws-empty">
-                            <div class="ls-ws-empty-icon">⏳</div>
-                            <p>AI 正在监控直播流...</p>
-                            <span>检测到高光时刻将自动生成片段</span>
+                    <div class="ls-aside-list" id="clipList">
+                        <div class="ls-aside-empty">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="24" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><path d="M16 16L26 20L16 24V16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.3"/></svg>
+                            <p>暂无片段</p>
+                            <span>使用入点/出点工具标记直播精彩时刻</span>
                         </div>
                     </div>
-                    <div class="ls-ws-footer">
-                        <button class="ls-ws-export-btn" id="exportAllBtn">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V9M7 9L10 6M7 9L4 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 10V12H12V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            批量导出全部
-                        </button>
-                        <button id="saveAllVodBtn" onclick="this.innerHTML='☁️ 已保存到云点播';this.style.background='rgba(16,185,129,0.15)';this.style.color='#10b981';this.style.borderColor='rgba(16,185,129,0.3)';" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px;font-size:0.82rem;font-weight:600;color:#06b6d4;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.25);border-radius:10px;cursor:pointer;font-family:inherit;margin-top:8px;transition:all 0.3s;">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5C2 3.89543 2.89543 3 4 3H6.5L8 4.5H10C11.1046 4.5 12 5.39543 12 6.5V10C12 11.1046 11.1046 12 10 12H4C2.89543 12 2 11.1046 2 10V5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 6V10M7 10L9 8M7 10L5 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            保存全部到云点播
+                    <div class="ls-aside-footer" id="clipsFooter" style="display:none;">
+                        <div class="ls-aside-footer-actions">
+                            <button class="ls-footer-btn ls-footer-clear" id="clearAllBtn">清空</button>
+                            <button class="ls-footer-btn ls-footer-select" id="selectAllBtn">全选</button>
+                        </div>
+                        <button class="ls-footer-export-btn" id="exportSelectedBtn">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2V9M8 9L11 6M8 9L5 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 11V13C3 13.5523 3.44772 14 4 14H12C12.5523 14 13 13.5523 13 13V11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                            批量导出选中
                         </button>
                     </div>
-                </div>
+                </aside>
             </div>
         </div>
     </main>
@@ -302,28 +306,33 @@
         const startBtn = document.getElementById('startLiveBtn');
         const stopBtn = document.getElementById('stopBtn');
         const backBtn = document.getElementById('backBtn');
+        const workBackBtn = document.getElementById('workBackBtn');
         const liveInput = document.getElementById('liveUrlInput');
         const configToggle = document.getElementById('configToggle');
         const configPanel = document.getElementById('configPanel');
         const liveCanvas = document.getElementById('liveCanvas');
         const danmakuLayer = document.getElementById('danmakuLayer');
-        const tlHeatmap = document.getElementById('tlHeatmap');
         const tlMarkers = document.getElementById('tlMarkers');
         const tlPlayhead = document.getElementById('tlPlayhead');
         const tlRuler = document.getElementById('tlRuler');
+        const tlFrames = document.getElementById('tlFrames');
         const clipList = document.getElementById('clipList');
         const clipCount = document.getElementById('clipCount');
-        const aiAlert = document.getElementById('aiAlert');
+        const clipAlert = document.getElementById('clipAlert');
+        const clipsFooter = document.getElementById('clipsFooter');
+        const clipsPanel = document.getElementById('clipsPanel');
+        const progressFill = document.getElementById('progressFill');
+        const progressPlayhead = document.getElementById('progressPlayhead');
 
         let isMonitoring = false;
         let elapsed = 0;
         let elapsedTimer = null;
-        let highlights = [];
-        let heatData = [];
+        let clips = [];
         let danmakuTimer = null;
-        let heatTimer = null;
-        let highlightTimer = null;
         let canvasAnim = null;
+        let inpointTime = null;
+        let outpointTime = null;
+        let panelVisible = true;
 
         // === Config Toggle ===
         let configOpen = false;
@@ -342,38 +351,48 @@
             });
         }
 
-        // === Start Monitor ===
+        // === Start / Stop ===
         if (startBtn) startBtn.addEventListener('click', startMonitor);
         if (stopBtn) stopBtn.addEventListener('click', stopMonitor);
         if (backBtn) backBtn.addEventListener('click', stopMonitor);
+        if (workBackBtn) workBackBtn.addEventListener('click', stopMonitor);
+
+        // === Panel Toggle ===
+        document.getElementById('panelToggle').addEventListener('click', function() {
+            panelVisible = !panelVisible;
+            clipsPanel.classList.toggle('collapsed', !panelVisible);
+        });
+
+        // === Export Button ===
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            if (clips.length === 0) {
+                alert('暂无片段可导出');
+                return;
+            }
+            alert('导出 ' + clips.length + ' 个片段...');
+        });
 
         function startMonitor() {
             isMonitoring = true;
             elapsed = 0;
-            highlights = [];
-            heatData = [];
+            clips = [];
+            inpointTime = null;
+            outpointTime = null;
 
-            // Enter fullscreen work mode
             landingView.style.display = 'none';
-            workView.style.display = 'block';
+            workView.style.display = 'flex';
             document.body.classList.add('fullscreen-mode');
 
-            // Init canvas
             initLiveCanvas();
-            // Start timers
             startTimers();
-            // Init timeline ruler
             renderRuler();
-            // Init heatmap
-            initHeatmap();
+            renderFrameThumbs();
         }
 
         function stopMonitor() {
             isMonitoring = false;
             clearInterval(elapsedTimer);
             clearInterval(danmakuTimer);
-            clearInterval(heatTimer);
-            clearInterval(highlightTimer);
             cancelAnimationFrame(canvasAnim);
 
             document.body.classList.remove('fullscreen-mode');
@@ -385,47 +404,25 @@
         function startTimers() {
             elapsedTimer = setInterval(function() {
                 elapsed++;
-                var h = Math.floor(elapsed / 3600);
-                var m = Math.floor((elapsed % 3600) / 60);
-                var s = elapsed % 60;
-                document.getElementById('workDuration').textContent =
-                    String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+                document.getElementById('workDuration').textContent = formatTime(elapsed);
+                document.getElementById('currentTime').textContent = formatTime(elapsed);
 
-                // Update viewer count randomly
+                // Update viewer count
                 var v = 12847 + Math.floor(Math.random() * 200 - 100);
-                document.getElementById('viewerCount').textContent = v.toLocaleString();
                 document.getElementById('liveViewers').textContent = v.toLocaleString();
+
+                // Progress bar
+                var pct = Math.min((elapsed % 600) / 600 * 100, 100);
+                progressFill.style.width = pct + '%';
+                progressPlayhead.style.left = pct + '%';
+                tlPlayhead.style.left = pct + '%';
             }, 1000);
 
             // Danmaku
-            danmakuTimer = setInterval(spawnDanmaku, 800);
-
-            // Heat data
-            heatTimer = setInterval(function() {
-                var val = 30 + Math.random() * 50 + (Math.random() > 0.85 ? 40 : 0);
-                heatData.push(Math.min(val, 100));
-                if (heatData.length > 200) heatData.shift();
-                drawHeatmap();
-                updateHUD(val);
-                // Move playhead
-                var pct = Math.min((elapsed % 300) / 300 * 100, 100);
-                tlPlayhead.style.left = pct + '%';
-            }, 1500);
-
-            // Auto-generate highlights
-            highlightTimer = setInterval(function() {
-                if (Math.random() > 0.5 && highlights.length < 12) {
-                    generateHighlight();
-                }
-            }, 5000);
-
-            // First highlight after 4s
-            setTimeout(function() {
-                if (isMonitoring) generateHighlight();
-            }, 4000);
+            danmakuTimer = setInterval(spawnDanmaku, 1200);
         }
 
-        // === Live Canvas (simulated video) ===
+        // === Live Canvas ===
         function initLiveCanvas() {
             var c = liveCanvas;
             var w = c.parentElement.clientWidth;
@@ -435,40 +432,39 @@
             var ctx = c.getContext('2d');
 
             var particles = [];
-            for (var i = 0; i < 30; i++) {
+            for (var i = 0; i < 25; i++) {
                 particles.push({
                     x: Math.random() * c.width,
                     y: Math.random() * c.height,
-                    r: Math.random() * 40 + 10,
-                    vx: (Math.random() - 0.5) * 1.5,
-                    vy: (Math.random() - 0.5) * 1.5,
-                    hue: Math.random() * 60 + 220,
-                    alpha: Math.random() * 0.15 + 0.05
+                    r: Math.random() * 50 + 15,
+                    vx: (Math.random() - 0.5) * 1.2,
+                    vy: (Math.random() - 0.5) * 1.2,
+                    hue: Math.random() * 40 + 340,
+                    alpha: Math.random() * 0.12 + 0.04
                 });
             }
 
             function draw() {
                 if (!isMonitoring) return;
-                ctx.fillStyle = 'rgba(10, 10, 24, 0.3)';
+                ctx.fillStyle = 'rgba(10, 10, 24, 0.25)';
                 ctx.fillRect(0, 0, c.width, c.height);
 
                 particles.forEach(function(p) {
                     p.x += p.vx; p.y += p.vy;
-                    if (p.x < -50) p.x = c.width + 50;
-                    if (p.x > c.width + 50) p.x = -50;
-                    if (p.y < -50) p.y = c.height + 50;
-                    if (p.y > c.height + 50) p.y = -50;
+                    if (p.x < -60) p.x = c.width + 60;
+                    if (p.x > c.width + 60) p.x = -60;
+                    if (p.y < -60) p.y = c.height + 60;
+                    if (p.y > c.height + 60) p.y = -60;
 
                     var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
-                    grad.addColorStop(0, 'hsla(' + p.hue + ', 70%, 60%, ' + p.alpha + ')');
-                    grad.addColorStop(1, 'hsla(' + p.hue + ', 70%, 60%, 0)');
+                    grad.addColorStop(0, 'hsla(' + p.hue + ', 65%, 55%, ' + p.alpha + ')');
+                    grad.addColorStop(1, 'hsla(' + p.hue + ', 65%, 55%, 0)');
                     ctx.fillStyle = grad;
                     ctx.fillRect(p.x - p.r, p.y - p.r, p.r * 2, p.r * 2);
                 });
 
-                // Center text
-                ctx.fillStyle = 'rgba(255,255,255,0.04)';
-                ctx.font = 'bold ' + (c.width * 0.04) + 'px Inter';
+                ctx.fillStyle = 'rgba(255,255,255,0.03)';
+                ctx.font = 'bold ' + (c.width * 0.035) + 'px Inter';
                 ctx.textAlign = 'center';
                 ctx.fillText('📡 直播画面监控中', c.width / 2, c.height / 2);
 
@@ -481,9 +477,7 @@
         var danmakuTexts = [
             '666666', '太强了吧', '买买买！', '🔥🔥🔥', '哈哈哈哈', '主播牛逼',
             '这个必须要', '还有吗', '再来一个', '太好看了', '冲冲冲', '已下单',
-            '求链接', '多少钱', '好划算', '爱了爱了', '感谢主播', '互动一下',
-            '双击关注', '点点赞', '主播真好看', '优惠力度大', '手速快', '抢到了',
-            'YYDS', '绝绝子', '有被种草', '这个配色好好看'
+            '求链接', '多少钱', '好划算', '爱了爱了', '感谢主播', '双击关注'
         ];
         function spawnDanmaku() {
             if (!isMonitoring) return;
@@ -499,159 +493,223 @@
             d.addEventListener('animationend', function() { d.remove(); });
         }
 
-        // === Heatmap ===
-        function initHeatmap() {
-            var c = tlHeatmap;
-            c.width = c.parentElement.clientWidth * 2;
-            c.height = 80;
-        }
-        function drawHeatmap() {
-            var c = tlHeatmap;
-            if (!c.parentElement) return;
-            var w = c.parentElement.clientWidth * 2;
-            c.width = w;
-            var ctx = c.getContext('2d');
-            ctx.clearRect(0, 0, w, 80);
-            if (heatData.length < 2) return;
-
-            var step = w / Math.max(heatData.length - 1, 1);
-            ctx.beginPath();
-            ctx.moveTo(0, 80);
-            heatData.forEach(function(v, i) {
-                ctx.lineTo(i * step, 80 - v * 0.7);
-            });
-            ctx.lineTo((heatData.length - 1) * step, 80);
-            ctx.closePath();
-            var grad = ctx.createLinearGradient(0, 0, 0, 80);
-            grad.addColorStop(0, 'rgba(99,102,241,0.4)');
-            grad.addColorStop(1, 'rgba(99,102,241,0)');
-            ctx.fillStyle = grad;
-            ctx.fill();
-
-            // Line
-            ctx.beginPath();
-            heatData.forEach(function(v, i) {
-                if (i === 0) ctx.moveTo(0, 80 - v * 0.7);
-                else ctx.lineTo(i * step, 80 - v * 0.7);
-            });
-            ctx.strokeStyle = 'rgba(99,102,241,0.7)';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        }
-
-        function updateHUD(val) {
-            document.getElementById('hudDanmaku').style.width = Math.min(val, 100) + '%';
-            document.getElementById('hudInteract').style.width = Math.min(val * 0.8 + Math.random() * 20, 100) + '%';
-        }
-
         // === Timeline Ruler ===
         function renderRuler() {
             var html = '';
-            for (var i = 0; i <= 10; i++) {
-                var mm = i * 30;
-                var label = Math.floor(mm / 60) + ':' + String(mm % 60).padStart(2, '0') + ':00';
-                html += '<span class="ls-tl-tick" style="left:' + (i * 10) + '%">' + label + '</span>';
+            for (var i = 0; i <= 20; i++) {
+                var sec = i * 30;
+                var label = formatTime(sec);
+                var pct = (i / 20 * 100);
+                html += '<div class="ls-tl-tick" style="left:' + pct + '%"><span>' + label + '</span></div>';
             }
             tlRuler.innerHTML = html;
         }
 
-        // === Generate Highlight ===
-        var clipTitles = [
-            '🔥 互动高潮', '🎯 精彩讲解', '💰 限时优惠', '😂 搞笑时刻',
-            '🏆 高能操作', '💡 干货分享', '🎁 抽奖环节', '👏 观众互动',
-            '⭐ 金句名场面', '🛒 种草安利', '🎵 才艺展示', '💪 激情带货'
-        ];
-        function generateHighlight() {
-            if (!isMonitoring) return;
-            var idx = highlights.length;
-            var startSec = Math.max(0, elapsed - Math.floor(Math.random() * 60 + 15));
-            var dur = Math.floor(Math.random() * 40 + 15);
-            var title = clipTitles[idx % clipTitles.length];
-            var clip = {
-                id: idx,
-                title: title,
-                start: startSec,
-                duration: dur,
-                score: Math.floor(Math.random() * 30 + 70)
-            };
-            highlights.push(clip);
+        // === Frame Thumbnails ===
+        function renderFrameThumbs() {
+            var html = '';
+            var count = 60;
+            for (var i = 0; i < count; i++) {
+                var hue = 220 + Math.random() * 60;
+                var lightness = 12 + Math.random() * 8;
+                html += '<div class="ls-tl-frame" style="background:hsl(' + hue + ',30%,' + lightness + '%)"></div>';
+            }
+            tlFrames.innerHTML = html;
+        }
 
-            // Show AI alert
-            aiAlert.classList.add('active');
-            setTimeout(function() { aiAlert.classList.remove('active'); }, 2500);
+        // === Inpoint / Outpoint ===
+        document.getElementById('setInpointBtn').addEventListener('click', function() {
+            inpointTime = elapsed;
+            this.classList.add('active');
+            updateInOutMarks();
+        });
+
+        document.getElementById('setOutpointBtn').addEventListener('click', function() {
+            outpointTime = elapsed;
+            this.classList.add('active');
+            updateInOutMarks();
+        });
+
+        function updateInOutMarks() {
+            var total = 600;
+            if (inpointTime !== null) {
+                var mark = document.getElementById('inpointMark');
+                mark.style.display = 'block';
+                mark.style.left = (inpointTime % total) / total * 100 + '%';
+            }
+            if (outpointTime !== null) {
+                var mark = document.getElementById('outpointMark');
+                mark.style.display = 'block';
+                mark.style.left = (outpointTime % total) / total * 100 + '%';
+            }
+            if (inpointTime !== null && outpointTime !== null && outpointTime > inpointTime) {
+                var sel = document.getElementById('selectionRange');
+                var left = (inpointTime % total) / total * 100;
+                var width = ((outpointTime - inpointTime) % total) / total * 100;
+                sel.style.display = 'block';
+                sel.style.left = left + '%';
+                sel.style.width = width + '%';
+
+                // Timeline selection
+                var tlSel = document.getElementById('tlSelection');
+                tlSel.style.display = 'block';
+                tlSel.style.left = left + '%';
+                tlSel.style.width = width + '%';
+            }
+        }
+
+        // === Generate Clip ===
+        document.getElementById('generateClipBtn').addEventListener('click', function() {
+            if (inpointTime === null || outpointTime === null) {
+                alert('请先设置入点和出点');
+                return;
+            }
+            if (outpointTime <= inpointTime) {
+                alert('出点必须大于入点');
+                return;
+            }
+            generateClip(inpointTime, outpointTime);
+            // Reset
+            inpointTime = null;
+            outpointTime = null;
+            document.getElementById('setInpointBtn').classList.remove('active');
+            document.getElementById('setOutpointBtn').classList.remove('active');
+            document.getElementById('inpointMark').style.display = 'none';
+            document.getElementById('outpointMark').style.display = 'none';
+            document.getElementById('selectionRange').style.display = 'none';
+            document.getElementById('tlSelection').style.display = 'none';
+        });
+
+        function generateClip(start, end) {
+            var dur = end - start;
+            var clip = {
+                id: clips.length,
+                start: start,
+                end: end,
+                duration: dur,
+                selected: false
+            };
+            clips.push(clip);
+
+            // Show alert
+            clipAlert.classList.add('active');
+            setTimeout(function() { clipAlert.classList.remove('active'); }, 2000);
 
             // Update count
-            clipCount.textContent = highlights.length;
-            document.getElementById('highlightNum').textContent = highlights.length + ' 个高光';
+            clipCount.textContent = clips.length;
+            clipsFooter.style.display = '';
 
             // Add timeline marker
             addTimelineMarker(clip);
 
-            // Add to clip list
+            // Add clip card
             addClipCard(clip);
         }
 
         function addTimelineMarker(clip) {
-            var pct = (clip.start % 300) / 300 * 100;
-            var widthPct = clip.duration / 300 * 100;
+            var total = 600;
+            var pct = (clip.start % total) / total * 100;
+            var widthPct = clip.duration / total * 100;
             var m = document.createElement('div');
             m.className = 'ls-tl-marker';
             m.style.left = pct + '%';
-            m.style.width = Math.max(widthPct, 1) + '%';
-            m.title = clip.title + ' (' + formatTime(clip.start) + ')';
-            m.innerHTML = '<span class="ls-tl-marker-label">' + clip.title + '</span>';
+            m.style.width = Math.max(widthPct, 0.5) + '%';
+            m.title = '片段 ' + (clip.id + 1) + ' (' + formatTime(clip.start) + ' – ' + formatTime(clip.end) + ')';
             tlMarkers.appendChild(m);
         }
 
         function addClipCard(clip) {
             // Remove empty state
-            var empty = clipList.querySelector('.ls-ws-empty');
+            var empty = clipList.querySelector('.ls-aside-empty');
             if (empty) empty.remove();
 
             var card = document.createElement('div');
             card.className = 'ls-clip-card';
-            card.style.animation = 'clipCardIn 0.4s cubic-bezier(0.34,1.56,0.64,1)';
+            card.dataset.id = clip.id;
             card.innerHTML =
-                '<div class="ls-clip-top">' +
-                    '<div class="ls-clip-thumb"><canvas class="ls-clip-canvas" width="160" height="90"></canvas><span class="ls-clip-dur">' + formatDuration(clip.duration) + '</span></div>' +
-                    '<div class="ls-clip-info">' +
-                        '<span class="ls-clip-title">' + clip.title + '</span>' +
-                        '<span class="ls-clip-time">' + formatTime(clip.start) + ' — ' + formatTime(clip.start + clip.duration) + '</span>' +
-                        '<div class="ls-clip-score"><div class="ls-clip-score-fill" style="width:' + clip.score + '%"></div><span>' + clip.score + '%</span></div>' +
-                    '</div>' +
+                '<div class="ls-clip-check">' +
+                    '<input type="checkbox" class="ls-clip-checkbox" data-id="' + clip.id + '">' +
+                '</div>' +
+                '<div class="ls-clip-thumb">' +
+                    '<canvas class="ls-clip-canvas" width="120" height="68"></canvas>' +
+                    '<span class="ls-clip-dur">' + formatDuration(clip.duration) + '</span>' +
+                '</div>' +
+                '<div class="ls-clip-info">' +
+                    '<span class="ls-clip-title">片段 ' + (clip.id + 1) + '</span>' +
+                    '<span class="ls-clip-time">' + formatTime(clip.start) + ' — ' + formatTime(clip.end) + '</span>' +
                 '</div>' +
                 '<div class="ls-clip-actions">' +
-                    '<button class="ls-clip-btn ls-clip-play"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2L10 6L3 10V2Z" fill="currentColor"/></svg>预览</button>' +
-                    '<button class="ls-clip-btn ls-clip-trim"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4L5 1L8 4M4 8L7 11L10 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>裁剪</button>' +
-                    '<button class="ls-clip-btn ls-clip-dl"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2V8M6 8L8.5 5.5M6 8L3.5 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 9V10H10V9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>导出</button>' +
-                    '<button class="ls-clip-btn ls-clip-vod" onclick="this.innerHTML=\'☁️ 已保存\';this.style.color=\'#10b981\';"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 4C1.5 3.17 2.17 2.5 3 2.5H5L6.5 4H9C9.83 4 10.5 4.67 10.5 5.5V8.5C10.5 9.33 9.83 10 9 10H3C2.17 10 1.5 9.33 1.5 8.5V4Z" stroke="currentColor" stroke-width="1"/><path d="M6 5.5V8.5M6 8.5L7.5 7M6 8.5L4.5 7" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>存点播</button>' +
+                    '<button class="ls-clip-btn" title="预览"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2L10 6L3 10V2Z" fill="currentColor"/></svg></button>' +
+                    '<button class="ls-clip-btn ls-clip-delete" title="删除" data-id="' + clip.id + '"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3L9 9M9 3L3 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>' +
                 '</div>';
 
             clipList.insertBefore(card, clipList.firstChild);
 
-            // Draw mini canvas
+            // Draw thumbnail
             var miniCanvas = card.querySelector('.ls-clip-canvas');
-            drawMiniThumb(miniCanvas, clip);
+            drawMiniThumb(miniCanvas);
+
+            // Delete handler
+            card.querySelector('.ls-clip-delete').addEventListener('click', function() {
+                var id = parseInt(this.dataset.id);
+                card.style.animation = 'clipCardOut 0.25s ease-out forwards';
+                setTimeout(function() {
+                    card.remove();
+                    clips = clips.filter(function(c) { return c.id !== id; });
+                    clipCount.textContent = clips.length;
+                    if (clips.length === 0) {
+                        clipsFooter.style.display = 'none';
+                        clipList.innerHTML = '<div class="ls-aside-empty"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="24" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><path d="M16 16L26 20L16 24V16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.3"/></svg><p>暂无片段</p><span>使用入点/出点工具标记直播精彩时刻</span></div>';
+                    }
+                }, 250);
+            });
         }
 
-        function drawMiniThumb(c, clip) {
+        function drawMiniThumb(c) {
             var ctx = c.getContext('2d');
-            // Simple gradient bg
-            var grad = ctx.createLinearGradient(0, 0, 160, 90);
+            var grad = ctx.createLinearGradient(0, 0, 120, 68);
             grad.addColorStop(0, '#0c0c1a');
             grad.addColorStop(0.5, '#1a1030');
             grad.addColorStop(1, '#0c0c1a');
             ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, 160, 90);
-            // Play icon
-            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.fillRect(0, 0, 120, 68);
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
             ctx.beginPath();
-            ctx.moveTo(68, 35);
-            ctx.lineTo(98, 45);
-            ctx.lineTo(68, 55);
+            ctx.moveTo(50, 24);
+            ctx.lineTo(74, 34);
+            ctx.lineTo(50, 44);
             ctx.closePath();
             ctx.fill();
         }
+
+        // === Select All / Clear All ===
+        document.getElementById('selectAllBtn').addEventListener('click', function() {
+            document.querySelectorAll('.ls-clip-checkbox').forEach(function(cb) {
+                cb.checked = true;
+            });
+        });
+        document.getElementById('clearAllBtn').addEventListener('click', function() {
+            if (confirm('确定清空所有片段？')) {
+                clips = [];
+                clipCount.textContent = '0';
+                clipsFooter.style.display = 'none';
+                clipList.innerHTML = '<div class="ls-aside-empty"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="24" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><path d="M16 16L26 20L16 24V16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.3"/></svg><p>暂无片段</p><span>使用入点/出点工具标记直播精彩时刻</span></div>';
+                tlMarkers.innerHTML = '';
+            }
+        });
+        document.getElementById('exportSelectedBtn').addEventListener('click', function() {
+            var selected = document.querySelectorAll('.ls-clip-checkbox:checked');
+            if (selected.length === 0) {
+                alert('请先选择要导出的片段');
+                return;
+            }
+            alert('导出 ' + selected.length + ' 个片段...');
+        });
+
+        // === Show/Hide Ruler ===
+        document.getElementById('showRulerCheck').addEventListener('change', function() {
+            tlRuler.style.display = this.checked ? '' : 'none';
+        });
 
         function formatTime(sec) {
             var h = Math.floor(sec / 3600);
@@ -664,28 +722,15 @@
             var s = sec % 60;
             return m + ':' + String(s).padStart(2,'0');
         }
-
-        // === Manual buttons ===
-        var manualBtn = document.getElementById('tlManualClip');
-        if (manualBtn) manualBtn.addEventListener('click', function() {
-            if (isMonitoring) generateHighlight();
-        });
-        var autoBtn = document.getElementById('tlAutoHighlight');
-        if (autoBtn) autoBtn.addEventListener('click', function() {
-            if (!isMonitoring) return;
-            for (var i = 0; i < 3; i++) {
-                setTimeout(function() { generateHighlight(); }, i * 600);
-            }
-        });
-
     })();
     </script>
     <style>
     /* ============================================
-       直播剪辑页面 — 重新设计
+       直播剪辑 — 沉浸式工作台
+       对齐 translate-v6 / editor-v2 设计系统
        ============================================ */
 
-    /* === Hero Section === */
+    /* === 首屏 === */
     .ls-first-screen {
         display: flex;
         flex-direction: column;
@@ -715,19 +760,11 @@
         pointer-events: none;
         animation: heroGlowPulse 5s ease-in-out infinite;
     }
+    @keyframes heroGlowPulse {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        50% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+    }
     .ls-hero-content { position: relative; z-index: 1; max-width: 900px; width: 100%; margin: 0 auto; }
-    .ls-live-dot, .ls-live-dot-sm {
-        width: 8px; height: 8px;
-        border-radius: 50%;
-        background: #ef4444;
-        animation: ls-pulse 1.5s infinite;
-        flex-shrink: 0;
-    }
-    .ls-live-dot-sm { width: 6px; height: 6px; }
-    @keyframes ls-pulse {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
-        50% { box-shadow: 0 0 0 5px rgba(239,68,68,0); }
-    }
     .ls-hero-title {
         font-size: 2.2rem;
         font-weight: 800;
@@ -757,12 +794,17 @@
         border-color: rgba(239,68,68,0.4);
         box-shadow: 0 0 0 4px rgba(239,68,68,0.08), 0 0 40px rgba(239,68,68,0.06);
     }
-    .ls-input-dot {
-        width: 10px; height: 10px;
+    .ls-input-dot, .ls-live-dot-sm {
+        width: 8px; height: 8px;
         border-radius: 50%;
         background: #ef4444;
         animation: ls-pulse 1.5s infinite;
         flex-shrink: 0;
+    }
+    .ls-live-dot-sm { width: 6px; height: 6px; }
+    @keyframes ls-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+        50% { box-shadow: 0 0 0 5px rgba(239,68,68,0); }
     }
     .ls-input-box input {
         flex: 1;
@@ -849,144 +891,134 @@
         border-radius: 0 0 12px 12px;
     }
     .ls-config-panel.open { display: block; animation: fadeInUp 0.3s ease-out; }
-
-    /* === Scroll Hint === */
-    .ls-scroll-hint {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.72rem;
-        color: var(--text-faint);
-        animation: scrollHintBounce 2s ease-in-out infinite;
-        cursor: pointer;
-        opacity: 0.6;
-        transition: opacity 0.3s;
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(-8px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    .ls-scroll-hint:hover { opacity: 1; }
-    @keyframes scrollHintBounce {
-        0%, 100% { transform: translateX(-50%) translateY(0); }
-        50% { transform: translateX(-50%) translateY(6px); }
-    }
-
-    /* === Second Screen === */
-    .ls-second-screen {
-        padding: 60px 0 40px;
-    }
-    .ls-second-header {
-        text-align: center;
-        margin-bottom: 32px;
-    }
-    .ls-second-header h2 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin: 0 0 8px;
-    }
-    .ls-second-header p {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        margin: 0;
-    }
-
-    /* === Scene Cards === */
-    .ls-scenes { margin-bottom: 28px; }
-    .ls-scenes-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-    }
-    .ls-scene-card {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        border-radius: 14px;
-        overflow: hidden;
-        transition: all 0.35s;
-        cursor: default;
-    }
-    .ls-scene-card:hover {
-        border-color: rgba(239,68,68,0.2);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(239,68,68,0.05);
-    }
-    .ls-scene-img { position: relative; aspect-ratio: 16/10; overflow: hidden; }
-    .ls-scene-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-    .ls-scene-card:hover .ls-scene-img img { transform: scale(1.06); }
-    .ls-scene-overlay { position: absolute; inset: 0; background: linear-gradient(transparent 30%, rgba(8,8,13,0.8)); }
-    .ls-scene-badge {
-        position: absolute; top: 10px; left: 10px;
-        padding: 4px 10px; font-size: 0.72rem; font-weight: 600;
-        color: #fff; background: rgba(239,68,68,0.7);
-        backdrop-filter: blur(8px); border-radius: 6px; z-index: 2;
-    }
-    .ls-scene-body { padding: 12px 14px 14px; }
-    .ls-scene-body h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; }
-    .ls-scene-body p { font-size: 0.73rem; color: var(--text-muted); line-height: 1.45; }
-
-    /* === Stats === */
-    .ls-stats {
-        display: flex; align-items: center; justify-content: center;
-        gap: 32px; padding: 20px; margin-bottom: 28px;
-        background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 14px;
-    }
-    .ls-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .ls-stat-num {
-        font-size: 1.3rem; font-weight: 800;
-        background: linear-gradient(135deg, #ef4444, #f97316);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .ls-stat-label { font-size: 0.72rem; color: var(--text-muted); }
-    .ls-stat-div { width: 1px; height: 36px; background: var(--glass-border); }
 
     /* ============================================
-       Work View — 全屏直播监控
+       沉浸式工作台
        ============================================ */
-    .ls-work-topbar {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 12px 20px;
-        background: rgba(12,12,20,0.95);
-        border-bottom: 1px solid rgba(255,255,255,0.06);
-        flex-shrink: 0;
+    .ls-workbench {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+        background: #06060a;
     }
-    .ls-work-left { display: flex; align-items: center; gap: 12px; }
-    .ls-live-indicator {
-        display: inline-flex; align-items: center; gap: 5px;
-        padding: 3px 10px; font-size: 0.68rem; font-weight: 700;
-        color: #ef4444; background: rgba(239,68,68,0.1);
-        border: 1px solid rgba(239,68,68,0.25); border-radius: 6px;
+
+    /* === 顶部栏 === */
+    .ls-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 48px;
+        padding: 0 16px;
+        background: rgba(10,10,16,0.92);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        flex-shrink: 0;
+        z-index: 100;
+    }
+    .ls-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .ls-back-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: #64748b;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: color 0.2s;
+        padding: 0;
+    }
+    .ls-back-btn:hover { color: #e2e8f0; }
+    .ls-topbar-divider {
+        width: 1px;
+        height: 18px;
+        background: rgba(255,255,255,0.08);
+    }
+    .ls-live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #ef4444;
+        background: rgba(239,68,68,0.1);
+        border: 1px solid rgba(239,68,68,0.25);
+        border-radius: 6px;
         letter-spacing: 1px;
     }
-    .ls-work-title { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); }
-    .ls-work-duration {
-        font-size: 0.78rem; font-family: 'JetBrains Mono', monospace;
-        color: var(--text-muted);
+    .ls-topbar-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
     }
-    .ls-work-right { display: flex; align-items: center; gap: 14px; }
-    .ls-work-stat {
-        display: flex; align-items: center; gap: 5px;
-        font-size: 0.78rem; color: var(--text-secondary);
+    .ls-topbar-duration {
+        font-size: 0.75rem;
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text-muted);
+        background: rgba(255,255,255,0.03);
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+    .ls-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .ls-topbar-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03);
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .ls-topbar-btn:hover {
+        color: #e2e8f0;
+        background: rgba(255,255,255,0.06);
+        border-color: rgba(255,255,255,0.15);
     }
     .ls-stop-btn {
-        display: inline-flex; align-items: center; gap: 6px;
-        padding: 6px 14px; font-size: 0.78rem; font-weight: 600;
-        color: #ef4444; background: rgba(239,68,68,0.08);
-        border: 1px solid rgba(239,68,68,0.2); border-radius: 8px;
-        cursor: pointer; font-family: inherit; transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #ef4444;
+        background: rgba(239,68,68,0.08);
+        border: 1px solid rgba(239,68,68,0.2);
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
     }
     .ls-stop-btn:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); }
 
-    /* === Work Body Layout === */
-    .ls-work-body {
-        display: flex;
+    /* === 主体布局 === */
+    .ls-main {
         flex: 1;
+        display: flex;
         min-height: 0;
         overflow: hidden;
     }
-    .ls-work-main {
+    .ls-left {
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -994,21 +1026,46 @@
         overflow: hidden;
     }
 
-    /* === Video Container === */
-    .ls-video-container {
-        position: relative;
+    /* === 视频区域 === */
+    .ls-video-area {
         flex: 1;
+        display: flex;
+        gap: 1px;
         min-height: 0;
+        background: rgba(255,255,255,0.03);
+    }
+    .ls-video-primary {
+        flex: 2;
+        position: relative;
         background: #0a0a18;
         overflow: hidden;
+        min-height: 0;
     }
     .ls-video-canvas {
         width: 100%;
         height: 100%;
         display: block;
     }
+    .ls-video-preview {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #08080f;
+        min-width: 200px;
+        max-width: 380px;
+    }
+    .ls-preview-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-dim);
+        font-size: 0.75rem;
+    }
+    .ls-preview-empty svg { opacity: 0.25; }
 
-    /* Danmaku */
+    /* 弹幕 */
     .ls-danmaku-layer {
         position: absolute; inset: 0;
         pointer-events: none; overflow: hidden;
@@ -1017,7 +1074,7 @@
         position: absolute;
         right: -300px;
         white-space: nowrap;
-        color: rgba(255,255,255,0.7);
+        color: rgba(255,255,255,0.6);
         font-size: 0.8rem;
         animation: danmakuScroll 5s linear forwards;
         text-shadow: 0 1px 4px rgba(0,0,0,0.6);
@@ -1027,45 +1084,7 @@
         to { transform: translateX(calc(-100vw - 300px)); }
     }
 
-    /* HUD */
-    .ls-hud {
-        position: absolute;
-        top: 12px; right: 12px;
-        display: flex; flex-direction: column; gap: 6px;
-        padding: 10px 14px;
-        background: rgba(0,0,0,0.55);
-        backdrop-filter: blur(8px);
-        border-radius: 10px;
-        min-width: 140px;
-    }
-    .ls-hud-item { display: flex; flex-direction: column; gap: 3px; }
-    .ls-hud-label { font-size: 0.62rem; color: rgba(255,255,255,0.5); font-weight: 500; }
-    .ls-hud-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
-    .ls-hud-bar-fill { height: 100%; background: linear-gradient(90deg, #a855f7, #ec4899); border-radius: 2px; transition: width 1s ease; }
-    .ls-hud-bar-cyan { background: linear-gradient(90deg, #06b6d4, #3b82f6); }
-
-    /* AI Alert */
-    .ls-ai-alert {
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%) scale(0.8);
-        display: flex; align-items: center; gap: 10px;
-        padding: 12px 24px;
-        background: rgba(239,68,68,0.15);
-        border: 1px solid rgba(239,68,68,0.4);
-        border-radius: 14px;
-        backdrop-filter: blur(12px);
-        font-size: 0.88rem; font-weight: 600; color: #fca5a5;
-        opacity: 0; transition: all 0.3s; pointer-events: none;
-        box-shadow: 0 0 40px rgba(239,68,68,0.2);
-    }
-    .ls-ai-alert.active {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-    .ls-ai-alert-icon { font-size: 1.3rem; }
-
-    /* Streamer Info */
+    /* 主播信息 */
     .ls-streamer-info {
         position: absolute;
         bottom: 12px; left: 12px;
@@ -1076,257 +1095,566 @@
         border-radius: 10px;
     }
     .ls-streamer-avatar {
-        width: 32px; height: 32px;
+        width: 30px; height: 30px;
         border-radius: 50%;
         background: rgba(239,68,68,0.15);
         display: flex; align-items: center; justify-content: center;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
     .ls-streamer-meta { display: flex; flex-direction: column; }
-    .ls-streamer-name { font-size: 0.78rem; font-weight: 600; color: var(--text-primary); }
-    .ls-streamer-viewers { font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+    .ls-streamer-name { font-size: 0.75rem; font-weight: 600; color: #e2e8f0; }
+    .ls-streamer-viewers { font-size: 0.62rem; color: rgba(255,255,255,0.45); }
 
-    /* ============================================
-       时间轴
-       ============================================ */
-    .ls-timeline {
-        flex-shrink: 0;
-        padding: 10px 16px 8px;
-        background: rgba(12,12,20,0.95);
-        border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .ls-tl-header {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 6px;
-    }
-    .ls-tl-left {
+    /* 信号源标识 */
+    .ls-source-badge {
+        position: absolute;
+        top: 12px; left: 12px;
         display: flex; align-items: center; gap: 6px;
-        font-size: 0.72rem; font-weight: 600; color: var(--text-secondary);
+        padding: 4px 10px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: rgba(239,68,68,0.8);
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(8px);
+        border-radius: 6px;
+        border: 1px solid rgba(239,68,68,0.2);
     }
-    .ls-tl-right { display: flex; align-items: center; gap: 4px; }
-    .ls-tl-zoom {
-        width: 24px; height: 24px;
-        border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);
-        background: rgba(255,255,255,0.03);
-        color: var(--text-secondary); font-size: 0.9rem;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; transition: all 0.2s;
-    }
-    .ls-tl-zoom:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
-    .ls-tl-scale { font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; color: var(--text-faint); min-width: 20px; text-align: center; }
 
-    .ls-tl-track {
+    /* 片段生成提示 */
+    .ls-clip-alert {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%) scale(0.85);
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 24px;
+        background: rgba(16,185,129,0.12);
+        border: 1px solid rgba(16,185,129,0.3);
+        border-radius: 14px;
+        backdrop-filter: blur(12px);
+        font-size: 0.88rem; font-weight: 600; color: #6ee7b7;
+        opacity: 0; transition: all 0.3s; pointer-events: none;
+        box-shadow: 0 0 40px rgba(16,185,129,0.15);
+    }
+    .ls-clip-alert.active {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .ls-clip-alert-icon { font-size: 1.2rem; }
+
+    /* === 播放控制栏 === */
+    .ls-playback-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 16px;
+        background: rgba(10,10,16,0.95);
+        border-top: 1px solid rgba(255,255,255,0.05);
+        flex-shrink: 0;
+    }
+    .ls-pb-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
+    .ls-pb-source {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: rgba(239,68,68,0.7);
+        padding: 3px 8px;
+        background: rgba(239,68,68,0.06);
+        border-radius: 4px;
+        border: 1px solid rgba(239,68,68,0.12);
+    }
+    .ls-pb-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255,255,255,0.06);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .ls-pb-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .ls-pb-time {
+        font-size: 0.72rem;
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text-muted);
+        min-width: 65px;
+    }
+    .ls-pb-progress {
+        flex: 1;
+        padding: 0 4px;
+    }
+    .ls-pb-progress-bar {
         position: relative;
-        height: 56px;
-        background: rgba(255,255,255,0.02);
-        border: 1px solid rgba(255,255,255,0.06);
-        border-radius: 8px;
+        height: 4px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    .ls-pb-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ef4444, #f97316);
+        border-radius: 2px;
+        width: 0%;
+        transition: width 1s linear;
+    }
+    .ls-pb-playhead {
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        transform: translate(-50%, -50%);
+        width: 10px; height: 10px;
+        border-radius: 50%;
+        background: #ef4444;
+        box-shadow: 0 0 6px rgba(239,68,68,0.5);
+        transition: left 1s linear;
+    }
+    .ls-pb-inpoint, .ls-pb-outpoint {
+        position: absolute;
+        top: -6px;
+        width: 2px; height: 16px;
+        transform: translateX(-50%);
+        z-index: 5;
+    }
+    .ls-pb-inpoint { background: #10b981; }
+    .ls-pb-outpoint { background: #f59e0b; }
+    .ls-pb-selection {
+        position: absolute;
+        top: 0; height: 100%;
+        background: rgba(99,102,241,0.2);
+        border-radius: 2px;
+    }
+    .ls-pb-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+    .ls-pb-vol-btn { width: 26px; height: 26px; border-radius: 6px; }
+    .ls-pb-vol-slider { width: 60px; }
+    .ls-pb-vol-track {
+        height: 3px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 2px;
         overflow: hidden;
     }
+    .ls-pb-vol-fill {
+        height: 100%;
+        background: var(--text-secondary);
+        border-radius: 2px;
+    }
+
+    /* === 操作按钮行 === */
+    .ls-action-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 6px 16px;
+        background: rgba(10,10,16,0.9);
+        border-top: 1px solid rgba(255,255,255,0.04);
+        flex-shrink: 0;
+    }
+    .ls-action-left, .ls-action-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .ls-action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
+    }
+    .ls-action-btn:hover {
+        color: var(--text-primary);
+        border-color: rgba(255,255,255,0.15);
+        background: rgba(255,255,255,0.06);
+    }
+    .ls-action-inpoint:hover, .ls-action-inpoint.active {
+        color: #10b981;
+        border-color: rgba(16,185,129,0.3);
+        background: rgba(16,185,129,0.08);
+    }
+    .ls-action-outpoint:hover, .ls-action-outpoint.active {
+        color: #f59e0b;
+        border-color: rgba(245,158,11,0.3);
+        background: rgba(245,158,11,0.08);
+    }
+    .ls-action-generate:hover {
+        color: #a855f7;
+        border-color: rgba(168,85,247,0.3);
+        background: rgba(168,85,247,0.08);
+    }
+    .ls-action-check {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.68rem;
+        color: var(--text-faint);
+        cursor: pointer;
+    }
+    .ls-action-check input { accent-color: #ef4444; }
+    .ls-zoom-group {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+    .ls-zoom-btn {
+        width: 24px; height: 24px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 6px;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.03);
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .ls-zoom-btn:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+    .ls-zoom-label {
+        font-size: 0.65rem;
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text-faint);
+        min-width: 20px;
+        text-align: center;
+    }
+
+    /* === 时间轴 === */
+    .ls-timeline {
+        flex-shrink: 0;
+        background: rgba(8,8,14,0.95);
+        border-top: 1px solid rgba(255,255,255,0.04);
+    }
     .ls-tl-ruler {
-        position: absolute; top: 0; left: 0; right: 0; height: 16px;
+        display: flex;
+        position: relative;
+        height: 20px;
         border-bottom: 1px solid rgba(255,255,255,0.04);
+        overflow: hidden;
     }
     .ls-tl-tick {
-        position: absolute; top: 2px;
-        font-size: 0.55rem; font-family: 'JetBrains Mono', monospace;
-        color: var(--text-dim); transform: translateX(-50%);
-    }
-    .ls-tl-heatmap {
         position: absolute;
-        bottom: 0; left: 0; right: 0;
-        height: 40px;
-        pointer-events: none;
+        top: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
+    .ls-tl-tick::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0;
+        width: 1px;
+        height: 6px;
+        background: rgba(255,255,255,0.12);
+    }
+    .ls-tl-tick span {
+        font-size: 0.52rem;
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--text-dim);
+        padding-left: 4px;
+        white-space: nowrap;
+    }
+    .ls-tl-track {
+        position: relative;
+        height: 52px;
+        overflow: hidden;
+    }
+    .ls-tl-frames {
+        display: flex;
+        height: 100%;
+        gap: 1px;
+    }
+    .ls-tl-frame {
+        flex: 1;
+        min-width: 0;
+        border-radius: 2px;
+        transition: opacity 0.3s;
+    }
+    .ls-tl-frame:hover { opacity: 0.7; }
     .ls-tl-markers {
         position: absolute;
-        top: 16px; left: 0; right: 0; bottom: 0;
+        inset: 0;
+        pointer-events: none;
     }
     .ls-tl-marker {
         position: absolute;
         top: 2px; bottom: 2px;
-        background: rgba(239,68,68,0.15);
-        border: 1px solid rgba(239,68,68,0.35);
-        border-radius: 4px;
+        background: rgba(168,85,247,0.2);
+        border: 1px solid rgba(168,85,247,0.4);
+        border-radius: 3px;
+        pointer-events: auto;
         cursor: pointer;
         transition: all 0.2s;
-        overflow: hidden;
         animation: markerIn 0.3s ease-out;
     }
     @keyframes markerIn {
         from { opacity: 0; transform: scaleX(0); }
         to { opacity: 1; transform: scaleX(1); }
     }
-    .ls-tl-marker:hover { background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.5); }
-    .ls-tl-marker-label {
+    .ls-tl-marker:hover {
+        background: rgba(168,85,247,0.35);
+        border-color: rgba(168,85,247,0.6);
+    }
+    .ls-tl-selection {
         position: absolute;
-        top: 2px; left: 4px;
-        font-size: 0.55rem; font-weight: 600;
-        color: rgba(239,68,68,0.8);
-        white-space: nowrap;
+        top: 0; bottom: 0;
+        background: rgba(99,102,241,0.12);
+        border-left: 2px solid #10b981;
+        border-right: 2px solid #f59e0b;
     }
     .ls-tl-playhead {
         position: absolute;
-        top: 0; bottom: 0; left: 0;
-        width: 2px;
+        top: 0; bottom: 0;
+        left: 0%;
+        z-index: 10;
+        transition: left 1s linear;
+    }
+    .ls-tl-playhead-head {
+        width: 10px; height: 10px;
         background: #ef4444;
-        box-shadow: 0 0 8px rgba(239,68,68,0.5);
-        z-index: 5;
-        transition: left 1.5s linear;
+        border-radius: 2px 2px 50% 50%;
+        transform: translateX(-50%);
+        margin-left: 1px;
+    }
+    .ls-tl-playhead-line {
+        width: 2px;
+        height: calc(100% - 10px);
+        background: #ef4444;
+        box-shadow: 0 0 6px rgba(239,68,68,0.4);
     }
 
-    .ls-tl-actions {
-        display: flex; align-items: center; gap: 8px; margin-top: 6px;
-    }
-    .ls-tl-action-btn {
-        display: inline-flex; align-items: center; gap: 5px;
-        padding: 5px 12px; font-size: 0.7rem; font-weight: 500;
-        color: var(--text-secondary); background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.06); border-radius: 6px;
-        cursor: pointer; font-family: inherit; transition: all 0.2s;
-    }
-    .ls-tl-action-btn:hover {
-        color: var(--text-primary); border-color: rgba(99,102,241,0.3);
-        background: rgba(99,102,241,0.06);
-    }
-
-    /* ============================================
-       右侧高光片段面板
-       ============================================ */
-    .ls-work-sidebar {
-        width: 320px; flex-shrink: 0;
-        display: flex; flex-direction: column;
-        background: rgba(12,12,20,0.95);
-        border-left: 1px solid rgba(255,255,255,0.06);
+    /* === 右侧面板 === */
+    .ls-aside {
+        width: 320px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        background: rgba(10,10,16,0.95);
+        border-left: 1px solid rgba(255,255,255,0.05);
         overflow: hidden;
+        transition: width 0.3s ease, opacity 0.3s ease;
     }
-    .ls-ws-header {
-        display: flex; align-items: center; justify-content: space-between;
+    .ls-aside.collapsed {
+        width: 0;
+        opacity: 0;
+        border-left: none;
+        pointer-events: none;
+    }
+    .ls-aside-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         padding: 14px 16px;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
         flex-shrink: 0;
     }
-    .ls-ws-header h3 { font-size: 0.88rem; font-weight: 600; }
-    .ls-ws-count {
-        padding: 2px 10px; font-size: 0.7rem; font-weight: 700;
-        color: #ef4444; background: rgba(239,68,68,0.1);
+    .ls-aside-header h3 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    .ls-aside-count {
+        padding: 2px 10px;
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: #ef4444;
+        background: rgba(239,68,68,0.1);
         border-radius: 100px;
     }
-    .ls-ws-list {
-        flex: 1; overflow-y: auto; padding: 12px;
-        display: flex; flex-direction: column; gap: 10px;
+    .ls-aside-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
-    .ls-ws-list::-webkit-scrollbar { width: 4px; }
-    .ls-ws-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
-    .ls-ws-empty {
-        display: flex; flex-direction: column; align-items: center;
-        justify-content: center; padding: 40px 20px;
-        text-align: center; flex: 1;
+    .ls-aside-list::-webkit-scrollbar { width: 4px; }
+    .ls-aside-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
+    .ls-aside-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+        flex: 1;
+        color: var(--text-dim);
     }
-    .ls-ws-empty-icon { font-size: 2rem; margin-bottom: 12px; opacity: 0.5; }
-    .ls-ws-empty p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; }
-    .ls-ws-empty span { font-size: 0.72rem; color: var(--text-faint); }
+    .ls-aside-empty p { font-size: 0.82rem; color: var(--text-secondary); margin: 12px 0 4px; }
+    .ls-aside-empty span { font-size: 0.68rem; color: var(--text-faint); }
 
-    .ls-ws-footer {
-        padding: 12px; flex-shrink: 0;
-        border-top: 1px solid rgba(255,255,255,0.06);
+    .ls-aside-footer {
+        padding: 10px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        flex-shrink: 0;
     }
-    .ls-ws-export-btn {
-        display: flex; align-items: center; justify-content: center; gap: 8px;
-        width: 100%; padding: 10px;
-        font-size: 0.82rem; font-weight: 600;
+    .ls-aside-footer-actions {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 8px;
+    }
+    .ls-footer-btn {
+        flex: 1;
+        padding: 6px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        border-radius: 6px;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.03);
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
+    }
+    .ls-footer-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.06); }
+    .ls-footer-clear:hover { color: #ef4444; border-color: rgba(239,68,68,0.2); }
+    .ls-footer-export-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 10px;
+        font-size: 0.78rem;
+        font-weight: 600;
         color: #fff;
         background: linear-gradient(135deg, #a855f7, #6366f1);
-        border: none; border-radius: 10px;
-        cursor: pointer; font-family: inherit;
-        box-shadow: 0 0 20px rgba(99,102,241,0.2);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: inherit;
+        box-shadow: 0 0 20px rgba(168,85,247,0.2);
         transition: all 0.3s;
     }
-    .ls-ws-export-btn:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(99,102,241,0.35); }
+    .ls-footer-export-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 30px rgba(168,85,247,0.35);
+    }
 
-    /* === Clip Card === */
+    /* === 片段卡片 === */
     .ls-clip-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
         background: rgba(255,255,255,0.03);
         border: 1px solid rgba(255,255,255,0.06);
-        border-radius: 12px;
-        overflow: hidden;
+        border-radius: 10px;
         transition: all 0.25s;
+        animation: clipCardIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .ls-clip-card:hover { border-color: rgba(239,68,68,0.2); }
+    .ls-clip-card:hover {
+        border-color: rgba(168,85,247,0.2);
+        background: rgba(255,255,255,0.05);
+    }
     @keyframes clipCardIn {
-        from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+        from { opacity: 0; transform: translateY(-6px) scale(0.97); }
         to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .ls-clip-top {
-        display: flex; gap: 10px; padding: 10px;
+    @keyframes clipCardOut {
+        from { opacity: 1; transform: scale(1); }
+        to { opacity: 0; transform: scale(0.95) translateX(20px); }
+    }
+    .ls-clip-check {
+        flex-shrink: 0;
+    }
+    .ls-clip-checkbox {
+        width: 16px; height: 16px;
+        accent-color: #a855f7;
+        cursor: pointer;
     }
     .ls-clip-thumb {
         position: relative;
-        width: 80px; height: 45px;
-        border-radius: 8px; overflow: hidden; flex-shrink: 0;
+        width: 60px; height: 34px;
+        border-radius: 6px;
+        overflow: hidden;
+        flex-shrink: 0;
     }
     .ls-clip-canvas { width: 100%; height: 100%; display: block; }
     .ls-clip-dur {
-        position: absolute; bottom: 3px; right: 3px;
-        padding: 1px 5px; font-size: 0.58rem;
+        position: absolute;
+        bottom: 2px; right: 2px;
+        padding: 1px 4px;
+        font-size: 0.52rem;
         font-family: 'JetBrains Mono', monospace;
-        color: #fff; background: rgba(0,0,0,0.65);
+        color: #fff;
+        background: rgba(0,0,0,0.65);
         border-radius: 3px;
     }
     .ls-clip-info {
-        flex: 1; min-width: 0;
-        display: flex; flex-direction: column; gap: 2px;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
     }
     .ls-clip-title {
-        font-size: 0.78rem; font-weight: 600; color: var(--text-primary);
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .ls-clip-time {
-        font-size: 0.62rem; color: var(--text-faint);
+        font-size: 0.6rem;
+        color: var(--text-faint);
         font-family: 'JetBrains Mono', monospace;
     }
-    .ls-clip-score {
-        display: flex; align-items: center; gap: 6px; margin-top: 2px;
-    }
-    .ls-clip-score > div {
-        flex: 1; height: 3px;
-        background: rgba(255,255,255,0.06);
-        border-radius: 2px; overflow: hidden;
-    }
-    .ls-clip-score-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #10b981, #34d399);
-        border-radius: 2px;
-    }
-    .ls-clip-score span {
-        font-size: 0.6rem; font-family: 'JetBrains Mono', monospace;
-        color: #34d399; flex-shrink: 0;
-    }
     .ls-clip-actions {
-        display: flex; gap: 0;
-        border-top: 1px solid rgba(255,255,255,0.04);
+        display: flex;
+        gap: 4px;
+        flex-shrink: 0;
     }
     .ls-clip-btn {
-        flex: 1;
-        display: inline-flex; align-items: center; justify-content: center; gap: 4px;
-        padding: 7px; font-size: 0.68rem; font-weight: 500;
-        color: var(--text-muted); background: none; border: none;
-        cursor: pointer; font-family: inherit; transition: all 0.2s;
-        border-right: 1px solid rgba(255,255,255,0.04);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px; height: 26px;
+        border-radius: 6px;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.03);
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s;
     }
-    .ls-clip-btn:last-child { border-right: none; }
-    .ls-clip-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
-    .ls-clip-play:hover { color: #ef4444; }
-    .ls-clip-dl:hover { color: #a855f7; }
+    .ls-clip-btn:hover {
+        color: var(--text-primary);
+        background: rgba(255,255,255,0.08);
+    }
+    .ls-clip-delete:hover {
+        color: #ef4444;
+        border-color: rgba(239,68,68,0.2);
+        background: rgba(239,68,68,0.08);
+    }
 
-    /* === Responsive === */
-    @media (max-width: 1024px) {
-        .ls-work-sidebar { width: 280px; }
+    /* === 响应式 === */
+    @media (max-width: 1100px) {
+        .ls-aside { width: 280px; }
+        .ls-video-preview { display: none; }
     }
     @media (max-width: 800px) {
-        .ls-scenes-grid { grid-template-columns: 1fr; }
-        .ls-work-body { flex-direction: column; }
-        .ls-work-sidebar { width: 100%; max-height: 40vh; border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
+        .ls-main { flex-direction: column; }
+        .ls-aside { width: 100%; max-height: 35vh; border-left: none; border-top: 1px solid rgba(255,255,255,0.05); }
+        .ls-video-preview { display: none; }
     }
     </style>
 </body>
