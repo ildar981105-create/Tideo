@@ -3617,48 +3617,12 @@
     .task-import-search input::placeholder {
         color: var(--text-dim);
     }
-    /* 搜索/ID 切换按钮 */
-    .task-import-mode-toggle {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        padding: 2px;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.06);
-        border-radius: 8px;
-        margin: 0 24px 8px;
-        flex-shrink: 0;
-    }
-    .task-import-mode-btn {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        padding: 6px 12px;
-        font-size: 0.72rem;
-        font-weight: 500;
-        color: var(--text-muted);
-        background: transparent;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-family: inherit;
-        transition: all 0.2s;
-    }
-    .task-import-mode-btn:hover {
-        color: var(--text-secondary);
-    }
-    .task-import-mode-btn.active {
-        color: var(--text-primary);
-        background: rgba(99,102,241,0.12);
-    }
     /* ID 导入面板 */
     .task-import-id-panel {
         display: none;
         flex-direction: column;
-        gap: 12px;
-        padding: 16px 24px 20px;
+        gap: 14px;
+        padding: 20px 24px;
         flex: 1;
         min-height: 0;
     }
@@ -3778,6 +3742,33 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
+    }
+    /* ID 面板空状态 */
+    .task-import-id-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 16px;
+        text-align: center;
+        flex: 1;
+    }
+    .task-import-id-empty span {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+    }
+    /* FrameX 面板 */
+    .task-import-framex-panel {
+        display: none;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+    }
+    .task-import-framex-panel.active {
+        display: flex;
+    }
+    .task-import-framex-panel .task-import-search {
+        margin: 12px 24px 0;
     }
     /* Task List */
     .task-import-list {
@@ -5752,52 +5743,28 @@
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </button>
             </div>
-            <!-- Platform Tabs -->
+            <!-- Tabs: ID导入(主) + FrameX任务(辅) -->
             <div class="task-import-tabs">
-                <button class="task-import-tab active" data-platform="vod">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 6C3 4.89543 3.89543 4 5 4H9L11 6H19C20.1046 6 21 6.89543 21 8V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                    云点播
-                </button>
-                <button class="task-import-tab" data-platform="mps">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 6H20M4 10H20M4 14H20M4 18H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                    MPS 视频处理
-                </button>
-                <button class="task-import-tab" data-platform="framex">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M9 9L15 12L9 15V9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                    FrameX
-                </button>
-            </div>
-            <!-- 导入模式切换：列表浏览 / 任务 ID -->
-            <div class="task-import-mode-toggle" id="taskImportModeToggle">
-                <button class="task-import-mode-btn active" data-mode="list">
-                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M2 4H14M2 8H14M2 12H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                    列表浏览
-                </button>
-                <button class="task-import-mode-btn" data-mode="id">
-                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 2V14M8 4H13M8 8H12M8 12H11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                <button class="task-import-tab active" data-tab="id">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 3V21M11 6H18M11 10H16M11 14H17M11 18H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     通过 ID 导入
                 </button>
+                <button class="task-import-tab" data-tab="framex">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M9 9L15 12L9 15V9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    FrameX 任务
+                </button>
             </div>
-            <!-- Search（列表模式） -->
-            <div class="task-import-search" id="taskImportSearchWrap">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="var(--text-faint)" stroke-width="1.3"/><path d="M10 10L13 13" stroke="var(--text-faint)" stroke-width="1.3" stroke-linecap="round"/></svg>
-                <input id="taskImportSearch" type="text" placeholder="搜索任务名称…">
-            </div>
-            <!-- Task List（列表模式） -->
-            <div class="task-import-list" id="taskImportList">
-                <!-- JS 动态填充 -->
-            </div>
-            <!-- ID 导入面板 -->
-            <div class="task-import-id-panel" id="taskImportIdPanel">
+            <!-- ========== ID 导入面板（默认显示） ========== -->
+            <div class="task-import-id-panel active" id="taskImportIdPanel">
                 <div class="task-import-id-hint">
-                    输入云点播或 MPS 的任务 ID 直接导入。支持格式：<br>
-                    云点播 TaskId：<code>125xxx-proceduretask-xxxx</code><br>
+                    输入云点播或 MPS 的任务 ID 直接导入已完成的译制任务。<br>
+                    云点播 TaskId：<code>125xxx-proceduretask-xxxx</code> ·
                     MPS TaskId：<code>2600xxx-TranscodeTask-xxxx</code>
                 </div>
                 <div class="task-import-id-form">
                     <div class="task-import-id-field">
                         <label>平台</label>
-                        <select id="taskImportIdPlatform" style="padding:10px 14px;font-size:0.82rem;color:var(--text-primary);background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;font-family:inherit;outline:none;width:100%;">
+                        <select id="taskImportIdPlatform" style="padding:10px 14px;font-size:0.82rem;color:var(--text-primary);background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;font-family:inherit;outline:none;width:100%;cursor:pointer;">
                             <option value="vod">腾讯云点播</option>
                             <option value="mps">MPS 视频处理</option>
                         </select>
@@ -5811,10 +5778,30 @@
                 <div class="task-import-id-result" id="taskImportIdResult">
                     <!-- JS 动态填充 -->
                 </div>
+                <!-- ID面板空状态提示 -->
+                <div class="task-import-id-empty" id="taskImportIdEmpty">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="opacity:0.3;margin-bottom:12px;">
+                        <rect x="8" y="6" width="32" height="36" rx="4" stroke="#a78bfa" stroke-width="1.5"/>
+                        <path d="M16 16H32M16 22H28M16 28H24" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="36" cy="36" r="8" fill="rgba(99,102,241,0.15)" stroke="#6366f1" stroke-width="1.5"/>
+                        <path d="M34 36H38M36 34V38" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span>粘贴任务 ID，即可查询并导入</span>
+                </div>
+            </div>
+            <!-- ========== FrameX 任务列表面板 ========== -->
+            <div class="task-import-framex-panel" id="taskImportFramexPanel" style="display:none;">
+                <div class="task-import-search" id="taskImportSearchWrap">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="var(--text-faint)" stroke-width="1.3"/><path d="M10 10L13 13" stroke="var(--text-faint)" stroke-width="1.3" stroke-linecap="round"/></svg>
+                    <input id="taskImportSearch" type="text" placeholder="搜索 FrameX 任务…">
+                </div>
+                <div class="task-import-list" id="taskImportList">
+                    <!-- JS 动态填充 -->
+                </div>
             </div>
             <!-- Footer -->
             <div class="task-import-footer">
-                <span class="task-import-selected-label" id="taskImportSelectedLabel">请选择一个任务</span>
+                <span class="task-import-selected-label" id="taskImportSelectedLabel">请输入任务 ID</span>
                 <div class="task-import-footer-actions">
                     <button class="task-import-cancel" id="taskImportCancel">取消</button>
                     <button class="task-import-confirm" id="taskImportConfirm" disabled>
@@ -5916,63 +5903,81 @@
         const closeBtn = document.getElementById('taskImportClose');
         const cancelBtn = document.getElementById('taskImportCancel');
         const confirmBtn = document.getElementById('taskImportConfirm');
-        const listEl = document.getElementById('taskImportList');
         const selectedLabel = document.getElementById('taskImportSelectedLabel');
-        const searchInput = document.getElementById('taskImportSearch');
 
-        // ID 导入相关元素
-        const modeToggle = document.getElementById('taskImportModeToggle');
-        const searchWrap = document.getElementById('taskImportSearchWrap');
+        // Tab elements
+        const tabs = document.querySelectorAll('.task-import-tab[data-tab]');
+
+        // ID panel elements
         const idPanel = document.getElementById('taskImportIdPanel');
         const idPlatformSel = document.getElementById('taskImportIdPlatform');
         const idInput = document.getElementById('taskImportIdInput');
         const idFetchBtn = document.getElementById('taskImportIdFetch');
         const idResult = document.getElementById('taskImportIdResult');
-        const platformTabs = document.querySelector('.task-import-tabs');
+        const idEmpty = document.getElementById('taskImportIdEmpty');
+
+        // FrameX panel elements
+        const framexPanel = document.getElementById('taskImportFramexPanel');
+        const listEl = document.getElementById('taskImportList');
+        const searchInput = document.getElementById('taskImportSearch');
 
         if (!openBtn || !modal) return;
 
-        let importMode = 'list'; // 'list' | 'id'
-        let idFetchedTask = null; // 通过 ID 查询到的任务
-
-        // Mock data for completed tasks across platforms
-        const taskData = {
-            vod: [
-                { id:'vt001', name:'产品发布会完整版 — 英文版', video:'产品发布会完整版.mp4', lang:'中→英', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-09', duration:'1:04:02' },
-                { id:'vt002', name:'2026春季广告片 — 日语版', video:'2026春季广告片-最终版.mp4', lang:'中→日', steps:{ erase:true, subtitle:true, voice:false }, date:'2026-03-08', duration:'3:05' },
-                { id:'vt003', name:'APP功能演示 — 多语种字幕', video:'APP 功能演示 v3.mp4', lang:'中→英/日/韩', steps:{ erase:false, subtitle:true, voice:false }, date:'2026-03-07', duration:'7:42' },
-                { id:'vt004', name:'CEO 新年致辞 — 英文配音', video:'CEO 新年致辞 2026.mp4', lang:'中→英', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-06', duration:'10:23' },
-            ],
-            mps: [
-                { id:'mt001', name:'电商直播精选 — 东南亚版', video:'电商直播精选 3.1 大促.mp4', lang:'中→泰/越/印尼', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-08', duration:'31:00' },
-                { id:'mt002', name:'英语培训课程 — 西班牙语版', video:'英语培训课程 L1-L5 合集.mp4', lang:'英→西', steps:{ erase:false, subtitle:true, voice:true }, date:'2026-03-05', duration:'2:00:00' },
-            ],
-            framex: [
-                { id:'ft001', name:'出海短视频素材-东南亚篇 — 英文', video:'出海短视频素材-东南亚篇.mp4', lang:'中→英', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-07', duration:'1:32' },
-                { id:'ft002', name:'UI 动效设计教程 — 日语版', video:'UI 动效设计教程.mp4', lang:'中→日', steps:{ erase:true, subtitle:true, voice:false }, date:'2026-03-04', duration:'20:34' },
-                { id:'ft003', name:'品牌宣传片 — 韩语版', video:'品牌宣传片2026.mp4', lang:'中→韩', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-03', duration:'5:16' },
-            ]
-        };
-
-        let currentPlatform = 'vod';
+        let currentTab = 'id'; // 'id' | 'framex'
+        let idFetchedTask = null;
         let selectedTaskId = null;
 
-        function renderTasks(filter) {
+        // FrameX mock data only
+        const framexTasks = [
+            { id:'ft001', name:'出海短视频素材-东南亚篇 — 英文', video:'出海短视频素材-东南亚篇.mp4', lang:'中→英', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-07', duration:'1:32' },
+            { id:'ft002', name:'UI 动效设计教程 — 日语版', video:'UI 动效设计教程.mp4', lang:'中→日', steps:{ erase:true, subtitle:true, voice:false }, date:'2026-03-04', duration:'20:34' },
+            { id:'ft003', name:'品牌宣传片 — 韩语版', video:'品牌宣传片2026.mp4', lang:'中→韩', steps:{ erase:true, subtitle:true, voice:true }, date:'2026-03-03', duration:'5:16' },
+        ];
+
+        /* ===== Tab 切换 ===== */
+        function switchTab(tab) {
+            currentTab = tab;
+            tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+
+            if (tab === 'id') {
+                idPanel.classList.add('active');
+                framexPanel.style.display = 'none';
+                // Restore ID state
+                if (idFetchedTask) {
+                    selectedLabel.textContent = '已查到: ' + idFetchedTask.name;
+                    confirmBtn.disabled = false;
+                } else {
+                    selectedLabel.textContent = '请输入任务 ID';
+                    confirmBtn.disabled = true;
+                }
+            } else {
+                idPanel.classList.remove('active');
+                framexPanel.style.display = 'flex';
+                searchInput.value = '';
+                renderFramexTasks();
+            }
+        }
+
+        tabs.forEach(t => {
+            t.addEventListener('click', () => switchTab(t.dataset.tab));
+        });
+
+        /* ===== FrameX 列表渲染 ===== */
+        function renderFramexTasks(filter) {
             const q = (filter || '').toLowerCase();
-            const tasks = taskData[currentPlatform] || [];
             listEl.innerHTML = '';
 
-            const filtered = tasks.filter(t => !q || t.name.toLowerCase().includes(q) || t.video.toLowerCase().includes(q));
+            const filtered = framexTasks.filter(t => !q || t.name.toLowerCase().includes(q) || t.video.toLowerCase().includes(q));
 
             if (filtered.length === 0) {
-                listEl.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-dim);font-size:0.82rem;">暂无已完成的任务</div>';
+                listEl.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--text-dim);font-size:0.82rem;">暂无已完成的 FrameX 任务</div>';
                 return;
             }
 
             filtered.forEach(t => {
                 const card = document.createElement('div');
                 card.className = 'task-import-card' + (selectedTaskId === t.id ? ' selected' : '');
-                
+
                 const stepLabels = [];
                 if (t.steps.erase) stepLabels.push({ label: '擦除', active: true });
                 else stepLabels.push({ label: '擦除', active: false });
@@ -5981,7 +5986,7 @@
                 if (t.steps.voice) stepLabels.push({ label: '配音', active: true });
                 else stepLabels.push({ label: '配音', active: false });
 
-                const stepsHtml = stepLabels.map(s => 
+                const stepsHtml = stepLabels.map(s =>
                     `<span class="task-import-step${s.active ? ' active' : ''}">${s.active ? '✓ ' : ''}${s.label}</span>`
                 ).join('');
 
@@ -6001,7 +6006,7 @@
 
                 card.addEventListener('click', () => {
                     selectedTaskId = t.id;
-                    renderTasks(searchInput.value);
+                    renderFramexTasks(searchInput.value);
                 });
 
                 listEl.appendChild(card);
@@ -6009,7 +6014,7 @@
 
             // Update footer
             if (selectedTaskId) {
-                const task = tasks.find(t => t.id === selectedTaskId);
+                const task = framexTasks.find(t => t.id === selectedTaskId);
                 selectedLabel.textContent = task ? `已选: ${task.name}` : '请选择一个任务';
                 confirmBtn.disabled = !task;
             } else {
@@ -6018,69 +6023,25 @@
             }
         }
 
-        function openModal() {
-            modal.style.display = 'flex';
-            selectedTaskId = null;
-            currentPlatform = 'vod';
-            // Reset tabs
-            document.querySelectorAll('.task-import-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('.task-import-tab[data-platform="vod"]').classList.add('active');
-            searchInput.value = '';
-            // Reset to list mode
-            switchMode('list');
-            renderTasks();
-        }
-
-        function switchMode(mode) {
-            importMode = mode;
-            idFetchedTask = null;
-            // Toggle active button
-            modeToggle.querySelectorAll('.task-import-mode-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.mode === mode);
-            });
-            if (mode === 'list') {
-                searchWrap.style.display = '';
-                listEl.style.display = '';
-                platformTabs.style.display = '';
-                idPanel.classList.remove('active');
-                // Restore footer to list state
-                selectedLabel.textContent = selectedTaskId
-                    ? '已选: ' + ((taskData[currentPlatform] || []).find(t => t.id === selectedTaskId) || {}).name
-                    : '请选择一个任务';
-                confirmBtn.disabled = !selectedTaskId;
-            } else {
-                searchWrap.style.display = 'none';
-                listEl.style.display = 'none';
-                platformTabs.style.display = 'none';
-                idPanel.classList.add('active');
-                idInput.value = '';
-                idFetchBtn.disabled = true;
-                idResult.classList.remove('active', 'error');
-                selectedLabel.textContent = '输入任务 ID 后点击查询';
-                confirmBtn.disabled = true;
-                setTimeout(() => idInput.focus(), 100);
-            }
-        }
-
-        // Mode toggle clicks
-        modeToggle.querySelectorAll('.task-import-mode-btn').forEach(btn => {
-            btn.addEventListener('click', () => switchMode(btn.dataset.mode));
-        });
-
-        // ID input → enable/disable fetch button
+        /* ===== ID 导入逻辑 ===== */
         idInput.addEventListener('input', () => {
             const val = idInput.value.trim();
             idFetchBtn.disabled = val.length < 3;
+            // Show/hide empty state
+            if (val.length > 0) {
+                idEmpty.style.display = 'none';
+            } else {
+                idEmpty.style.display = 'flex';
+            }
             // Clear previous result if input changes
             if (idFetchedTask) {
                 idFetchedTask = null;
                 idResult.classList.remove('active', 'error');
                 confirmBtn.disabled = true;
-                selectedLabel.textContent = '输入任务 ID 后点击查询';
+                selectedLabel.textContent = '请输入任务 ID';
             }
         });
 
-        // Enter key → trigger fetch
         idInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !idFetchBtn.disabled) {
                 idFetchBtn.click();
@@ -6096,14 +6057,13 @@
             idFetchBtn.disabled = true;
             idFetchBtn.textContent = '查询中…';
             idResult.classList.remove('active', 'error');
+            idEmpty.style.display = 'none';
 
             // Simulate API call
             setTimeout(() => {
                 idFetchBtn.textContent = '查询';
                 idFetchBtn.disabled = false;
 
-                // Mock: generate a result based on the ID
-                // In production this would be an API call to VOD/MPS
                 const mockResults = {
                     vod: {
                         name: '云点播任务 — ' + taskId,
@@ -6125,7 +6085,7 @@
                     }
                 };
 
-                // Simulate a "not found" case for obviously wrong IDs
+                // Simulate "not found" for short IDs
                 if (taskId.length < 5) {
                     idResult.innerHTML = `
                         <div class="task-import-id-result-header">
@@ -6166,7 +6126,6 @@
                 idResult.classList.remove('error');
                 idResult.classList.add('active');
 
-                // Save fetched task for confirm
                 idFetchedTask = {
                     id: 'id-' + taskId,
                     ...mock,
@@ -6177,6 +6136,20 @@
             }, 800);
         });
 
+        /* ===== 打开/关闭弹窗 ===== */
+        function openModal() {
+            modal.style.display = 'flex';
+            // Reset state
+            selectedTaskId = null;
+            idFetchedTask = null;
+            idInput.value = '';
+            idFetchBtn.disabled = true;
+            idResult.classList.remove('active', 'error');
+            idEmpty.style.display = 'flex';
+            // Default to ID tab
+            switchTab('id');
+        }
+
         function closeModal() {
             modal.style.display = 'none';
         }
@@ -6185,24 +6158,11 @@
         closeBtn.addEventListener('click', closeModal);
         cancelBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-        searchInput.addEventListener('input', () => renderTasks(searchInput.value));
-
-        // Platform tab switching
-        document.querySelectorAll('.task-import-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                currentPlatform = tab.dataset.platform;
-                document.querySelectorAll('.task-import-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                selectedTaskId = null;
-                searchInput.value = '';
-                renderTasks();
-            });
-        });
+        searchInput.addEventListener('input', () => renderFramexTasks(searchInput.value));
 
         // Confirm — import task and enter finetune
         confirmBtn.addEventListener('click', () => {
-            if (importMode === 'id') {
-                // ID 模式导入
+            if (currentTab === 'id') {
                 if (!idFetchedTask) return;
                 closeModal();
                 if (typeof window._tv2ImportTask === 'function') {
@@ -6210,15 +6170,13 @@
                 }
                 return;
             }
-            // 列表模式导入
+            // FrameX list mode
             if (!selectedTaskId) return;
-            const tasks = taskData[currentPlatform] || [];
-            const task = tasks.find(t => t.id === selectedTaskId);
+            const task = framexTasks.find(t => t.id === selectedTaskId);
             if (!task) return;
             closeModal();
-            // Call global import handler
             if (typeof window._tv2ImportTask === 'function') {
-                window._tv2ImportTask(task, currentPlatform);
+                window._tv2ImportTask(task, 'framex');
             }
         });
     })();
