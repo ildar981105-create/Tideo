@@ -8623,13 +8623,13 @@
         function addEraseRegion() {
             eraseRegionCounter++;
             const newId = 'E' + eraseRegionCounter;
-            const curTime = Math.floor(videoTime);
+            const curTime = Math.round(videoTime * 2) / 2; // snap to 0.5s
             const newRegion = {
                 id: newId,
                 title: '新擦除区域',
                 x: 20, y: 40, w: 60, h: 15,
                 startSec: curTime,
-                endSec: Math.min(curTime + 10, videoDuration)
+                endSec: Math.min(curTime + 1, videoDuration)
             };
             eraseRegions.push(newRegion);
             activeEraseRegion = newId;
@@ -8637,6 +8637,7 @@
             lastVisibleEraseId = newId;
             renderEraseRegionList();
             renderEraseOverlays();
+            syncTimelineSegments('erase');
             eraseRegionListEl.scrollTop = eraseRegionListEl.scrollHeight;
         }
 
@@ -8654,6 +8655,7 @@
             lastVisibleEraseId = null;
             renderEraseRegionList();
             renderEraseOverlays();
+            syncTimelineSegments('erase');
         }
 
         function updateRegionData(rid, props) {
