@@ -7704,7 +7704,7 @@
             if (panel) panel.classList.add('active');
 
             // Re-render panel list for latest data
-            if (step === 'erase') renderEraseRegionList();
+            if (step === 'erase') { editingEraseId = null; renderEraseRegionList(); }
             else if (step === 'subtitle') { editingSubId = null; renderSubtitleList(); }
             else if (step === 'voice') { editingVoiceId = null; renderVoiceList(); }
 
@@ -7744,16 +7744,17 @@
             });
 
             tl.classList.add('finetune-mode');
+            // Only show the current step's track, hide all others
             configSteps.forEach(s => {
                 const trk = document.querySelector(`.tv2-tl-track[data-track="${s}"]`);
                 if (!trk) return;
                 trk.classList.remove('track-placeholder', 'track-ft-active', 'track-ft-dim');
-                if (features[s]) {
-                    trk.classList.add('track-visible');
-                    trk.classList.add(s === step ? 'track-ft-active' : 'track-ft-dim');
+                if (s === step) {
+                    // Current step: always visible and active
+                    trk.classList.add('track-visible', 'track-ft-active');
                 } else {
-                    trk.classList.add('track-visible', 'track-placeholder');
-                    trk.classList.add('track-ft-dim');
+                    // Other steps: completely hidden
+                    trk.classList.remove('track-visible');
                 }
             });
 
@@ -7802,11 +7803,17 @@
                 tl.classList.remove('ft-tl-exit');
                 document.querySelectorAll('.tv2-ft-panel').forEach(p => p.classList.remove('active'));
 
-                // Reset timeline tracks
+                // Reset timeline tracks — restore all enabled feature tracks
                 document.querySelectorAll('.tv2-tl-track').forEach(track => {
                     track.style.opacity = '';
                     track.classList.remove('track-ft-active', 'track-ft-dim');
-                    if (track.classList.contains('track-placeholder')) {
+                    const trackStep = track.dataset.track;
+                    if (features[trackStep]) {
+                        // Enabled feature: make visible again
+                        track.classList.add('track-visible');
+                        track.classList.remove('track-placeholder');
+                    } else {
+                        // Not enabled: hide
                         track.classList.remove('track-visible', 'track-placeholder');
                     }
                 });
@@ -7903,11 +7910,15 @@
                     // Update middle column header
                     document.getElementById('middleTitle').textContent = headerTitleMap[key];
                     document.getElementById('middleDesc').textContent = headerDescMap[key];
-                    // Update timeline highlight
-                    document.querySelectorAll('.tv2-tl-track').forEach(track => {
-                        track.classList.remove('track-ft-active', 'track-ft-dim');
-                        if (track.classList.contains('track-visible')) {
-                            track.classList.add(track.dataset.track === key ? 'track-ft-active' : 'track-ft-dim');
+                    // Update timeline: only show current step's track, hide others
+                    configSteps.forEach(s => {
+                        const trk = document.querySelector(`.tv2-tl-track[data-track="${s}"]`);
+                        if (!trk) return;
+                        trk.classList.remove('track-ft-active', 'track-ft-dim');
+                        if (s === key) {
+                            trk.classList.add('track-visible', 'track-ft-active');
+                        } else {
+                            trk.classList.remove('track-visible');
                         }
                     });
                     // Update finetune badge & hint for the new step
@@ -8280,6 +8291,7 @@
             { id: 'E8', title: '顶部水印', x: 70, y: 3, w: 28, h: 8, startSec: 0,  endSec: 90 },
         ];
         let activeEraseRegion = 'E1';
+        let editingEraseId = null; // tracks which erase region's inline-edit panel is expanded (decoupled from highlight)
         let eraseRegionCounter = 8;
         let lastVisibleEraseId = null;
         let eraseTrackHidden = false; // set by eye-button on erase track
@@ -8303,7 +8315,7 @@
                         <svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     </button>
                 </div>
-                <div class="ft-inline-edit${r.id === activeEraseRegion ? ' expanded' : ''}" data-edit-eid="${r.id}">
+                <div class="ft-inline-edit${r.id === editingEraseId ? ' expanded' : ''}" data-edit-eid="${r.id}">
                     <div class="ft-inline-edit-row">
                         <span class="ft-inline-edit-label">时间范围</span>
                         <div class="ft-inline-edit-time">
@@ -8390,6 +8402,7 @@
                 activeEraseRegion = visibleId;
                 highlightOverlayBox(visibleId);
                 if (isEraseFinetune) {
+                    // Only update card highlight (active state), do NOT touch editingEraseId or inline-edit panels
                     eraseRegionListEl.querySelectorAll('.ft-region-card').forEach(c =>
                         c.classList.toggle('active', c.dataset.region === visibleId));
                     const activeCard = eraseRegionListEl.querySelector(`.ft-region-card[data-region="${visibleId}"]`);
@@ -8481,11 +8494,13 @@
                     if (e.target.closest('.ft-region-delete')) return;
                     const rid = card.dataset.region;
                     activeEraseRegion = rid;
+                    // Toggle editing: click same card again to collapse, otherwise expand
+                    editingEraseId = (editingEraseId === rid) ? null : rid;
                     eraseRegionListEl.querySelectorAll('.ft-region-card').forEach(c => c.classList.remove('active'));
                     card.classList.add('active');
-                    // Toggle inline edit panels
+                    // Toggle inline edit panels based on editingEraseId
                     eraseRegionListEl.querySelectorAll('.ft-inline-edit').forEach(el =>
-                        el.classList.toggle('expanded', el.dataset.editEid === rid));
+                        el.classList.toggle('expanded', el.dataset.editEid === editingEraseId));
                     highlightOverlayBox(rid);
                     const r = eraseRegions.find(r => r.id === rid);
                     if (r) {
@@ -8568,6 +8583,7 @@
             };
             eraseRegions.push(newRegion);
             activeEraseRegion = newId;
+            editingEraseId = newId;
             lastVisibleEraseId = newId;
             renderEraseRegionList();
             renderEraseOverlays();
@@ -8581,6 +8597,9 @@
             eraseRegions.splice(idx, 1);
             if (activeEraseRegion === rid) {
                 activeEraseRegion = eraseRegions[Math.min(idx, eraseRegions.length - 1)].id;
+            }
+            if (editingEraseId === rid) {
+                editingEraseId = null;
             }
             lastVisibleEraseId = null;
             renderEraseRegionList();
