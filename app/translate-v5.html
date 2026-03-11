@@ -356,20 +356,6 @@
         font-size: 0.58rem; color: #c4b5fd; font-weight: 500; white-space: nowrap;
     }
 
-    /* Erase box in preview (read-only, no handles) */
-    .erase-overlay-container.preview-mode .erase-region-box {
-        pointer-events: none;
-        border-width: 1.5px;
-        opacity: 0.7;
-    }
-    .erase-overlay-container.preview-mode .erase-region-box .er-handle {
-        display: none !important;
-    }
-    .erase-overlay-container.preview-mode .erase-region-box .er-label {
-        font-size: 0.5rem;
-        opacity: 0.6;
-    }
-
     /* ===== Video Scan Overlay Animation ===== */
     .tv2-scan-overlay {
         position: absolute;
@@ -6293,9 +6279,6 @@
         /* Track which tabs are unlocked (persist across navigation) */
         let unlockedTabs = { erase: false, subtitle: false, voice: false };
 
-        /* Track which step is currently being previewed (before confirm) */
-        let previewingSteps = { erase: false, subtitle: false, voice: false };
-
         /* ===== Video sync ===== */
         let lastBurntSubId = null;
 
@@ -6442,7 +6425,6 @@
             pendingAdvanceStep = null;
             // Reset tabs to locked
             unlockedTabs = { erase: false, subtitle: false, voice: false };
-            previewingSteps = { erase: false, subtitle: false, voice: false };
             Object.values(tabItems).forEach(tab => {
                 tab.className = 'tv2-tab-item locked';
             });
@@ -6489,7 +6471,6 @@
 
             // Reset and unlock tabs for completed features
             unlockedTabs = { erase: false, subtitle: false, voice: false };
-            previewingSteps = { erase: false, subtitle: false, voice: false };
             Object.keys(tabItems).forEach(key => {
                 tabItems[key].className = 'tv2-tab-item locked';
             });
@@ -6868,16 +6849,6 @@
             const stepNum = currentStep + 1;
             const totalSteps = activeSteps.length;
 
-            // Hide previous step previews when entering a new step
-            const stepOrder = ['erase', 'subtitle', 'voice'];
-            const curIdx = stepOrder.indexOf(step);
-            stepOrder.forEach((s, i) => {
-                if (i < curIdx && previewingSteps[s]) {
-                    previewingSteps[s] = false;
-                    if (s === 'erase') renderEraseOverlays();
-                }
-            });
-
             // Show a brief step header bubble, then auto-start AI scan
             const bubbleHtml = `
                 <div class="chat-step-badge ${meta.badgeClass}">步骤 ${stepNum} / ${totalSteps}</div>
@@ -6974,22 +6945,12 @@
                 </div>`;
                 scrollChat();
 
-                // Preview this step (same logic as showStepResultBubble)
-                const stepOrder = ['erase', 'subtitle', 'voice'];
-                const curIdx = stepOrder.indexOf(step);
-                stepOrder.forEach((s, i) => {
-                    if (i < curIdx && previewingSteps[s]) {
-                        previewingSteps[s] = false;
-                        if (s === 'erase') renderEraseOverlays();
-                    }
-                });
-                previewingSteps[step] = true;
+                // Show timeline track for this step
                 const previewTrack = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
                 if (previewTrack) {
                     setTimeout(() => previewTrack.classList.add('track-visible'), 300);
                 }
                 syncTimelineSegments(step);
-                if (step === 'erase') renderEraseOverlays();
 
                 // Bind erase region line clicks
                 setTimeout(() => {
@@ -7064,16 +7025,7 @@
                 </div>`;
                 scrollChat();
 
-                // Preview this step
-                const stepOrder = ['erase', 'subtitle', 'voice'];
-                const curIdx = stepOrder.indexOf(step);
-                stepOrder.forEach((s, i) => {
-                    if (i < curIdx && previewingSteps[s]) {
-                        previewingSteps[s] = false;
-                        if (s === 'erase') renderEraseOverlays();
-                    }
-                });
-                previewingSteps[step] = true;
+                // Show timeline track for this step
                 const previewTrack = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
                 if (previewTrack) setTimeout(() => previewTrack.classList.add('track-visible'), 300);
                 syncTimelineSegments(step);
@@ -7100,12 +7052,6 @@
 
         /* ===== Subtitle Step: Phase 2A — ASR Recognition (auto-confirm + auto-translate) ===== */
         function startSubtitleASR() {
-            // Hide erase overlays when entering subtitle phase
-            if (previewingSteps.erase) {
-                previewingSteps.erase = false;
-                renderEraseOverlays();
-            }
-
             const scanBubbleHtml = `
                 <div class="chat-scan-loading">
                     <div class="scan-dots"><span></span><span></span><span></span></div>
@@ -7132,12 +7078,6 @@
 
         /* ===== Subtitle Step: Manual Upload ===== */
         function startSubtitleUpload() {
-            // Hide erase overlays when entering subtitle phase
-            if (previewingSteps.erase) {
-                previewingSteps.erase = false;
-                renderEraseOverlays();
-            }
-
             const scanBubbleHtml = `
                 <div class="chat-scan-loading">
                     <div class="scan-dots"><span></span><span></span><span></span></div>
@@ -7286,16 +7226,7 @@
                 </div>`;
                 scrollChat();
 
-                // Preview this step
-                const stepOrder = ['erase', 'subtitle', 'voice'];
-                const curIdx = stepOrder.indexOf(step);
-                stepOrder.forEach((s, i) => {
-                    if (i < curIdx && previewingSteps[s]) {
-                        previewingSteps[s] = false;
-                        if (s === 'erase') renderEraseOverlays();
-                    }
-                });
-                previewingSteps[step] = true;
+                // Show timeline track for this step
                 const previewTrack = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
                 if (previewTrack) {
                     setTimeout(() => previewTrack.classList.add('track-visible'), 300);
@@ -7395,19 +7326,7 @@
             appendBubble('ai', bubbleHtml, 0);
             scrollChat();
 
-            // Preview this step
-            const stepOrder = ['erase', 'subtitle', 'voice'];
-            const curIdx = stepOrder.indexOf(step);
-            stepOrder.forEach((s, i) => {
-                if (i < curIdx && previewingSteps[s]) {
-                    previewingSteps[s] = false;
-                    if (s === 'erase') renderEraseOverlays();
-                }
-            });
-
-            previewingSteps[step] = true;
-
-            // Show timeline track
+            // Show timeline track for this step
             const previewTrack = document.querySelector(`.tv2-tl-track[data-track="${step}"]`);
             if (previewTrack) {
                 setTimeout(() => previewTrack.classList.add('track-visible'), 300);
@@ -7425,9 +7344,6 @@
 
             // Track script availability
             if (step === 'subtitle' && enabled) scriptReady = true;
-
-            // Preview mode is no longer needed — either unlocked or skipped
-            previewingSteps[step] = false;
 
             // Disable all step buttons for this step (including phased ones)
             const btns = chatFlow.querySelectorAll(`.chat-step-confirm[data-step="${step}"], .chat-step-skip[data-step="${step}"], .chat-step-ft-entry[data-step="${step}"], .chat-pre-btn[data-step="${step}"]`);
@@ -7522,9 +7438,6 @@
 
             // Step-specific: erase → trigger burntSub erasing animation
             if (step === 'erase') {
-                // Hide erase overlays during processing
-                previewingSteps.erase = false;
-                renderEraseOverlays();
                 // Make burntSub visible and start erasing animation
                 burntSub.classList.remove('erased');
                 burntSub.classList.remove('erasing');
@@ -7859,10 +7772,14 @@
                 phaseDot.className = 'tv2-phase-dot live';
                 phaseLabel.textContent = '请在右侧对话中继续配置';
 
-                // Restore all previews
-                renderEraseOverlays();
-                updateSubtitlePreview();
-                updateVoicePreview();
+                // Clear all overlays — back to clean preview
+                eraseOverlayContainer.innerHTML = '';
+                lastVisibleEraseId = null;
+                eraseOverlayContainer.classList.remove('interactive');
+                subPreview.classList.remove('visible');
+                lastSubId = null;
+                voicePreview.classList.remove('visible');
+                lastVoiceId = null;
 
                 // AI confirms finetune done in chat
                 const labelMap = { erase: '擦除', subtitle: '字幕', voice: '配音' };
@@ -8372,20 +8289,16 @@
 
         function renderEraseOverlays() {
             const isEraseFinetune = inFinetune && currentFinetuneStep === 'erase';
-            const isEraseUnlocked = unlockedTabs.erase && features.erase;
-            const isErasePreviewing = previewingSteps.erase;
-            // In finetune mode for a different step, hide erase overlays
-            const isFinetuneOtherStep = inFinetune && currentFinetuneStep !== 'erase';
-            const showOverlays = !eraseTrackHidden && !isFinetuneOtherStep && (isEraseFinetune || isEraseUnlocked || isErasePreviewing);
-
-            eraseOverlayContainer.classList.toggle('interactive', isEraseFinetune);
-            eraseOverlayContainer.classList.toggle('preview-mode', !isEraseFinetune && (isEraseUnlocked || isErasePreviewing));
-
-            if (!showOverlays) {
+            // Only show erase overlays in finetune mode for the erase step
+            if (!isEraseFinetune || eraseTrackHidden) {
                 eraseOverlayContainer.innerHTML = '';
                 lastVisibleEraseId = null;
+                eraseOverlayContainer.classList.remove('interactive');
                 return;
             }
+
+            eraseOverlayContainer.classList.add('interactive');
+
             eraseOverlayContainer.innerHTML = eraseRegions.map(r => `
                 <div class="erase-region-box${r.id === activeEraseRegion ? ' active' : ''}" data-rid="${r.id}"
                      style="left:${r.x}%;top:${r.y}%;width:${r.w}%;height:${r.h}%;display:none;">
@@ -8406,9 +8319,7 @@
 
         function updateEraseOverlayVisibility() {
             const isEraseFinetune = inFinetune && currentFinetuneStep === 'erase';
-            const isEraseUnlocked = unlockedTabs.erase && features.erase;
-            const isErasePreviewing = previewingSteps.erase;
-            if (!isEraseFinetune && !isEraseUnlocked && !isErasePreviewing) return;
+            if (!isEraseFinetune) return;
             if (!eraseOverlayContainer.children.length) return;
 
             const t = videoTime;
@@ -8443,14 +8354,8 @@
         let lastVoiceId = null;
 
         function updateSubtitlePreview() {
-            const canShow = (unlockedTabs.subtitle && features.subtitle) || previewingSteps.subtitle;
-            // In finetune mode, only show subtitle preview when finetuning subtitle
-            if (inFinetune && currentFinetuneStep !== 'subtitle') {
-                subPreview.classList.remove('visible');
-                lastSubId = null;
-                return;
-            }
-            if (!canShow || phase === 'upload') {
+            // Only show subtitle preview in finetune mode for the subtitle step
+            if (!inFinetune || currentFinetuneStep !== 'subtitle') {
                 subPreview.classList.remove('visible');
                 lastSubId = null;
                 return;
@@ -8478,14 +8383,8 @@
         }
 
         function updateVoicePreview() {
-            const canShow = (unlockedTabs.voice && features.voice) || previewingSteps.voice;
-            // In finetune mode, only show voice preview when finetuning voice
-            if (inFinetune && currentFinetuneStep !== 'voice') {
-                voicePreview.classList.remove('visible');
-                lastVoiceId = null;
-                return;
-            }
-            if (!canShow || phase === 'upload') {
+            // Only show voice preview in finetune mode for the voice step
+            if (!inFinetune || currentFinetuneStep !== 'voice') {
                 voicePreview.classList.remove('visible');
                 lastVoiceId = null;
                 return;
