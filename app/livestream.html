@@ -239,19 +239,38 @@
                         </div>
                     </div>
 
-                    <!-- ★ 时间轴 — 帧缩略图风格 -->
+                    <!-- ★ 时间轴 — 帧缩略图 + 片段轨道 -->
                     <div class="ls-timeline" id="timelineArea">
                         <!-- 时间刻度尺 -->
                         <div class="ls-tl-ruler" id="tlRuler"></div>
-                        <!-- 帧缩略图轨道 -->
-                        <div class="ls-tl-track" id="tlTrack">
-                            <!-- 帧缩略图 -->
-                            <div class="ls-tl-frames" id="tlFrames"></div>
-                            <!-- 片段标记 -->
-                            <div class="ls-tl-markers" id="tlMarkers"></div>
-                            <!-- 入点/出点选区 -->
-                            <div class="ls-tl-selection" id="tlSelection" style="display:none;"></div>
-                            <!-- 播放头 -->
+                        <!-- 多轨道容器（共享播放头） -->
+                        <div class="ls-tl-tracks-wrap">
+                            <!-- 帧缩略图轨道 -->
+                            <div class="ls-tl-track" id="tlTrack">
+                                <!-- 帧缩略图 -->
+                                <div class="ls-tl-frames" id="tlFrames"></div>
+                                <!-- 旧版片段标记（兼容） -->
+                                <div class="ls-tl-markers" id="tlMarkers"></div>
+                                <!-- 入点/出点选区 -->
+                                <div class="ls-tl-selection" id="tlSelection" style="display:none;"></div>
+                            </div>
+                            <!-- 自动剪辑轨道 -->
+                            <div class="ls-tl-sub-track" id="autoClipTrack">
+                                <div class="ls-tl-sub-label">
+                                    <span class="ls-tl-sub-dot ls-tl-sub-dot--auto"></span>
+                                    自动
+                                </div>
+                                <div class="ls-tl-sub-content" id="autoClipContent"></div>
+                            </div>
+                            <!-- 手动剪辑轨道 -->
+                            <div class="ls-tl-sub-track" id="manualClipTrack">
+                                <div class="ls-tl-sub-label">
+                                    <span class="ls-tl-sub-dot ls-tl-sub-dot--manual"></span>
+                                    手动
+                                </div>
+                                <div class="ls-tl-sub-content" id="manualClipContent"></div>
+                            </div>
+                            <!-- 全局播放头（跨所有轨道） -->
                             <div class="ls-tl-playhead" id="tlPlayhead">
                                 <div class="ls-tl-playhead-head"></div>
                                 <div class="ls-tl-playhead-line"></div>
@@ -305,6 +324,8 @@
         const tlPlayhead = document.getElementById('tlPlayhead');
         const tlRuler = document.getElementById('tlRuler');
         const tlFrames = document.getElementById('tlFrames');
+        const autoClipContent = document.getElementById('autoClipContent');
+        const manualClipContent = document.getElementById('manualClipContent');
         const clipList = document.getElementById('clipList');
         const clipCount = document.getElementById('clipCount');
         const clipAlert = document.getElementById('clipAlert');
@@ -321,6 +342,7 @@
         let canvasAnim = null;
         let inpointTime = null;
         let outpointTime = null;
+        let autoClipTimer = null;
 
         // === Config Toggle ===
         let configOpen = false;
@@ -358,12 +380,14 @@
             startTimers();
             renderRuler();
             renderFrameThumbs();
+            startAutoClipSimulation();
         }
 
         function stopMonitor() {
             isMonitoring = false;
             clearInterval(elapsedTimer);
             clearInterval(danmakuTimer);
+            clearInterval(autoClipTimer);
             cancelAnimationFrame(canvasAnim);
 
             document.body.classList.remove('fullscreen-mode');
@@ -581,12 +605,62 @@
             var total = 600;
             var pct = (clip.start % total) / total * 100;
             var widthPct = clip.duration / total * 100;
+
+            // 在旧的markers层上也保留标记（帧缩略图轨道上的半透明覆盖）
             var m = document.createElement('div');
             m.className = 'ls-tl-marker';
             m.style.left = pct + '%';
             m.style.width = Math.max(widthPct, 0.5) + '%';
             m.title = '片段 ' + (clip.id + 1) + ' (' + formatTime(clip.start) + ' – ' + formatTime(clip.end) + ')';
             tlMarkers.appendChild(m);
+
+            // 在手动剪辑轨道上添加片段块
+            var seg = document.createElement('div');
+            seg.className = 'ls-tl-seg ls-tl-seg--manual';
+            seg.style.left = pct + '%';
+            seg.style.width = Math.max(widthPct, 0.8) + '%';
+            seg.title = '手动 · 片段 ' + (clip.id + 1);
+            seg.innerHTML = '<span class="ls-tl-seg-label">片段 ' + (clip.id + 1) + '</span>';
+            manualClipContent.appendChild(seg);
+        }
+
+        // === 自动剪辑模拟 ===
+        var autoClipId = 0;
+        function startAutoClipSimulation() {
+            // 初始放置几个模拟的自动片段
+            var presets = [
+                { start: 25, end: 45 },
+                { start: 120, end: 155 },
+                { start: 280, end: 310 },
+                { start: 430, end: 470 }
+            ];
+            presets.forEach(function(p) {
+                addAutoClipSegment(p.start, p.end);
+            });
+
+            // 每隔一段时间新增一个自动检测的片段
+            autoClipTimer = setInterval(function() {
+                if (!isMonitoring) return;
+                var total = 600;
+                var start = Math.floor(Math.random() * (total - 40));
+                var dur = Math.floor(Math.random() * 25) + 10;
+                addAutoClipSegment(start, start + dur);
+            }, 15000); // 每15秒模拟一次
+        }
+
+        function addAutoClipSegment(start, end) {
+            autoClipId++;
+            var total = 600;
+            var pct = (start % total) / total * 100;
+            var widthPct = ((end - start) % total) / total * 100;
+
+            var seg = document.createElement('div');
+            seg.className = 'ls-tl-seg ls-tl-seg--auto';
+            seg.style.left = pct + '%';
+            seg.style.width = Math.max(widthPct, 0.8) + '%';
+            seg.title = '自动 · 精彩 ' + autoClipId + ' (' + formatTime(start) + ' – ' + formatTime(end) + ')';
+            seg.innerHTML = '<span class="ls-tl-seg-label">精彩 ' + autoClipId + '</span>';
+            autoClipContent.appendChild(seg);
         }
 
         function addClipCard(clip) {
@@ -742,6 +816,7 @@
                 clipsFooter.style.display = 'none';
                 clipList.innerHTML = '<div class="ls-aside-empty"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="24" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><path d="M16 16L26 20L16 24V16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" opacity="0.3"/></svg><p>暂无片段</p><span>使用入点/出点工具标记直播精彩时刻</span></div>';
                 tlMarkers.innerHTML = '';
+                manualClipContent.innerHTML = '';
             }
         });
         document.getElementById('exportSelectedBtn').addEventListener('click', function() {
@@ -1414,11 +1489,17 @@
         padding-left: 4px;
         white-space: nowrap;
     }
+
+    /* 多轨道容器 */
+    .ls-tl-tracks-wrap {
+        position: relative;
+        margin: 0 8px;
+    }
+
     .ls-tl-track {
         position: relative;
         height: 80px;
         overflow: hidden;
-        margin: 0 8px;
     }
     .ls-tl-frames {
         display: flex;
@@ -1463,12 +1544,89 @@
         border-left: 2px solid #10b981;
         border-right: 2px solid #f59e0b;
     }
+
+    /* === 子轨道（自动 / 手动） === */
+    .ls-tl-sub-track {
+        position: relative;
+        height: 32px;
+        border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .ls-tl-sub-label {
+        position: absolute;
+        left: 4px;
+        top: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.58rem;
+        font-weight: 600;
+        color: var(--text-faint);
+        letter-spacing: 0.02em;
+        user-select: none;
+        z-index: 5;
+        pointer-events: none;
+    }
+    .ls-tl-sub-dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    .ls-tl-sub-dot--auto { background: #06b6d4; box-shadow: 0 0 6px rgba(6,182,212,0.4); }
+    .ls-tl-sub-dot--manual { background: #a855f7; box-shadow: 0 0 6px rgba(168,85,247,0.4); }
+
+    .ls-tl-sub-content {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+
+    /* 片段块 */
+    .ls-tl-seg {
+        position: absolute;
+        top: 3px; bottom: 3px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.2s;
+        animation: markerIn 0.35s ease-out;
+    }
+    .ls-tl-seg--auto {
+        background: rgba(6,182,212,0.15);
+        border: 1px solid rgba(6,182,212,0.3);
+    }
+    .ls-tl-seg--auto:hover {
+        background: rgba(6,182,212,0.28);
+        border-color: rgba(6,182,212,0.5);
+    }
+    .ls-tl-seg--manual {
+        background: rgba(168,85,247,0.18);
+        border: 1px solid rgba(168,85,247,0.35);
+    }
+    .ls-tl-seg--manual:hover {
+        background: rgba(168,85,247,0.32);
+        border-color: rgba(168,85,247,0.55);
+    }
+    .ls-tl-seg-label {
+        font-size: 0.5rem;
+        font-weight: 600;
+        white-space: nowrap;
+        padding: 0 6px;
+        color: rgba(255,255,255,0.65);
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* 全局播放头（跨所有轨道） */
     .ls-tl-playhead {
         position: absolute;
         top: 0; bottom: 0;
         left: 0%;
         z-index: 10;
         transition: left 1s linear;
+        pointer-events: none;
     }
     .ls-tl-playhead-head {
         width: 10px; height: 10px;
