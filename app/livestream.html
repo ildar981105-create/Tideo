@@ -122,23 +122,15 @@
             <!-- ★ 顶部栏 — 对齐 editor-v2 / translate-v6 -->
             <header class="ls-topbar">
                 <div class="ls-topbar-left">
-                    <button class="ls-back-btn" id="workBackBtn">
+                    <a href="create.html" class="ls-back-link" id="workBackBtn">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        返回
-                    </button>
+                        工作台
+                    </a>
                     <div class="ls-topbar-divider"></div>
-                    <span class="ls-live-badge"><span class="ls-live-dot-sm"></span>LIVE</span>
                     <span class="ls-topbar-title" id="workTitle">抖音直播</span>
                     <span class="ls-topbar-duration" id="workDuration">00:00:00</span>
                 </div>
                 <div class="ls-topbar-right">
-                    <button class="ls-topbar-btn" id="panelToggle" title="收起/展开片段面板">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M10 2V14" stroke="currentColor" stroke-width="1.2"/></svg>
-                    </button>
-                    <button class="ls-export-btn" id="exportBtn">
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2V9M8 9L11 6M8 9L5 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 11V13C3 13.5523 3.44772 14 4 14H12C12.5523 14 13 13.5523 13 13V11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                        导出
-                    </button>
                     <button class="ls-stop-btn" id="stopBtn">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="2" width="8" height="8" rx="1" fill="currentColor"/></svg>
                         停止监控
@@ -311,7 +303,6 @@
         const startBtn = document.getElementById('startLiveBtn');
         const stopBtn = document.getElementById('stopBtn');
         const backBtn = document.getElementById('backBtn');
-        const workBackBtn = document.getElementById('workBackBtn');
         const liveInput = document.getElementById('liveUrlInput');
         const configToggle = document.getElementById('configToggle');
         const configPanel = document.getElementById('configPanel');
@@ -337,7 +328,6 @@
         let canvasAnim = null;
         let inpointTime = null;
         let outpointTime = null;
-        let panelVisible = true;
 
         // === Config Toggle ===
         let configOpen = false;
@@ -360,22 +350,6 @@
         if (startBtn) startBtn.addEventListener('click', startMonitor);
         if (stopBtn) stopBtn.addEventListener('click', stopMonitor);
         if (backBtn) backBtn.addEventListener('click', stopMonitor);
-        if (workBackBtn) workBackBtn.addEventListener('click', stopMonitor);
-
-        // === Panel Toggle ===
-        document.getElementById('panelToggle').addEventListener('click', function() {
-            panelVisible = !panelVisible;
-            clipsPanel.classList.toggle('collapsed', !panelVisible);
-        });
-
-        // === Export Button ===
-        document.getElementById('exportBtn').addEventListener('click', function() {
-            if (clips.length === 0) {
-                alert('暂无片段可导出');
-                return;
-            }
-            alert('导出 ' + clips.length + ' 个片段...');
-        });
 
         function startMonitor() {
             isMonitoring = true;
@@ -1006,38 +980,21 @@
         align-items: center;
         gap: 12px;
     }
-    .ls-back-btn {
+    .ls-back-link {
         display: flex;
         align-items: center;
         gap: 6px;
         font-size: 0.78rem;
         font-weight: 500;
         color: #64748b;
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-family: inherit;
+        text-decoration: none;
         transition: color 0.2s;
-        padding: 0;
     }
-    .ls-back-btn:hover { color: #e2e8f0; }
+    .ls-back-link:hover { color: #e2e8f0; }
     .ls-topbar-divider {
         width: 1px;
         height: 18px;
         background: rgba(255,255,255,0.08);
-    }
-    .ls-live-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 3px 10px;
-        font-size: 0.65rem;
-        font-weight: 700;
-        color: #ef4444;
-        background: rgba(239,68,68,0.1);
-        border: 1px solid rgba(239,68,68,0.25);
-        border-radius: 6px;
-        letter-spacing: 1px;
     }
     .ls-topbar-title {
         font-size: 0.85rem;
@@ -1057,24 +1014,6 @@
         align-items: center;
         gap: 8px;
     }
-    .ls-topbar-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        border: 1px solid rgba(255,255,255,0.08);
-        background: rgba(255,255,255,0.03);
-        color: #64748b;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .ls-topbar-btn:hover {
-        color: #e2e8f0;
-        background: rgba(255,255,255,0.06);
-        border-color: rgba(255,255,255,0.15);
-    }
     .ls-stop-btn {
         display: inline-flex;
         align-items: center;
@@ -1091,28 +1030,6 @@
         transition: all 0.2s;
     }
     .ls-stop-btn:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); }
-
-    /* 导出按钮 — 对齐 ev2-btn-export */
-    .ls-export-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 18px;
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: #fff;
-        background: linear-gradient(135deg, #a855f7, #6366f1);
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 0 20px rgba(168,85,247,0.2);
-        transition: all 0.2s;
-        font-family: inherit;
-    }
-    .ls-export-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 0 30px rgba(168,85,247,0.35);
-    }
 
     /* === 主体布局 === */
     .ls-main {
