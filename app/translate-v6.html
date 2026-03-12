@@ -3461,17 +3461,17 @@
     }
     .tv2-landing-scroll::-webkit-scrollbar { width: 5px; }
     .tv2-landing-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
-    /* 首屏：占满视口，内容居中 */
+    /* 首屏：占满视口，内容从固定位置开始，不因内容多少跳动 */
     .tv2-first-screen {
         width: 100%;
-        height: 100vh;
         min-height: 100vh;
         scroll-snap-align: start;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
+        align-items: center;
         box-sizing: border-box;
-        padding: 20px 0;
+        padding: 8vh 0 40px;
         flex-shrink: 0;
     }
     .tv2-landing-hero {
