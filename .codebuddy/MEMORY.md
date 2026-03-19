@@ -29,24 +29,27 @@
 
 | 仓库 | 用途 | 可否修改 |
 |------|------|---------|
-| **`framex-studio`**（origin） | 主开发仓库，所有改动在这里进行 | ✅ |
-| `framex-app`（framex 远程） | 发布镜像/备份，**不主动修改**，只有用户明确要求才同步 | ❌ |
+| **`Tideo`**（origin） | **主开发仓库**，所有改动在这里进行 | ✅ |
+| `framex-studio`（studio-backup 远程） | 备份归档，不主动修改 | ❌ |
+| `framex-app`（framex 远程） | 备份归档，不主动修改 | ❌ |
 | `av-saas` | 已冻结归档，不做任何修改 | ❌ |
 
 ### Git 远程配置
 ```
-origin  → https://github.com/ildar981105-create/framex-studio.git
-framex  → https://github.com/ildar981105-create/framex-app.git
+origin        → https://github.com/ildar981105-create/Tideo.git
+studio-backup → https://github.com/ildar981105-create/framex-studio.git
+framex        → https://github.com/ildar981105-create/framex-app.git
 ```
 
 ### 推送规则
-1. 改完代码后只执行 `git push origin main`
-2. **不要主动** `git push framex main`，除非用户明确说"同步到 app"
+1. 改完代码后只执行 `git push origin main`（推送到 Tideo）
+2. **不要主动**推送到 `studio-backup` 或 `framex`，除非用户明确要求同步
 3. commit message 使用中文，格式如 `feat: 新增xxx`、`fix: 修复xxx`
 
 ### GitHub Pages
-- studio：`https://ildar981105-create.github.io/framex-studio/`
-- app（镜像）：`https://ildar981105-create.github.io/framex-app/`
+- **Tideo（主站）**：`https://ildar981105-create.github.io/Tideo/`
+- studio（备份）：`https://ildar981105-create.github.io/framex-studio/`
+- app（备份）：`https://ildar981105-create.github.io/framex-app/`
 - 主入口：`app/create.html`
 
 ---
@@ -200,7 +203,7 @@ framex  → https://github.com/ildar981105-create/framex-app.git
 ## 九、待办 / 未来方向（供参考）
 
 - [ ] 登录页只有前端模拟，后续可能需要对接真实后端
-- [ ] 其他页面（media、result、generate、livestream）的侧边栏头像区还没有加用户菜单，目前只有 create.html 有
+- [x] ~~其他页面（media、result、generate、livestream、translate-v6）的侧边栏头像区已添加用户菜单（2026-03-19）~~
 - [ ] translate-v6 的第二屏内容可以继续丰富（客户案例、定价等）
 - [ ] 移动端适配还不完善
 - [ ] 国际化（i18n）暂未开始

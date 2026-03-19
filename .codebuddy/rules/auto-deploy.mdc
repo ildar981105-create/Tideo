@@ -35,13 +35,13 @@ alwaysApply: true
 | 项目 | 值 |
 |------|-----|
 | 远程名 | `origin` |
-| 仓库地址 | `https://github.com/ildar981105-create/framex-studio.git` |
+| 仓库地址 | `https://github.com/ildar981105-create/Tideo.git` |
 | 分支 | `main` |
-| GitHub Pages 地址 | `https://ildar981105-create.github.io/framex-studio/` |
+| GitHub Pages 地址 | `https://ildar981105-create.github.io/Tideo/` |
 | 主入口 | `app/create.html` |
 
 ### 注意事项
 
 - 每次修改完成后**自动执行**，不需要用户说"发布"或"推送"
 - 如果有多个文件改动，合并为一次 commit
-- **不要主动推送到 framex 远程**（framex-app），除非用户明确要求
+- **不要主动推送到 studio-backup 或 framex 远程**，除非用户明确要求
