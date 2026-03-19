@@ -7,541 +7,579 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-    /* ===== create.html 首页 — AI 统一入口 ===== */
+    /* ===== create.html — 高级暗色风格主页 ===== */
+
     .create-home {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         min-height: 100vh;
-        padding: 40px 32px;
+        padding: 40px 32px 32px;
         overflow-y: auto;
+        position: relative;
     }
-    .create-home::-webkit-scrollbar { width: 5px; }
-    .create-home::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+    .create-home::-webkit-scrollbar { width: 4px; }
+    .create-home::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
+
+    /* === 背景氛围光球 === */
+    .create-home::before {
+        content: '';
+        position: fixed;
+        top: -10%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 900px;
+        height: 600px;
+        background:
+            radial-gradient(ellipse 60% 55% at 30% 40%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
+            radial-gradient(ellipse 50% 45% at 70% 30%, rgba(99, 102, 241, 0.10) 0%, transparent 55%),
+            radial-gradient(ellipse 45% 40% at 50% 60%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+        animation: ambientDrift 12s ease-in-out infinite alternate;
+    }
+    .create-home::after {
+        content: '';
+        position: fixed;
+        bottom: -5%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 500px;
+        background:
+            radial-gradient(ellipse 55% 50% at 60% 50%, rgba(168, 85, 247, 0.07) 0%, transparent 55%),
+            radial-gradient(ellipse 40% 35% at 25% 60%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+        animation: ambientDrift2 15s ease-in-out infinite alternate;
+    }
+    @keyframes ambientDrift {
+        0%   { opacity: 0.6; transform: translateX(-50%) translateY(0) scale(1); }
+        100% { opacity: 1; transform: translateX(-48%) translateY(-15px) scale(1.06); }
+    }
+    @keyframes ambientDrift2 {
+        0%   { opacity: 0.5; transform: translateX(-50%) scale(1); }
+        100% { opacity: 0.85; transform: translateX(-52%) translateY(10px) scale(1.04); }
+    }
 
     .create-home-inner {
-        max-width: 720px;
+        max-width: 820px;
         width: 100%;
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        position: relative;
+        z-index: 1;
     }
 
-    /* ---- Hero 标题 ---- */
-    .create-hero {
-        margin-bottom: 32px;
+    /* ---- Hero 区域 ---- */
+    .hero-section {
+        text-align: center;
+        margin-bottom: 48px;
+        position: relative;
     }
-    .create-hero h1 {
-        font-size: 2rem;
+    .hero-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 18px;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: rgba(124,58,237,0.08);
+        border: 1px solid rgba(124,58,237,0.12);
+        position: relative;
+    }
+    .hero-icon::after {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border-radius: 22px;
+        background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%);
+        animation: heroGlow 3s ease-in-out infinite alternate;
+    }
+    @keyframes heroGlow {
+        0% { opacity: 0.4; transform: scale(1); }
+        100% { opacity: 0.8; transform: scale(1.15); }
+    }
+    .hero-subtitle {
+        font-size: 0.82rem;
+        color: rgba(148, 163, 184, 0.6);
+        margin-bottom: 8px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+    }
+    .hero-title {
+        font-size: 2.4rem;
         font-weight: 800;
-        line-height: 1.35;
-        margin: 0 0 10px;
-        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        line-height: 1.25;
+        letter-spacing: -0.03em;
     }
-    .create-hero h1 .gradient-text {
-        background: linear-gradient(135deg, #a855f7, #6366f1, #06b6d4);
+    .hero-title .gradient-word {
+        background: linear-gradient(135deg, #c084fc 0%, #818cf8 40%, #22d3ee 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
-    .create-hero p {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        margin: 0;
-    }
 
-    /* ---- Skill 选择器胶囊 ---- */
-    .skill-selector {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
+    /* ---- 三张大卡片 ---- */
+    .skill-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        width: 100%;
+        margin-bottom: 48px;
     }
-    .skill-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 8px 18px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: var(--text-muted);
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 100px;
+    .skill-card-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
         cursor: pointer;
-        transition: all 0.25s ease;
-        font-family: inherit;
+    }
+    .skill-card {
         position: relative;
-        white-space: nowrap;
-    }
-    .skill-pill:hover {
-        color: var(--text-primary);
-        border-color: rgba(255,255,255,0.18);
-        background: rgba(255,255,255,0.05);
-        transform: translateY(-1px);
-    }
-    .skill-pill.active {
-        color: #fff;
-        border-color: rgba(99,102,241,0.5);
-        background: rgba(99,102,241,0.12);
-        box-shadow: 0 0 20px rgba(99,102,241,0.15);
-    }
-    .skill-pill--translate.active {
-        color: #34d399;
-        border-color: rgba(16,185,129,0.45);
-        background: rgba(16,185,129,0.1);
-        box-shadow: 0 0 20px rgba(16,185,129,0.12);
-    }
-    .skill-pill--livestream.active {
-        color: #fb923c;
-        border-color: rgba(249,115,22,0.45);
-        background: rgba(249,115,22,0.1);
-        box-shadow: 0 0 20px rgba(249,115,22,0.12);
-    }
-    .skill-pill--generate.active {
-        color: #c084fc;
-        border-color: rgba(168,85,247,0.45);
-        background: rgba(168,85,247,0.1);
-        box-shadow: 0 0 20px rgba(168,85,247,0.12);
-    }
-    .skill-pill .skill-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: currentColor;
-        opacity: 0.6;
-    }
-    .skill-pill.active .skill-dot {
-        opacity: 1;
-        animation: skillDotPulse 2s ease-in-out infinite;
-    }
-    @keyframes skillDotPulse {
-        0%, 100% { box-shadow: 0 0 0 0 currentColor; }
-        50% { box-shadow: 0 0 0 4px transparent; }
-    }
-    .skill-pill .skill-badge {
-        font-size: 0.58rem;
-        font-weight: 700;
-        padding: 1px 6px;
-        border-radius: 4px;
-        background: rgba(16,185,129,0.15);
-        color: #34d399;
-        margin-left: 2px;
-    }
-
-    /* ---- 统一输入框 ---- */
-    .create-input-wrap {
-        margin-bottom: 24px;
-    }
-    .create-input-box {
-        background: rgba(255,255,255,0.025);
-        border: 2px solid rgba(255,255,255,0.08);
-        border-radius: 18px;
-        transition: all 0.3s;
+        border-radius: 20px;
         overflow: hidden;
+        aspect-ratio: 4 / 3;
+        transition: all 0.4s cubic-bezier(.4,0,.2,1);
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
     }
-    .create-input-box:focus-within {
-        border-color: rgba(99,102,241,0.35);
-        box-shadow: 0 0 0 4px rgba(99,102,241,0.06), 0 0 40px rgba(99,102,241,0.05);
+    /* 卡片图片 */
+    .skill-card-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s cubic-bezier(.4,0,.2,1), filter 0.5s;
+        filter: brightness(0.85) saturate(1.1);
     }
-    .create-input-box.skill-translate:focus-within {
-        border-color: rgba(16,185,129,0.35);
-        box-shadow: 0 0 0 4px rgba(16,185,129,0.06), 0 0 40px rgba(16,185,129,0.05);
+    .skill-card-wrap:hover .skill-card-img {
+        transform: scale(1.06);
+        filter: brightness(1) saturate(1.2);
     }
-    .create-input-box.skill-livestream:focus-within {
-        border-color: rgba(249,115,22,0.35);
-        box-shadow: 0 0 0 4px rgba(249,115,22,0.06), 0 0 40px rgba(249,115,22,0.05);
-    }
-    .create-input-box.skill-generate:focus-within {
-        border-color: rgba(168,85,247,0.35);
-        box-shadow: 0 0 0 4px rgba(168,85,247,0.06), 0 0 40px rgba(168,85,247,0.05);
-    }
-
-    /* ---- Action Slot ---- */
-    .action-slot {
-        padding: 10px 14px 0;
-        transition: all 0.35s cubic-bezier(.4,0,.2,1);
-    }
-    .action-slot:empty { padding: 0; }
-
-    /* 视频译制 — 上传区（单行紧凑，无边框） */
-    .action-upload-zone {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 0;
-        height: 42px;
-        cursor: pointer;
-        transition: all 0.25s;
-    }
-    .action-upload-zone:hover .upload-zone-text {
-        color: #6ee7b7;
-    }
-    .action-upload-zone input[type="file"] {
+    /* 图片上方的渐变遮罩（底部微弱） */
+    .skill-card-overlay {
         position: absolute;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-        opacity: 0;
+        inset: 0;
+        background: linear-gradient(to top, rgba(8,8,14,0.5) 0%, rgba(8,8,14,0.1) 30%, transparent 60%);
         pointer-events: none;
+        z-index: 1;
     }
-    .upload-zone-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
+    /* 每张卡片的底部氛围光 — 默认微弱可见 */
+    .skill-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        opacity: 0.5;
+        transition: opacity 0.5s;
+        pointer-events: none;
+        z-index: 2;
     }
-    .upload-zone-text {
-        flex: 1;
-        font-size: 0.82rem;
-        font-weight: 600;
-        color: #34d399;
-        text-align: left;
+    .skill-card-wrap:hover .skill-card::before { opacity: 1; }
+    .skill-card--translate::before {
+        background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(16,185,129,0.12) 0%, transparent 65%);
     }
-    .upload-zone-hint {
-        font-size: 0.68rem;
-        color: var(--text-faint);
-        flex-shrink: 0;
+    .skill-card--livestream::before {
+        background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(249,115,22,0.12) 0%, transparent 65%);
     }
-    /* 上传后文件预览 */
-    .upload-file-preview {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        background: rgba(16,185,129,0.06);
-        border: 1px solid rgba(16,185,129,0.2);
-        border-radius: 12px;
+    .skill-card--generate::before {
+        background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(168,85,247,0.14) 0%, transparent 65%);
     }
-    .upload-file-icon {
-        width: 28px; height: 28px;
-        border-radius: 6px;
-        background: rgba(16,185,129,0.12);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.85rem;
-        flex-shrink: 0;
+    /* 每张卡片的顶部柔光 — 默认微弱可见 */
+    .skill-card::after {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 15%;
+        right: 15%;
+        height: 1px;
+        opacity: 0.4;
+        transition: opacity 0.4s;
+        pointer-events: none;
+        z-index: 3;
     }
-    .upload-file-info { flex: 1; min-width: 0; text-align: left; }
-    .upload-file-name {
-        font-size: 0.78rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .skill-card-wrap:hover .skill-card::after { opacity: 1; }
+    .skill-card--translate::after {
+        background: linear-gradient(90deg, transparent, rgba(16,185,129,0.6), transparent);
     }
-    .upload-file-size {
-        font-size: 0.65rem;
-        color: var(--text-faint);
-        font-family: 'JetBrains Mono', monospace;
+    .skill-card--livestream::after {
+        background: linear-gradient(90deg, transparent, rgba(249,115,22,0.6), transparent);
     }
-    .upload-file-remove {
-        width: 28px; height: 28px;
-        border-radius: 6px;
-        border: none;
-        background: rgba(239,68,68,0.08);
-        color: #ef4444;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        flex-shrink: 0;
-        font-family: inherit;
-    }
-    .upload-file-remove:hover {
-        background: rgba(239,68,68,0.15);
+    .skill-card--generate::after {
+        background: linear-gradient(90deg, transparent, rgba(168,85,247,0.6), transparent);
     }
 
-    /* 直播剪辑 — 链接栏（无边框） */
-    .action-link-bar {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 0;
-        height: 42px;
-        transition: all 0.25s;
+    .skill-card-wrap:hover .skill-card {
+        transform: translateY(-4px);
+        border-color: rgba(255,255,255,0.12);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.35);
     }
-    .action-link-bar:focus-within .link-bar-input {
+    .skill-card-wrap:hover .skill-card--translate {
+        border-color: rgba(16,185,129,0.25);
+        box-shadow: 0 20px 60px rgba(16,185,129,0.1), 0 0 80px rgba(16,185,129,0.05);
+    }
+    .skill-card-wrap:hover .skill-card--livestream {
+        border-color: rgba(249,115,22,0.25);
+        box-shadow: 0 20px 60px rgba(249,115,22,0.1), 0 0 80px rgba(249,115,22,0.05);
+    }
+    .skill-card-wrap:hover .skill-card--generate {
+        border-color: rgba(168,85,247,0.25);
+        box-shadow: 0 20px 60px rgba(168,85,247,0.12), 0 0 80px rgba(168,85,247,0.06);
+    }
+
+    /* 卡片外部文字信息 */
+    .skill-card-info {
+        padding: 0 4px;
+    }
+    .skill-card-label {
+        font-size: 0.95rem;
+        font-weight: 700;
         color: var(--text-primary);
+        line-height: 1.35;
     }
-    .link-bar-icon {
-        font-size: 1rem;
-        flex-shrink: 0;
-        width: 28px;
-        text-align: center;
-        line-height: 1;
+    .skill-card-desc {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        line-height: 1.5;
     }
-    .link-bar-input {
-        flex: 1;
-        border: none;
-        background: none;
-        color: var(--text-primary);
-        font-size: 0.82rem;
-        font-family: 'JetBrains Mono', monospace;
-        outline: none;
-        min-width: 0;
-    }
-    .link-bar-input::placeholder {
-        color: var(--text-faint);
-        font-family: inherit;
-    }
-    .link-bar-paste-btn {
+    .skill-card-action {
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 6px 14px;
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 600;
-        color: #fb923c;
-        background: rgba(249,115,22,0.1);
-        border: 1px solid rgba(249,115,22,0.25);
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: inherit;
-        white-space: nowrap;
-        flex-shrink: 0;
+        color: var(--text-faint);
+        margin-top: 8px;
+        transition: all 0.3s;
     }
-    .link-bar-paste-btn:hover {
-        background: rgba(249,115,22,0.18);
-        border-color: rgba(249,115,22,0.4);
+    .skill-card-action svg {
+        transition: transform 0.3s;
     }
-    .link-platform-tag {
-        font-size: 0.62rem;
-        font-weight: 700;
-        padding: 2px 7px;
-        border-radius: 4px;
-        background: rgba(249,115,22,0.12);
+    .skill-card-wrap:hover .skill-card-action {
+        gap: 7px;
+    }
+    .skill-card-wrap:hover .skill-card-action svg {
+        transform: translateX(2px);
+    }
+    .skill-card-wrap--translate:hover .skill-card-action {
+        color: #34d399;
+    }
+    .skill-card-wrap--livestream:hover .skill-card-action {
         color: #fb923c;
-        white-space: nowrap;
-        flex-shrink: 0;
+    }
+    .skill-card-wrap--generate:hover .skill-card-action {
+        color: #c084fc;
     }
 
-    /* AI 生成 — 参考图（单行紧凑，无边框） */
-    .action-ref-upload {
+    /* ---- 输入区域（底部固定感） ---- */
+    .input-section {
+        width: 100%;
+        position: relative;
+    }
+
+    /* Skill 浮出标签（输入框上方） */
+    .skill-float {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: 8px;
-        padding: 0;
-        height: 42px;
+        margin-bottom: 8px;
+        min-height: 28px;
+        transition: all 0.3s;
+    }
+    .skill-float:empty { min-height: 0; margin-bottom: 0; }
+
+    .skill-float-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        border-radius: 100px;
+        animation: skillFloatIn 0.3s cubic-bezier(.4,0,.2,1);
         cursor: pointer;
-        transition: all 0.25s;
-        width: 100%;
+        transition: all 0.2s;
+        white-space: nowrap;
     }
-    .action-ref-upload:hover .ref-upload-text {
-        color: #d8b4fe;
+    .skill-float-tag:hover {
+        transform: translateY(-1px);
     }
-    .action-ref-upload input[type="file"] {
-        position: absolute;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-        opacity: 0;
-        pointer-events: none;
+    @keyframes skillFloatIn {
+        0% { opacity: 0; transform: translateY(6px) scale(0.9); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .ref-upload-icon {
-        font-size: 1rem;
-        flex-shrink: 0;
-        width: 28px;
-        text-align: center;
-        line-height: 1;
+
+    .skill-float-tag--translate {
+        background: rgba(16,185,129,0.12);
+        color: #34d399;
+        border: 1px solid rgba(16,185,129,0.25);
     }
-    .ref-upload-text {
-        flex: 1;
-        font-size: 0.82rem;
-        font-weight: 500;
+    .skill-float-tag--livestream {
+        background: rgba(249,115,22,0.12);
+        color: #fb923c;
+        border: 1px solid rgba(249,115,22,0.25);
+    }
+    .skill-float-tag--generate {
+        background: rgba(168,85,247,0.12);
         color: #c084fc;
-        text-align: left;
+        border: 1px solid rgba(168,85,247,0.25);
     }
-    .ref-upload-hint {
-        font-size: 0.68rem;
-        color: var(--text-faint);
-        flex-shrink: 0;
+    .skill-float-icon {
+        font-size: 0.75rem;
     }
-    /* 参考图预览 */
-    .ref-preview {
-        display: flex;
+    .skill-float-arrow {
+        font-size: 0.55rem;
+        opacity: 0.5;
+        margin-left: 2px;
+    }
+
+    /* 输入框容器 */
+    .input-box {
+        background: rgba(255,255,255,0.03);
+        border: 1.5px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        transition: all 0.35s;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.2), 0 0 60px rgba(99,102,241,0.03), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .input-box::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 15%;
+        right: 15%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent);
+        opacity: 0;
+        transition: opacity 0.4s;
+        pointer-events: none;
+        z-index: 2;
+    }
+    .input-box:focus-within::before { opacity: 1; }
+    .input-box:focus-within {
+        border-color: rgba(99,102,241,0.25);
+        box-shadow: 0 0 0 4px rgba(99,102,241,0.04), 0 8px 40px rgba(99,102,241,0.06);
+        background: rgba(255,255,255,0.035);
+    }
+
+    /* 附件标签 */
+    .attach-bar {
+        padding: 10px 16px 0;
+    }
+    .attach-bar:empty { display: none; }
+    .attach-tag {
+        display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        background: rgba(168,85,247,0.06);
-        border: 1px solid rgba(168,85,247,0.2);
-        border-radius: 12px;
-        width: 100%;
-    }
-    .ref-preview-thumb {
-        width: 28px; height: 28px;
-        border-radius: 6px;
-        object-fit: cover;
-    }
-    .ref-preview-name {
+        gap: 6px;
+        padding: 5px 10px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
         font-size: 0.75rem;
         color: var(--text-secondary);
-        max-width: 140px;
+        max-width: 100%;
+    }
+    .attach-tag-icon { flex-shrink: 0; font-size: 0.8rem; }
+    .attach-tag-name {
+        font-weight: 500;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        max-width: 220px;
     }
-    .ref-preview-remove {
-        width: 24px; height: 24px;
-        border-radius: 5px;
-        border: none;
-        background: rgba(239,68,68,0.08);
-        color: #ef4444;
-        cursor: pointer;
+    .attach-tag-meta {
+        font-size: 0.62rem;
+        color: var(--text-faint);
+        font-family: 'JetBrains Mono', monospace;
+        flex-shrink: 0;
+    }
+    .attach-tag-remove {
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.2s;
+        width: 18px; height: 18px;
+        border-radius: 4px;
+        border: none;
+        background: none;
+        color: var(--text-faint);
+        cursor: pointer;
+        transition: all 0.15s;
+        flex-shrink: 0;
         font-family: inherit;
     }
-    .ref-preview-remove:hover { background: rgba(239,68,68,0.15); }
+    .attach-tag-remove:hover {
+        color: #ef4444;
+        background: rgba(239,68,68,0.1);
+    }
+    .attach-tag-thumb {
+        width: 22px; height: 22px;
+        border-radius: 4px;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+    .attach-tag--link { border-color: rgba(249,115,22,0.2); }
+    .attach-tag--link .attach-tag-name { color: #fb923c; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; }
+    .attach-platform {
+        font-size: 0.58rem;
+        font-weight: 700;
+        padding: 1px 5px;
+        border-radius: 3px;
+        background: rgba(249,115,22,0.1);
+        color: #fb923c;
+        flex-shrink: 0;
+    }
 
-    /* ---- Textarea ---- */
-    .create-input-textarea {
+    /* Textarea */
+    .input-textarea {
         width: 100%;
-        min-height: 72px;
-        max-height: 160px;
-        padding: 12px 18px 6px;
+        min-height: 48px;
+        max-height: 120px;
+        padding: 14px 18px 6px;
         background: transparent;
         border: none;
         color: var(--text-primary);
-        font-size: 0.92rem;
+        font-size: 0.9rem;
         font-family: inherit;
         outline: none;
         resize: none;
-        line-height: 1.7;
+        line-height: 1.65;
     }
-    .create-input-textarea::placeholder { color: var(--text-faint); }
+    .input-textarea::placeholder { color: var(--text-faint); }
 
-    /* ---- Config Capsules 配置胶囊 ---- */
-    .config-capsules {
+    /* ---- 配置胶囊（Skill 识别后展示在 textarea 下方） ---- */
+    .config-bar {
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
-        padding: 4px 16px 10px;
-        transition: all 0.3s;
+        padding: 0 16px 8px;
+        animation: configSlideIn 0.35s cubic-bezier(.4,0,.2,1);
     }
-    .config-capsule {
+    .config-bar:empty { display: none; }
+    @keyframes configSlideIn {
+        0% { opacity: 0; transform: translateY(-6px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .cfg-capsule {
         position: relative;
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        padding: 5px 12px;
-        font-size: 0.72rem;
+        gap: 3px;
+        padding: 4px 10px;
+        font-size: 0.68rem;
         font-weight: 500;
         color: var(--text-muted);
         background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.07);
         border-radius: 100px;
         cursor: pointer;
         transition: all 0.2s;
         font-family: inherit;
         user-select: none;
     }
-    .config-capsule:hover {
+    .cfg-capsule:hover {
         color: var(--text-primary);
-        border-color: rgba(255,255,255,0.18);
+        border-color: rgba(255,255,255,0.16);
         background: rgba(255,255,255,0.06);
     }
-    .config-capsule.modified {
-        border-color: rgba(99,102,241,0.35);
+    .cfg-capsule.modified {
+        border-color: rgba(99,102,241,0.3);
         color: var(--text-primary);
         background: rgba(99,102,241,0.06);
     }
-    .skill-translate .config-capsule.modified {
-        border-color: rgba(16,185,129,0.35);
+    /* Skill 主色高亮 */
+    .cfg-capsule.modified[data-theme="translate"] {
+        border-color: rgba(16,185,129,0.3);
         background: rgba(16,185,129,0.06);
         color: #34d399;
     }
-    .skill-livestream .config-capsule.modified {
-        border-color: rgba(249,115,22,0.35);
+    .cfg-capsule.modified[data-theme="livestream"] {
+        border-color: rgba(249,115,22,0.3);
         background: rgba(249,115,22,0.06);
         color: #fb923c;
     }
-    .skill-generate .config-capsule.modified {
-        border-color: rgba(168,85,247,0.35);
+    .cfg-capsule.modified[data-theme="generate"] {
+        border-color: rgba(168,85,247,0.3);
         background: rgba(168,85,247,0.06);
         color: #c084fc;
     }
-    .capsule-value {
-        font-weight: 600;
-    }
-    .capsule-arrow {
-        font-size: 0.55rem;
-        opacity: 0.5;
+    .cfg-value { font-weight: 600; }
+    .cfg-arrow {
+        font-size: 0.5rem;
+        opacity: 0.45;
         transition: transform 0.2s;
     }
-    .config-capsule.open .capsule-arrow {
-        transform: rotate(180deg);
-    }
+    .cfg-capsule.open .cfg-arrow { transform: rotate(180deg); }
 
-    /* Capsule Dropdown */
-    .capsule-dropdown {
+    /* Capsule dropdown */
+    .cfg-dropdown {
         position: absolute;
-        top: calc(100% + 6px);
+        top: calc(100% + 5px);
         left: 50%;
         transform: translateX(-50%);
-        min-width: 120px;
+        min-width: 100px;
         background: rgba(15,15,26,0.96);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid rgba(255,255,255,0.1);
         border-radius: 10px;
         padding: 4px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        box-shadow: 0 8px 28px rgba(0,0,0,0.4);
         z-index: 100;
         opacity: 0;
         visibility: hidden;
         transition: all 0.2s cubic-bezier(.4,0,.2,1);
     }
-    .capsule-dropdown.show {
+    .cfg-dropdown.show {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
     }
-    .capsule-dropdown-item {
+    .cfg-drop-item {
         display: block;
         width: 100%;
-        padding: 7px 12px;
-        font-size: 0.72rem;
+        padding: 6px 10px;
+        font-size: 0.68rem;
         font-weight: 500;
         color: var(--text-muted);
         background: none;
         border: none;
-        border-radius: 7px;
+        border-radius: 6px;
         cursor: pointer;
-        transition: all 0.15s;
+        transition: all 0.12s;
         text-align: left;
         white-space: nowrap;
         font-family: inherit;
     }
-    .capsule-dropdown-item:hover {
+    .cfg-drop-item:hover {
         color: var(--text-primary);
         background: rgba(255,255,255,0.06);
     }
-    .capsule-dropdown-item.selected {
+    .cfg-drop-item.selected {
         color: #a78bfa;
         background: rgba(99,102,241,0.08);
     }
 
-    /* Toolbar 底栏 */
-    .create-input-toolbar {
+    /* 底栏 */
+    .input-toolbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 6px 14px 10px;
-        border-top: 1px solid rgba(255,255,255,0.04);
+        padding: 4px 12px 8px;
     }
-    .create-input-left {
+    .input-left {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
     }
-    .create-input-icon-btn {
+    .input-icon-btn {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -549,136 +587,163 @@
         height: 32px;
         border-radius: 8px;
         border: none;
-        background: rgba(255,255,255,0.04);
+        background: transparent;
         color: var(--text-faint);
         cursor: pointer;
         transition: all 0.2s;
         font-family: inherit;
     }
-    .create-input-icon-btn:hover {
+    .input-icon-btn:hover {
         color: var(--text-secondary);
-        background: rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.06);
     }
-    .create-char-count {
-        font-size: 0.68rem;
-        color: var(--text-faint);
-        font-family: 'JetBrains Mono', monospace;
-        margin-left: 4px;
-    }
-    .create-submit-btn {
-        display: inline-flex;
+    .input-submit-btn {
+        display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 9px 22px;
-        font-size: 0.82rem;
-        font-weight: 700;
-        color: #fff;
-        background: linear-gradient(135deg, #a855f7, #6366f1);
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
         border: none;
-        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(124,58,237,0.7), rgba(79,70,229,0.7));
+        color: #fff;
         cursor: pointer;
         font-family: inherit;
-        box-shadow: 0 0 24px rgba(99,102,241,0.25);
-        transition: all 0.2s;
+        transition: all 0.3s cubic-bezier(.4,0,.2,1);
         position: relative;
         overflow: hidden;
     }
-    .create-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 0 40px rgba(99,102,241,0.35); }
-    .create-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-    .create-submit-btn::before {
-        content: '';
-        position: absolute; top: -50%; left: -50%;
-        width: 200%; height: 200%;
-        background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent 30%);
-        animation: shimmer 3s linear infinite;
+    .input-submit-btn:hover {
+        background: linear-gradient(135deg, rgba(124,58,237,0.9), rgba(79,70,229,0.9));
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(124,58,237,0.3);
     }
-    @keyframes shimmer {
-        to { transform: rotate(360deg); }
-    }
-
-    /* ---- 快捷提示词 chips ---- */
-    .create-prompts-wrap {
-        margin-bottom: 20px;
-    }
-    .create-prompts-label {
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: var(--text-faint);
-        margin-bottom: 10px;
-    }
-    .create-prompts-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: center;
-    }
-    .create-prompt-chip {
-        padding: 7px 16px;
-        font-size: 0.78rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 100px;
-        cursor: pointer;
-        transition: all 0.25s;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-family: inherit;
-    }
-    .create-prompt-chip:hover {
-        color: var(--text-primary);
-        border-color: rgba(99,102,241,0.35);
-        background: rgba(99,102,241,0.06);
-        transform: translateY(-2px);
-    }
-    .create-prompt-chip .chip-arrow {
-        opacity: 0;
-        transform: translateX(-4px);
-        transition: all 0.25s;
-        font-size: 0.7rem;
-    }
-    .create-prompt-chip:hover .chip-arrow {
-        opacity: 0.7;
-        transform: translateX(0);
-    }
-
-    /* ---- 底部能力标签 ---- */
-    .create-caps {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        margin-top: 20px;
-    }
-    .create-cap {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 0.7rem;
-        color: var(--text-faint);
-    }
-    .create-cap-dot {
-        width: 4px; height: 4px;
-        border-radius: 50%;
-        background: rgba(99,102,241,0.4);
+    .input-submit-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        transform: none !important;
     }
 
     /* ---- 响应式 ---- */
     @media (max-width: 720px) {
-        .create-home-inner { max-width: 100%; }
-        .create-hero h1 { font-size: 1.5rem; }
-        .skill-selector { gap: 6px; }
-        .skill-pill { padding: 7px 14px; font-size: 0.75rem; }
-        .config-capsules { gap: 5px; }
-        .config-capsule { padding: 4px 10px; font-size: 0.68rem; }
+        .create-home { padding: 24px 16px 20px; }
+        .hero-title { font-size: 1.6rem; }
+        .skill-cards { gap: 16px; }
+        .skill-card { aspect-ratio: 3 / 2.5; }
+        .input-section { max-width: 100%; }
     }
-    @media (max-width: 480px) {
-        .create-caps { flex-wrap: wrap; gap: 12px; }
+    @media (max-width: 520px) {
+        .skill-cards {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .skill-card {
+            aspect-ratio: 16 / 9;
+        }
     }
 
     /* ===== 用户下拉菜单 ===== */
     .icon-nav-avatar { position: relative; }
+
+    /* ===== 素材引导提示 ===== */
+    .nudge-toast {
+        position: absolute;
+        bottom: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%) translateY(8px);
+        padding: 10px 18px;
+        border-radius: 14px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: #fff;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: all 0.35s cubic-bezier(.4,0,.2,1);
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .nudge-toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+    }
+    .nudge-toast--translate {
+        background: rgba(16,185,129,0.15);
+        border: 1px solid rgba(16,185,129,0.3);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .nudge-toast--livestream {
+        background: rgba(249,115,22,0.15);
+        border: 1px solid rgba(249,115,22,0.3);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+    .nudge-toast-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    .nudge-toast-text {
+        color: rgba(255,255,255,0.9);
+    }
+    .nudge-toast-btn {
+        padding: 4px 12px;
+        border-radius: 8px;
+        border: none;
+        font-size: 0.72rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        flex-shrink: 0;
+    }
+    .nudge-toast--translate .nudge-toast-btn {
+        background: rgba(16,185,129,0.25);
+        color: #34d399;
+    }
+    .nudge-toast--translate .nudge-toast-btn:hover {
+        background: rgba(16,185,129,0.4);
+    }
+    .nudge-toast--livestream .nudge-toast-btn {
+        background: rgba(249,115,22,0.25);
+        color: #fb923c;
+    }
+    .nudge-toast--livestream .nudge-toast-btn:hover {
+        background: rgba(249,115,22,0.4);
+    }
+
+    /* 按钮高亮引导脉冲 */
+    .input-icon-btn.nudge-pulse {
+        animation: nudgePulse 1.5s ease-in-out 3;
+    }
+    .input-icon-btn.nudge-pulse--green {
+        color: #34d399 !important;
+        background: rgba(16,185,129,0.12) !important;
+    }
+    .input-icon-btn.nudge-pulse--orange {
+        color: #fb923c !important;
+        background: rgba(249,115,22,0.12) !important;
+    }
+    @keyframes nudgePulse {
+        0%, 100% { box-shadow: none; }
+        50% { box-shadow: 0 0 0 6px rgba(255,255,255,0.06), 0 0 20px rgba(99,102,241,0.15); }
+    }
+
+    /* 输入框 shake 动画 */
+    .input-box.shake {
+        animation: inputShake 0.45s cubic-bezier(.36,.07,.19,.97);
+    }
+    @keyframes inputShake {
+        0%, 100% { transform: translateX(0); }
+        20% { transform: translateX(-5px); }
+        40% { transform: translateX(5px); }
+        60% { transform: translateX(-3px); }
+        80% { transform: translateX(3px); }
+    }
     .user-dropdown {
         position: absolute;
         bottom: 0;
@@ -771,34 +836,29 @@
                 <path d="M19.5 14.3L24.5 17L19.5 19.7V14.3Z" fill="url(#sLogo)" opacity="0.9"/>
                 <defs><linearGradient id="sLogo" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#a855f7"/><stop offset="0.5" stop-color="#6366f1"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
             </svg>
-            <span class="logo-text">Tideo</span>
         </a>
 
         <nav class="icon-nav">
             <a href="create.html" class="icon-nav-item active">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3L14 9H20L15 13L17 19L12 15L7 19L9 13L4 9H10L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3L14 9H20L15 13L17 19L12 15L7 19L9 13L4 9H10L12 3Z" fill="currentColor"/></svg>
                 创作
             </a>
             <a href="media.html" class="icon-nav-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 6C3 4.89543 3.89543 4 5 4H9L11 6H19C20.1046 6 21 6.89543 21 8V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 6C3 4.89543 3.89543 4 5 4H9L11 6H19C20.1046 6 21 6.89543 21 8V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
                 素材
             </a>
             <a href="result.html" class="icon-nav-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/></svg>
                 作品
             </a>
         </nav>
 
-        <div class="icon-nav-divider"></div>
-
         <div class="icon-nav-bottom">
             <a href="#" class="icon-nav-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                API
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
             </a>
             <a href="#" class="icon-nav-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M12 2V4M12 20V22M22 12H20M4 12H2M19.07 4.93L17.66 6.34M6.34 17.66L4.93 19.07M19.07 19.07L17.66 17.66M6.34 6.34L4.93 4.93" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                设置
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M12 2V4M12 20V22M22 12H20M4 12H2M19.07 4.93L17.66 6.34M6.34 17.66L4.93 19.07M19.07 19.07L17.66 17.66M6.34 6.34L4.93 4.93" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </a>
             <div class="icon-nav-avatar" id="userAvatar" title="用户"><span id="userAvatarLetter">U</span></div>
             <!-- 用户下拉菜单 -->
@@ -823,76 +883,89 @@
         </div>
     </aside>
 
-    <!-- ===== 默认首页视图 ===== -->
+    <!-- ===== 主页 ===== -->
     <main class="creator-main" id="homeView">
         <div class="create-home">
             <div class="create-home-inner">
 
-                <!-- Hero 标题 -->
-                <div class="create-hero">
-                    <h1>你想创作<span class="gradient-text">什么？</span></h1>
-                    <p>描述你的需求，AI 帮你完成视频创作全流程</p>
+                <!-- Hero -->
+                <div class="hero-section">
+                    <div class="hero-icon">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 9H21.5L16 13.5L18 20.5L12 16L6 20.5L8 13.5L2.5 9H9.5L12 2Z" fill="url(#heroStar)" opacity="0.9"/><defs><linearGradient id="heroStar" x1="2" y1="2" x2="22" y2="22"><stop stop-color="#c084fc"/><stop offset="1" stop-color="#818cf8"/></linearGradient></defs></svg>
+                    </div>
+                    <p class="hero-subtitle">欢迎使用 Tideo</p>
+                    <h1 class="hero-title">你想创作<span class="gradient-word">什么？</span></h1>
                 </div>
 
-                <!-- Skill 选择器 -->
-                <div class="skill-selector" id="skillSelector">
-                    <button class="skill-pill skill-pill--translate active" data-skill="translate">
-                        <span class="skill-dot"></span>
-                        🌐 视频译制
-                        <span class="skill-badge">热门</span>
-                    </button>
-                    <button class="skill-pill skill-pill--livestream" data-skill="livestream">
-                        <span class="skill-dot"></span>
-                        🔴 直播剪辑
-                    </button>
-                    <button class="skill-pill skill-pill--generate" data-skill="generate">
-                        <span class="skill-dot"></span>
-                        ✨ AI 生成
-                    </button>
-                </div>
-
-                <!-- 统一输入框（任务卡） -->
-                <div class="create-input-wrap">
-                    <div class="create-input-box skill-translate" id="createInputBox">
-                        <!-- Action Slot：根据 Skill 动态变化 -->
-                        <div class="action-slot" id="actionSlot"></div>
-                        <!-- 文本输入 -->
-                        <textarea class="create-input-textarea" id="createInput" placeholder="上传一段视频，翻译成英语..."></textarea>
-                        <!-- 配置胶囊 -->
-                        <div class="config-capsules" id="configCapsules"></div>
-                        <!-- 底栏 -->
-                        <div class="create-input-toolbar">
-                            <div class="create-input-left">
-                                <button class="create-input-icon-btn" id="uploadBtn" title="上传文件">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M8 3L11 6M8 3L5 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 10V12C2 12.5523 2.44772 13 3 13H13C13.5523 13 14 12.5523 14 12V10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                                </button>
-                                <button class="create-input-icon-btn" id="linkBtn" title="粘贴链接">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6.5 9.5L9.5 6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9 10.5L10.5 9C11.6046 7.89543 11.6046 6.10457 10.5 5L11 4.5C12.3807 5.88071 12.3807 8.11929 11 9.5L9.5 11C8.11929 12.3807 5.88071 12.3807 4.5 11L5 10.5C6.10457 11.6046 7.89543 11.6046 9 10.5Z" fill="currentColor" opacity="0.5"/><path d="M7 5.5L5.5 7C4.39543 8.10457 4.39543 9.89543 5.5 11L5 11.5C3.61929 10.1193 3.61929 7.88071 5 6.5L6.5 5C7.88071 3.61929 10.1193 3.61929 11.5 5L11 5.5C9.89543 4.39543 8.10457 4.39543 7 5.5Z" fill="currentColor" opacity="0.5"/></svg>
-                                </button>
-                                <span class="create-char-count"><span id="createCharCount">0</span> 字</span>
-                            </div>
-                            <button class="create-submit-btn" id="createSubmitBtn">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                开始
-                            </button>
+                <!-- 三张大卡片 -->
+                <div class="skill-cards">
+                    <div class="skill-card-wrap skill-card-wrap--translate" data-skill="translate">
+                        <div class="skill-card skill-card--translate">
+                            <img class="skill-card-img" src="assets/card-translate.png" alt="视频译制">
+                            <div class="skill-card-overlay"></div>
+                        </div>
+                        <div class="skill-card-info">
+                            <div class="skill-card-label">视频译制</div>
+                            <div class="skill-card-desc">自动翻译配音、口型同步、字幕生成，一键完成多语言视频本地化</div>
+                            <div class="skill-card-action">开始创作 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6.5 3M9.5 6L6.5 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                        </div>
+                    </div>
+                    <div class="skill-card-wrap skill-card-wrap--livestream" data-skill="livestream">
+                        <div class="skill-card skill-card--livestream">
+                            <img class="skill-card-img" src="assets/card-livestream.png" alt="直播剪辑">
+                            <div class="skill-card-overlay"></div>
+                        </div>
+                        <div class="skill-card-info">
+                            <div class="skill-card-label">直播剪辑</div>
+                            <div class="skill-card-desc">AI 智能识别直播高光时刻，自动剪辑精彩片段，快速产出短视频</div>
+                            <div class="skill-card-action">开始创作 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6.5 3M9.5 6L6.5 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                        </div>
+                    </div>
+                    <div class="skill-card-wrap skill-card-wrap--generate" data-skill="generate">
+                        <div class="skill-card skill-card--generate">
+                            <img class="skill-card-img" src="assets/card-generate.png" alt="AI 生成">
+                            <div class="skill-card-overlay"></div>
+                        </div>
+                        <div class="skill-card-info">
+                            <div class="skill-card-label">AI 生成</div>
+                            <div class="skill-card-desc">输入文本或图片，AI 自动生成高质量短视频，支持多种风格模板</div>
+                            <div class="skill-card-action">开始创作 <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6H9.5M9.5 6L6.5 3M9.5 6L6.5 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 快捷提示词 -->
-                <div class="create-prompts-wrap" id="promptsWrap">
-                    <div class="create-prompts-label">快捷指令</div>
-                    <div class="create-prompts-chips" id="promptsChips">
-                        <!-- 动态填充 -->
-                    </div>
-                </div>
+                <!-- 输入区域 -->
+                <div class="input-section">
+                    <!-- Skill 浮出标签 -->
+                    <div class="skill-float" id="skillFloat"></div>
 
-                <!-- 能力标签 -->
-                <div class="create-caps" id="createCaps">
-                    <span class="create-cap"><span class="create-cap-dot"></span> 口型同步</span>
-                    <span class="create-cap"><span class="create-cap-dot"></span> AI 配音</span>
-                    <span class="create-cap"><span class="create-cap-dot"></span> 30+ 语种</span>
-                    <span class="create-cap"><span class="create-cap-dot"></span> 字幕生成</span>
+                    <!-- 素材引导提示（浮在输入框上方） -->
+                    <div class="nudge-toast" id="nudgeToast">
+                        <span class="nudge-toast-icon" id="nudgeIcon"></span>
+                        <span class="nudge-toast-text" id="nudgeText"></span>
+                        <button class="nudge-toast-btn" id="nudgeBtn"></button>
+                    </div>
+
+                    <!-- 输入框 -->
+                    <div class="input-box" id="inputBox">
+                        <div class="attach-bar" id="attachBar"></div>
+                        <textarea class="input-textarea" id="mainInput" placeholder="描述你想做的事..."></textarea>
+                        <!-- 配置胶囊（Skill 识别后动态展示） -->
+                        <div class="config-bar" id="configBar"></div>
+                        <div class="input-toolbar">
+                            <div class="input-left">
+                                <button class="input-icon-btn" id="uploadBtn" title="上传文件">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M8 3L11 6M8 3L5 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 10V12C2 12.5523 2.44772 13 3 13H13C13.5523 13 14 12.5523 14 12V10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                                </button>
+                                <button class="input-icon-btn" id="linkBtn" title="粘贴链接">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6.5 9.5L9.5 6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9 10.5L10.5 9C11.6046 7.89543 11.6046 6.10457 10.5 5L11 4.5C12.3807 5.88071 12.3807 8.11929 11 9.5L9.5 11C8.11929 12.3807 5.88071 12.3807 4.5 11L5 10.5C6.10457 11.6046 7.89543 11.6046 9 10.5Z" fill="currentColor" opacity="0.5"/><path d="M7 5.5L5.5 7C4.39543 8.10457 4.39543 9.89543 5.5 11L5 11.5C3.61929 10.1193 3.61929 7.88071 5 6.5L6.5 5C7.88071 3.61929 10.1193 3.61929 11.5 5L11 5.5C9.89543 4.39543 8.10457 4.39543 7 5.5Z" fill="currentColor" opacity="0.5"/></svg>
+                                </button>
+                            </div>
+                            <button class="input-submit-btn" id="submitBtn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -902,18 +975,34 @@
     <script src="app.js"></script>
     <script>
     (function() {
-        // ===== Skill 定义 =====
+        // ===== Skill 定义（含配置项） =====
         var skills = {
             translate: {
                 name: '视频译制',
+                icon: '🌐',
                 url: 'translate-v6.html',
-                inputClass: 'skill-translate',
-                placeholder: '补充说明，如"翻译成英文，保留原声字幕"...',
-                prompts: [
-                    { icon: '🌐', text: '把我的视频翻译成英文', params: { lang: 'en' } },
-                    { icon: '🇯🇵', text: '翻译成日语，保留原声字幕', params: { lang: 'ja', keepOriginal: true } },
-                    { icon: '📦', text: '批量翻译视频到多个语种', params: { batch: true } },
-                    { icon: '🎙️', text: '只替换配音，不加字幕', params: { noSub: true } }
+                cssClass: 'translate',
+                keywords: ['翻译', '译制', '多语言', '本地化', '英文', '日文', '英语', '日语', '韩语', '法语', '德语', '西班牙语', 'translate', '语种', '口型', '出海'],
+                // 子功能模式：识别到子功能后跳转带 ?mode=xxx
+                subModes: [
+                    {
+                        mode: 'erase',
+                        name: '擦除字幕',
+                        icon: '🧹',
+                        keywords: ['擦字幕', '去字幕', '擦除字幕', '去除字幕', '删除字幕', '移除字幕', '硬字幕', '去水印', '擦除', 'erase', '消除字幕', '字幕擦除', '去掉字幕']
+                    },
+                    {
+                        mode: 'subtitle',
+                        name: '添加字幕',
+                        icon: '📝',
+                        keywords: ['加字幕', '添加字幕', '生成字幕', '上字幕', '做字幕', '字幕翻译', '双语字幕', 'subtitle', '字幕识别', 'srt', 'ass', '打字幕']
+                    },
+                    {
+                        mode: 'voice',
+                        name: '克隆配音',
+                        icon: '🎙️',
+                        keywords: ['配音', '克隆配音', '声音克隆', '加配音', '换配音', 'dub', '语音克隆', 'voice clone', '克隆声音', '原声', '配音翻译', '多语言配音']
+                    }
                 ],
                 config: [
                     { key: 'targetLang', label: '目标语言', options: [
@@ -937,27 +1026,15 @@
                     { key: 'quality', label: '画质', options: [
                         { value: '720', text: '720p' }, { value: '1080', text: '1080p' },
                         { value: '4k', text: '4K' }
-                    ]},
-                    { key: 'speed', label: '速度', options: [
-                        { value: 'fast', text: '极速' }, { value: 'standard', text: '标准' },
-                        { value: 'quality', text: '质量优先' }
                     ]}
-                ],
-                caps: [
-                    '口型同步', 'AI 配音', '30+ 语种', '字幕生成'
                 ]
             },
             livestream: {
                 name: '直播剪辑',
+                icon: '🔴',
                 url: 'livestream.html',
-                inputClass: 'skill-livestream',
-                placeholder: '补充说明，如"只要高光片段，竖屏输出"...',
-                prompts: [
-                    { icon: '🔴', text: '监控抖音直播，自动剪辑精彩片段', params: { platform: 'douyin' } },
-                    { icon: '✂️', text: '把直播录像剪成 3 分钟短视频', params: { duration: 180 } },
-                    { icon: '🛍️', text: '提取直播中的商品讲解片段', params: { mode: 'product' } },
-                    { icon: '🏆', text: '自动识别游戏直播高光时刻', params: { mode: 'highlight' } }
-                ],
+                cssClass: 'livestream',
+                keywords: ['直播', '监控', '剪辑', '录像', '高光', '精彩片段', '抖音', '快手', 'bilibili', 'b站', '带货', '商品讲解', 'livestream', 'live', '短视频'],
                 config: [
                     { key: 'platform', label: '平台', options: [
                         { value: 'douyin', text: '抖音' }, { value: 'kuaishou', text: '快手' },
@@ -976,28 +1053,17 @@
                         { value: '9:16', text: '9:16竖屏' }, { value: '16:9', text: '16:9横屏' },
                         { value: '1:1', text: '1:1方形' }
                     ]},
-                    { key: 'quality', label: '画质', options: [
-                        { value: '720', text: '720p' }, { value: '1080', text: '1080p' }
-                    ]},
                     { key: 'addCaption', label: '字幕', options: [
                         { value: 'on', text: '加字幕' }, { value: 'off', text: '不加' }
                     ]}
-                ],
-                caps: [
-                    '实时监控', 'AI 识别', '多平台', '快速出片'
                 ]
             },
             generate: {
                 name: 'AI 生成',
+                icon: '✨',
                 url: 'generate.html',
-                inputClass: 'skill-generate',
-                placeholder: '描述你想生成的视频内容...',
-                prompts: [
-                    { icon: '📦', text: '用产品图生成 15 秒广告视频', params: { mode: 'product' } },
-                    { icon: '🎬', text: '写一个温暖的咖啡店故事短片', params: { mode: 'story' } },
-                    { icon: '📱', text: '把这段文案变成竖屏短视频', params: { ratio: '9:16' } },
-                    { icon: '✈️', text: '生成一段旅行 Vlog 风格视频', params: { style: 'vlog' } }
-                ],
+                cssClass: 'generate',
+                keywords: ['生成', '创作', '脚本', '广告', '故事', '产品图', 'vlog', '文案', '制作视频', '做一个视频', 'generate', 'create', '动画'],
                 config: [
                     { key: 'style', label: '风格', options: [
                         { value: 'cinematic', text: '电影感' }, { value: 'realistic', text: '写实' },
@@ -1019,337 +1085,248 @@
                     { key: 'bgm', label: '配乐', options: [
                         { value: 'auto', text: '自动配乐' }, { value: 'none', text: '无' },
                         { value: 'upbeat', text: '轻快' }, { value: 'cinematic', text: '大气' }
-                    ]},
-                    { key: 'voice', label: '旁白', options: [
-                        { value: 'none', text: '无旁白' }, { value: 'female', text: '女声旁白' },
-                        { value: 'male', text: '男声旁白' }
                     ]}
-                ],
-                caps: [
-                    '4K 超清', '自动配乐', 'AI 声音克隆', '3 分钟出片'
                 ]
             }
         };
 
-        var currentSkill = 'translate';
-        var uploadedFile = null;   // 视频译制上传的文件
-        var refImage = null;       // AI 生成参考图
-        var liveLink = '';         // 直播剪辑链接
-        var configValues = {};     // 当前胶囊的选中值
+        var detectedSkill = null;
+        var detectedSubMode = null; // translate 子功能: 'erase' | 'subtitle' | 'voice' | null
+        var uploadedFile = null;
+        var refImage = null;
+        var liveLink = '';
+        var configValues = {};
 
         // ===== DOM =====
-        var inputBox = document.getElementById('createInputBox');
-        var inputEl = document.getElementById('createInput');
-        var charCount = document.getElementById('createCharCount');
-        var actionSlot = document.getElementById('actionSlot');
-        var configCapsules = document.getElementById('configCapsules');
-        var promptsChips = document.getElementById('promptsChips');
-        var capsEl = document.getElementById('createCaps');
+        var inputEl = document.getElementById('mainInput');
+        var skillFloat = document.getElementById('skillFloat');
+        var configBar = document.getElementById('configBar');
+        var attachBar = document.getElementById('attachBar');
+        var submitBtn = document.getElementById('submitBtn');
 
-        // ===== 字符计数 =====
-        inputEl.addEventListener('input', function() {
-            charCount.textContent = this.value.length;
-        });
-
-        // ===== Skill 切换 =====
-        document.querySelectorAll('.skill-pill').forEach(function(pill) {
-            pill.addEventListener('click', function() {
+        // ===== 卡片点击 → 直接跳转 =====
+        document.querySelectorAll('.skill-card-wrap').forEach(function(card) {
+            card.addEventListener('click', function() {
                 var sk = this.dataset.skill;
-                if (sk === currentSkill) return;
-                document.querySelectorAll('.skill-pill').forEach(function(p) { p.classList.remove('active'); });
-                this.classList.add('active');
-                currentSkill = sk;
-                uploadedFile = null;
-                refImage = null;
-                liveLink = '';
-                renderSkill(sk);
-            });
-        });
-
-        function renderSkill(sk) {
-            var skill = skills[sk];
-            inputBox.className = 'create-input-box ' + skill.inputClass;
-            inputEl.placeholder = skill.placeholder;
-            inputEl.value = '';
-            charCount.textContent = '0';
-            renderActionSlot(sk);
-            renderCapsules(skill.config);
-            renderPrompts(skill.prompts);
-            renderCaps(skill.caps);
-        }
-
-        // ===== Action Slot =====
-        function renderActionSlot(sk) {
-            actionSlot.innerHTML = '';
-            if (sk === 'translate') {
-                renderUploadZone();
-            } else if (sk === 'livestream') {
-                renderLinkBar();
-            } else if (sk === 'generate') {
-                renderRefUpload();
-            }
-        }
-
-        // -- 视频译制：上传区 --
-        function renderUploadZone() {
-            if (uploadedFile) {
-                renderUploadPreview();
-                return;
-            }
-            actionSlot.innerHTML = 
-                '<div class="action-upload-zone" id="uploadZone">' +
-                    '<input type="file" accept="video/*,.mp4,.mov,.avi,.mkv,.flv,.wmv" id="uploadZoneInput">' +
-                    '<span class="upload-zone-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 10V3M8 3L11 6M8 3L5 6" stroke="#34d399" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 10V12C2 12.5523 2.44772 13 3 13H13C13.5523 13 14 12.5523 14 12V10" stroke="#34d399" stroke-width="1.3" stroke-linecap="round"/></svg></span>' +
-                    '<span class="upload-zone-text">点击或拖拽上传视频</span>' +
-                    '<span class="upload-zone-hint">支持 MP4 / MOV / AVI · 最大 2GB</span>' +
-                '</div>';
-            var zone = document.getElementById('uploadZone');
-            var fileInput = document.getElementById('uploadZoneInput');
-            zone.addEventListener('click', function() { fileInput.click(); });
-            fileInput.addEventListener('change', function(e) {
-                if (e.target.files[0]) {
-                    uploadedFile = e.target.files[0];
-                    renderUploadPreview();
-                }
-            });
-            // 拖拽
-            zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
-            zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
-            zone.addEventListener('drop', function(e) {
-                e.preventDefault();
-                zone.classList.remove('dragover');
-                var f = e.dataTransfer.files[0];
-                if (f && f.type.startsWith('video/')) {
-                    uploadedFile = f;
-                    renderUploadPreview();
-                }
-            });
-        }
-
-        function renderUploadPreview() {
-            var sizeMB = (uploadedFile.size / 1048576).toFixed(1);
-            actionSlot.innerHTML = 
-                '<div class="upload-file-preview">' +
-                    '<div class="upload-file-icon">🎬</div>' +
-                    '<div class="upload-file-info">' +
-                        '<div class="upload-file-name">' + escHTML(uploadedFile.name) + '</div>' +
-                        '<div class="upload-file-size">' + sizeMB + ' MB</div>' +
-                    '</div>' +
-                    '<button class="upload-file-remove" id="uploadRemoveBtn" title="移除">' +
-                        '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
-                    '</button>' +
-                '</div>';
-            document.getElementById('uploadRemoveBtn').addEventListener('click', function() {
-                uploadedFile = null;
-                renderUploadZone();
-            });
-        }
-
-        // -- 直播剪辑：链接栏 --
-        function renderLinkBar() {
-            actionSlot.innerHTML = 
-                '<div class="action-link-bar">' +
-                    '<span class="link-bar-icon" id="linkPlatformIcon">🔗</span>' +
-                    '<input type="url" class="link-bar-input" id="linkBarInput" placeholder="粘贴直播/录像链接..." value="' + escHTML(liveLink) + '">' +
-                    '<span class="link-platform-tag" id="linkPlatformTag" style="display:none"></span>' +
-                    '<button class="link-bar-paste-btn" id="linkBarPasteBtn">' +
-                        '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="1" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 4V10.5C1 11.0523 1.44772 11.5 2 11.5H7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>' +
-                        ' 粘贴' +
-                    '</button>' +
-                '</div>';
-            var linkInput = document.getElementById('linkBarInput');
-            var pasteBtn = document.getElementById('linkBarPasteBtn');
-            
-            linkInput.addEventListener('input', function() {
-                liveLink = this.value;
-                detectPlatform(this.value);
-            });
-            
-            pasteBtn.addEventListener('click', function() {
-                if (navigator.clipboard && navigator.clipboard.readText) {
-                    navigator.clipboard.readText().then(function(text) {
-                        if (text && text.trim()) {
-                            linkInput.value = text.trim();
-                            liveLink = text.trim();
-                            detectPlatform(text.trim());
-                        }
-                    }).catch(function() {
-                        linkInput.focus();
+                var text = inputEl.value.trim();
+                var url = skills[sk].url;
+                var params = [];
+                if (text) params.push('prompt=' + encodeURIComponent(text));
+                // 如果当前已识别到这个 skill，带上配置
+                if (detectedSkill === sk) {
+                    Object.keys(configValues).forEach(function(k) {
+                        params.push(k + '=' + encodeURIComponent(configValues[k]));
                     });
-                } else {
-                    linkInput.focus();
-                }
-            });
-
-            if (liveLink) detectPlatform(liveLink);
-        }
-
-        function detectPlatform(url) {
-            var icon = document.getElementById('linkPlatformIcon');
-            var tag = document.getElementById('linkPlatformTag');
-            if (!url) { icon.textContent = '🔗'; tag.style.display = 'none'; return; }
-            var u = url.toLowerCase();
-            var platforms = [
-                { keys: ['douyin', 'iesdouyin'], icon: '📱', name: '抖音' },
-                { keys: ['kuaishou', 'gifshow'], icon: '📹', name: '快手' },
-                { keys: ['bilibili', 'b23.tv'], icon: '📺', name: 'B站' },
-                { keys: ['taobao', 'tbopen'], icon: '🛒', name: '淘宝' },
-                { keys: ['youtube', 'youtu.be'], icon: '▶️', name: 'YouTube' },
-                { keys: ['twitch'], icon: '🟣', name: 'Twitch' }
-            ];
-            for (var i = 0; i < platforms.length; i++) {
-                for (var j = 0; j < platforms[i].keys.length; j++) {
-                    if (u.indexOf(platforms[i].keys[j]) !== -1) {
-                        icon.textContent = platforms[i].icon;
-                        tag.textContent = platforms[i].name;
-                        tag.style.display = 'inline';
-                        return;
+                    // 带上子功能 mode
+                    if (sk === 'translate' && detectedSubMode) {
+                        params.push('mode=' + detectedSubMode);
                     }
                 }
+                if (params.length) url += '?' + params.join('&');
+                window.location.href = url;
+            });
+        });
+
+        // ===== 子功能识别 =====
+        function detectTranslateSubMode(text) {
+            var sub = skills.translate.subModes;
+            var bestSub = null;
+            var bestSubScore = 0;
+            for (var i = 0; i < sub.length; i++) {
+                var score = 0;
+                for (var j = 0; j < sub[i].keywords.length; j++) {
+                    if (text.indexOf(sub[i].keywords[j]) !== -1) score++;
+                }
+                if (score > bestSubScore) {
+                    bestSubScore = score;
+                    bestSub = sub[i];
+                }
             }
-            icon.textContent = '🔗';
-            tag.style.display = 'none';
+            return bestSubScore > 0 ? bestSub : null;
         }
 
-        // -- AI 生成：参考图上传 --
-        function renderRefUpload() {
-            if (refImage) {
-                renderRefPreview();
+        // ===== 实时意图识别 =====
+        var lastDetected = null;
+        var lastSubMode = null;
+
+        inputEl.addEventListener('input', function() {
+            var text = this.value.toLowerCase();
+            if (!text.trim()) {
+                detectedSkill = null;
+                detectedSubMode = null;
+                lastDetected = null;
+                lastSubMode = null;
+                skillFloat.innerHTML = '';
+                configBar.innerHTML = '';
+                configValues = {};
                 return;
             }
-            actionSlot.innerHTML = 
-                '<div class="action-ref-upload" id="refUploadZone">' +
-                    '<input type="file" accept="image/*" id="refFileInput">' +
-                    '<span class="ref-upload-icon">🖼️</span>' +
-                    '<span class="ref-upload-text">上传参考图</span>' +
-                    '<span class="ref-upload-hint">（可选）</span>' +
-                '</div>';
-            var refZone = document.getElementById('refUploadZone');
-            var refInput = document.getElementById('refFileInput');
-            refZone.addEventListener('click', function() { refInput.click(); });
-            refInput.addEventListener('change', function(e) {
-                if (e.target.files[0]) {
-                    refImage = e.target.files[0];
-                    renderRefPreview();
+
+            var scores = {};
+            Object.keys(skills).forEach(function(key) {
+                scores[key] = 0;
+                skills[key].keywords.forEach(function(kw) {
+                    if (text.indexOf(kw) !== -1) scores[key]++;
+                });
+                // 子功能关键词也计入 translate 总分
+                if (key === 'translate' && skills[key].subModes) {
+                    skills[key].subModes.forEach(function(sub) {
+                        sub.keywords.forEach(function(kw) {
+                            if (text.indexOf(kw) !== -1) scores[key]++;
+                        });
+                    });
                 }
             });
-        }
 
-        function renderRefPreview() {
-            var url = URL.createObjectURL(refImage);
-            actionSlot.innerHTML = 
-                '<div class="ref-preview">' +
-                    '<img class="ref-preview-thumb" src="' + url + '" alt="参考图">' +
-                    '<span class="ref-preview-name">' + escHTML(refImage.name) + '</span>' +
-                    '<button class="ref-preview-remove" id="refRemoveBtn" title="移除">' +
-                        '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
-                    '</button>' +
-                '</div>';
-            document.getElementById('refRemoveBtn').addEventListener('click', function() {
-                refImage = null;
-                renderRefUpload();
+            var best = null;
+            var bestScore = 0;
+            Object.keys(scores).forEach(function(key) {
+                if (scores[key] > bestScore) {
+                    bestScore = scores[key];
+                    best = key;
+                }
             });
-        }
 
-        // ===== Config Capsules 胶囊渲染 =====
-        function renderCapsules(config) {
+            // 检测 translate 子功能
+            var subMode = null;
+            if (best === 'translate') {
+                var sub = detectTranslateSubMode(text);
+                subMode = sub ? sub.mode : null;
+            }
+
+            var changed = (best !== lastDetected) || (best === 'translate' && subMode !== lastSubMode);
+
+            if (bestScore > 0 && changed) {
+                detectedSkill = best;
+                detectedSubMode = subMode;
+                lastDetected = best;
+                lastSubMode = subMode;
+                var s = skills[best];
+
+                // 构建浮出标签
+                var floatHTML = '';
+                if (best === 'translate' && subMode) {
+                    // 找到子功能定义
+                    var subDef = null;
+                    for (var i = 0; i < s.subModes.length; i++) {
+                        if (s.subModes[i].mode === subMode) { subDef = s.subModes[i]; break; }
+                    }
+                    // 显示: [视频译制] [→ 擦除字幕]
+                    floatHTML =
+                        '<div class="skill-float-tag skill-float-tag--translate" data-skill="translate" data-mode="">' +
+                            '<span class="skill-float-icon">' + s.icon + '</span>' +
+                            s.name +
+                            '<span class="skill-float-arrow">↗</span>' +
+                        '</div>' +
+                        '<div class="skill-float-tag skill-float-tag--translate" data-skill="translate" data-mode="' + subMode + '" style="background:rgba(16,185,129,0.18);border-color:rgba(16,185,129,0.35);">' +
+                            '<span class="skill-float-icon">' + (subDef ? subDef.icon : '') + '</span>' +
+                            (subDef ? subDef.name : '') +
+                            '<span class="skill-float-arrow">↗</span>' +
+                        '</div>';
+                } else {
+                    floatHTML =
+                        '<div class="skill-float-tag skill-float-tag--' + s.cssClass + '" data-skill="' + best + '">' +
+                            '<span class="skill-float-icon">' + s.icon + '</span>' +
+                            s.name +
+                            '<span class="skill-float-arrow">↗</span>' +
+                        '</div>';
+                }
+                skillFloat.innerHTML = floatHTML;
+
+                // 绑定浮出标签点击
+                skillFloat.querySelectorAll('.skill-float-tag').forEach(function(tag) {
+                    tag.addEventListener('click', function() {
+                        var sk = this.dataset.skill;
+                        var mode = this.dataset.mode;
+                        goToSkill(sk, mode || null);
+                    });
+                });
+
+                // 渲染配置胶囊
+                renderConfig(best);
+
+            } else if (bestScore === 0) {
+                detectedSkill = null;
+                detectedSubMode = null;
+                lastDetected = null;
+                lastSubMode = null;
+                skillFloat.innerHTML = '';
+                configBar.innerHTML = '';
+                configValues = {};
+            }
+        });
+
+        // ===== 渲染配置胶囊 =====
+        function renderConfig(sk) {
+            var config = skills[sk].config;
+            var theme = skills[sk].cssClass;
             configValues = {};
-            config.forEach(function(c) {
-                configValues[c.key] = c.options[0].value;
-            });
-            configCapsules.innerHTML = config.map(function(c, idx) {
-                return '<div class="config-capsule" data-key="' + c.key + '" data-idx="' + idx + '">' +
-                    '<span class="capsule-value">' + c.options[0].text + '</span>' +
-                    '<span class="capsule-arrow">▾</span>' +
-                    '<div class="capsule-dropdown" id="capsuleDrop_' + c.key + '">' +
-                        c.options.map(function(o, oi) {
-                            return '<button class="capsule-dropdown-item' + (oi === 0 ? ' selected' : '') + '" data-value="' + o.value + '" data-text="' + escHTML(o.text) + '">' + escHTML(o.text) + '</button>';
+            config.forEach(function(c) { configValues[c.key] = c.options[0].value; });
+
+            configBar.innerHTML = config.map(function(c) {
+                return '<div class="cfg-capsule" data-key="' + c.key + '" data-theme="' + theme + '">' +
+                    '<span class="cfg-value">' + c.options[0].text + '</span>' +
+                    '<span class="cfg-arrow">▾</span>' +
+                    '<div class="cfg-dropdown" id="cfgDrop_' + c.key + '">' +
+                        c.options.map(function(o, i) {
+                            return '<button class="cfg-drop-item' + (i === 0 ? ' selected' : '') + '" data-value="' + o.value + '" data-text="' + esc(o.text) + '">' + esc(o.text) + '</button>';
                         }).join('') +
                     '</div>' +
                 '</div>';
             }).join('');
 
-            // 绑定胶囊点击
-            configCapsules.querySelectorAll('.config-capsule').forEach(function(capsule) {
-                capsule.addEventListener('click', function(e) {
+            // 绑定胶囊交互
+            configBar.querySelectorAll('.cfg-capsule').forEach(function(cap) {
+                cap.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    var dropdown = capsule.querySelector('.capsule-dropdown');
-                    var isOpen = dropdown.classList.contains('show');
-                    // 关闭所有
-                    closeAllDropdowns();
+                    var dd = cap.querySelector('.cfg-dropdown');
+                    var isOpen = dd.classList.contains('show');
+                    closeAllCfgDropdowns();
                     if (!isOpen) {
-                        dropdown.classList.add('show');
-                        capsule.classList.add('open');
+                        dd.classList.add('show');
+                        cap.classList.add('open');
                     }
                 });
-                // 下拉选项点击
-                capsule.querySelectorAll('.capsule-dropdown-item').forEach(function(item) {
+                cap.querySelectorAll('.cfg-drop-item').forEach(function(item) {
                     item.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        var key = capsule.dataset.key;
+                        var key = cap.dataset.key;
                         var val = item.dataset.value;
                         var txt = item.dataset.text;
                         configValues[key] = val;
-                        capsule.querySelector('.capsule-value').textContent = txt;
-                        // 标记已修改（非默认值）
-                        var config = skills[currentSkill].config;
-                        var cfgItem = config.find(function(c) { return c.key === key; });
-                        if (cfgItem && val !== cfgItem.options[0].value) {
-                            capsule.classList.add('modified');
+                        cap.querySelector('.cfg-value').textContent = txt;
+                        // 高亮（非默认值）
+                        var cfgDef = skills[detectedSkill].config.find(function(c) { return c.key === key; });
+                        if (cfgDef && val !== cfgDef.options[0].value) {
+                            cap.classList.add('modified');
                         } else {
-                            capsule.classList.remove('modified');
+                            cap.classList.remove('modified');
                         }
-                        // 更新选中态
-                        capsule.querySelectorAll('.capsule-dropdown-item').forEach(function(d) { d.classList.remove('selected'); });
+                        cap.querySelectorAll('.cfg-drop-item').forEach(function(d) { d.classList.remove('selected'); });
                         item.classList.add('selected');
-                        closeAllDropdowns();
+                        closeAllCfgDropdowns();
                     });
                 });
             });
         }
 
-        function closeAllDropdowns() {
-            document.querySelectorAll('.capsule-dropdown.show').forEach(function(d) { d.classList.remove('show'); });
-            document.querySelectorAll('.config-capsule.open').forEach(function(c) { c.classList.remove('open'); });
+        function closeAllCfgDropdowns() {
+            document.querySelectorAll('.cfg-dropdown.show').forEach(function(d) { d.classList.remove('show'); });
+            document.querySelectorAll('.cfg-capsule.open').forEach(function(c) { c.classList.remove('open'); });
         }
+        document.addEventListener('click', function() { closeAllCfgDropdowns(); });
 
-        // 点击外部关闭胶囊下拉
-        document.addEventListener('click', function() { closeAllDropdowns(); });
+        // ===== 提交 =====
+        var nudgeToast = document.getElementById('nudgeToast');
+        var nudgeIcon = document.getElementById('nudgeIcon');
+        var nudgeText = document.getElementById('nudgeText');
+        var nudgeBtn = document.getElementById('nudgeBtn');
+        var inputBox = document.getElementById('inputBox');
+        var uploadBtnEl = document.getElementById('uploadBtn');
+        var linkBtnEl = document.getElementById('linkBtn');
+        var nudgeTimer = null;
 
-        // ===== 渲染快捷提示词 =====
-        function renderPrompts(prompts) {
-            promptsChips.innerHTML = prompts.map(function(p) {
-                return '<button class="create-prompt-chip" data-text="' + escHTML(p.text) + '">' + 
-                    p.icon + ' ' + escHTML(p.text) + 
-                    '<span class="chip-arrow">→</span></button>';
-            }).join('');
-            promptsChips.querySelectorAll('.create-prompt-chip').forEach(function(chip) {
-                chip.addEventListener('click', function() {
-                    inputEl.value = this.dataset.text;
-                    charCount.textContent = inputEl.value.length;
-                    inputEl.focus();
-                    this.style.transform = 'scale(0.95)';
-                    var c = chip;
-                    setTimeout(function() { c.style.transform = ''; }, 150);
-                });
-            });
-        }
-
-        // ===== 渲染能力标签 =====
-        function renderCaps(caps) {
-            capsEl.innerHTML = caps.map(function(c) {
-                return '<span class="create-cap"><span class="create-cap-dot"></span> ' + c + '</span>';
-            }).join('');
-        }
-
-        function escHTML(str) {
-            var div = document.createElement('div');
-            div.appendChild(document.createTextNode(str));
-            return div.innerHTML;
-        }
-
-        // ===== 意图识别 + 路由跳转 =====
-        document.getElementById('createSubmitBtn').addEventListener('click', handleSubmit);
+        submitBtn.addEventListener('click', handleSubmit);
         inputEl.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -1357,121 +1334,213 @@
             }
         });
 
+        function showNudge(type, icon, text, btnText, btnAction) {
+            // 清除上次的 timer
+            if (nudgeTimer) clearTimeout(nudgeTimer);
+            // 设置样式
+            nudgeToast.className = 'nudge-toast nudge-toast--' + type;
+            nudgeIcon.textContent = icon;
+            nudgeText.textContent = text;
+            nudgeBtn.textContent = btnText;
+            nudgeBtn.onclick = function(e) { e.stopPropagation(); hideNudge(); btnAction(); };
+            // shake 输入框
+            inputBox.classList.remove('shake');
+            void inputBox.offsetWidth; // reflow
+            inputBox.classList.add('shake');
+            // 显示
+            requestAnimationFrame(function() {
+                nudgeToast.classList.add('show');
+            });
+            // 5 秒后自动隐藏
+            nudgeTimer = setTimeout(function() { hideNudge(); }, 5000);
+        }
+
+        function hideNudge() {
+            nudgeToast.classList.remove('show');
+            if (nudgeTimer) { clearTimeout(nudgeTimer); nudgeTimer = null; }
+        }
+
+        function pulseBtn(btn, colorClass) {
+            btn.classList.remove('nudge-pulse', 'nudge-pulse--green', 'nudge-pulse--orange');
+            void btn.offsetWidth;
+            btn.classList.add('nudge-pulse', colorClass);
+            setTimeout(function() { btn.classList.remove('nudge-pulse', colorClass); }, 4600);
+        }
+
+        function triggerUpload() {
+            hideNudge();
+            pulseBtn(uploadBtnEl, 'nudge-pulse--green');
+            // 自动弹出文件选择器
+            var fi = document.createElement('input');
+            fi.type = 'file';
+            fi.accept = 'video/*,.mp4,.mov,.avi,.mkv';
+            fi.onchange = function(e) {
+                var f = e.target.files[0];
+                if (!f) return;
+                uploadedFile = f;
+                refImage = null;
+                liveLink = '';
+                renderAttachBar();
+            };
+            fi.click();
+        }
+
+        function triggerLinkInput() {
+            hideNudge();
+            pulseBtn(linkBtnEl, 'nudge-pulse--orange');
+            // 自动弹出链接输入
+            var url = prompt('请粘贴直播链接：');
+            if (url && url.trim()) {
+                liveLink = url.trim();
+                uploadedFile = null;
+                refImage = null;
+                renderAttachBar();
+            }
+        }
+
         function handleSubmit() {
             var text = inputEl.value.trim();
-            var skill = skills[currentSkill];
-            var detectedSkill = detectIntent(text);
-            if (detectedSkill && detectedSkill !== currentSkill) {
-                currentSkill = detectedSkill;
-                skill = skills[detectedSkill];
-                document.querySelectorAll('.skill-pill').forEach(function(p) { p.classList.remove('active'); });
-                document.querySelector('[data-skill="' + detectedSkill + '"]').classList.add('active');
-                renderSkill(detectedSkill);
-            }
+            if (!text && !detectedSkill && !uploadedFile && !liveLink && !refImage) return;
+            var sk = detectedSkill || 'translate';
 
-            var url = skill.url;
+            // ===== 智能引导：检查是否缺少必要素材 =====
+            if (sk === 'translate' && !uploadedFile) {
+                // 视频译制需要视频文件
+                showNudge('translate', '📹', '请先上传一个视频文件', '上传视频', triggerUpload);
+                return;
+            }
+            if (sk === 'livestream' && !liveLink) {
+                // 直播剪辑需要直播链接
+                showNudge('livestream', '🔗', '请先添加直播链接', '添加链接', triggerLinkInput);
+                return;
+            }
+            // AI 生成只需要文案，不需要额外素材
+
+            // ===== 一切就绪，直接跳转 =====
+            goToSkill(sk, detectedSubMode);
+        }
+
+        function goToSkill(sk, mode) {
+            var text = inputEl.value.trim();
+            var url = skills[sk].url;
             var params = [];
             if (text) params.push('prompt=' + encodeURIComponent(text));
-            // 收集胶囊配置值
-            Object.keys(configValues).forEach(function(key) {
-                params.push(key + '=' + encodeURIComponent(configValues[key]));
+            // 带上配置值
+            Object.keys(configValues).forEach(function(k) {
+                params.push(k + '=' + encodeURIComponent(configValues[k]));
             });
-            // 直播链接
-            if (currentSkill === 'livestream' && liveLink) {
-                params.push('liveUrl=' + encodeURIComponent(liveLink));
-            }
+            // 传递 translate 子功能 mode 参数
+            var m = mode || detectedSubMode;
+            if (sk === 'translate' && m) params.push('mode=' + m);
+            if (sk === 'livestream' && liveLink) params.push('liveUrl=' + encodeURIComponent(liveLink));
             if (params.length) url += '?' + params.join('&');
             window.location.href = url;
         }
 
-        // ===== 简易意图识别 =====
-        function detectIntent(text) {
-            if (!text) return null;
-            var t = text.toLowerCase();
-            var translateKw = ['翻译', '译制', '多语言', '配音', '字幕', '本地化', '英文', '日文', '英语', '日语', '韩语', '法语', '德语', '西班牙语', 'translate', 'dub'];
-            var liveKw = ['直播', '监控', '剪辑', '录像', '高光', '精彩片段', '抖音', '快手', 'bilibili', 'b站', '带货', '商品讲解', 'livestream', 'live'];
-            var genKw = ['生成', '创作', '脚本', '广告', '故事', '产品图', 'vlog', '文案', '制作视频', '做一个视频', 'generate', 'create'];
+        // ===== 附件标签 =====
+        function renderAttachBar() {
+            attachBar.innerHTML = '';
+            // 附件变更后自动隐藏引导提示
+            hideNudge();
 
-            var scores = { translate: 0, livestream: 0, generate: 0 };
-            translateKw.forEach(function(kw) { if (t.indexOf(kw) !== -1) scores.translate++; });
-            liveKw.forEach(function(kw) { if (t.indexOf(kw) !== -1) scores.livestream++; });
-            genKw.forEach(function(kw) { if (t.indexOf(kw) !== -1) scores.generate++; });
-
-            var max = Math.max(scores.translate, scores.livestream, scores.generate);
-            if (max === 0) return null;
-            if (scores.translate === max) return 'translate';
-            if (scores.livestream === max) return 'livestream';
-            return 'generate';
+            if (uploadedFile) {
+                var sizeMB = (uploadedFile.size / 1048576).toFixed(1);
+                attachBar.innerHTML =
+                    '<div class="attach-tag">' +
+                        '<span class="attach-tag-icon">🎬</span>' +
+                        '<span class="attach-tag-name">' + esc(uploadedFile.name) + '</span>' +
+                        '<span class="attach-tag-meta">' + sizeMB + ' MB</span>' +
+                        '<button class="attach-tag-remove" id="rmAttach" title="移除">' +
+                            '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+                        '</button>' +
+                    '</div>';
+                document.getElementById('rmAttach').onclick = function() { uploadedFile = null; renderAttachBar(); };
+            } else if (liveLink) {
+                var platform = detectPlatform(liveLink);
+                var short = liveLink.length > 40 ? liveLink.substring(0, 40) + '...' : liveLink;
+                attachBar.innerHTML =
+                    '<div class="attach-tag attach-tag--link">' +
+                        (platform ? '<span class="attach-platform">' + platform + '</span>' : '') +
+                        '<span class="attach-tag-name">' + esc(short) + '</span>' +
+                        '<button class="attach-tag-remove" id="rmAttach" title="移除">' +
+                            '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+                        '</button>' +
+                    '</div>';
+                document.getElementById('rmAttach').onclick = function() { liveLink = ''; renderAttachBar(); };
+            } else if (refImage) {
+                var url = URL.createObjectURL(refImage);
+                attachBar.innerHTML =
+                    '<div class="attach-tag">' +
+                        '<img class="attach-tag-thumb" src="' + url + '" alt="参考图">' +
+                        '<span class="attach-tag-name">' + esc(refImage.name) + '</span>' +
+                        '<button class="attach-tag-remove" id="rmAttach" title="移除">' +
+                            '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+                        '</button>' +
+                    '</div>';
+                document.getElementById('rmAttach').onclick = function() { refImage = null; renderAttachBar(); };
+            }
         }
 
-        // ===== 工具栏上传按钮（作为备用入口） =====
-        document.getElementById('uploadBtn').addEventListener('click', function() {
-            if (currentSkill === 'translate') {
-                // 触发 Action Slot 里的上传
-                var zoneInput = document.getElementById('uploadZoneInput');
-                if (zoneInput) { zoneInput.click(); return; }
-                // 如果已有文件，创建新的
-                var fi = document.createElement('input');
-                fi.type = 'file';
-                fi.accept = 'video/*,.mp4,.mov,.avi,.mkv,.flv,.wmv';
-                fi.onchange = function(e) {
-                    if (e.target.files[0]) {
-                        uploadedFile = e.target.files[0];
-                        renderUploadPreview();
-                    }
-                };
-                fi.click();
-            } else if (currentSkill === 'generate') {
-                var ri = document.getElementById('refFileInput');
-                if (ri) { ri.click(); return; }
-                var fi2 = document.createElement('input');
-                fi2.type = 'file';
-                fi2.accept = 'image/*';
-                fi2.onchange = function(e) {
-                    if (e.target.files[0]) {
-                        refImage = e.target.files[0];
-                        renderRefPreview();
-                    }
-                };
-                fi2.click();
-            } else {
-                var fi3 = document.createElement('input');
-                fi3.type = 'file';
-                fi3.accept = 'video/*,image/*';
-                fi3.onchange = function(e) {
-                    if (e.target.files[0]) {
-                        inputEl.value = (inputEl.value ? inputEl.value + '\n' : '') + '📎 ' + e.target.files[0].name;
-                        charCount.textContent = inputEl.value.length;
-                    }
-                };
-                fi3.click();
-            }
+        function detectPlatform(url) {
+            if (!url) return '';
+            var u = url.toLowerCase();
+            var list = [
+                { k: ['douyin','iesdouyin'], n: '抖音' },
+                { k: ['kuaishou','gifshow'], n: '快手' },
+                { k: ['bilibili','b23.tv'], n: 'B站' },
+                { k: ['taobao','tbopen'], n: '淘宝' },
+                { k: ['youtube','youtu.be'], n: 'YouTube' },
+                { k: ['twitch'], n: 'Twitch' }
+            ];
+            for (var i = 0; i < list.length; i++)
+                for (var j = 0; j < list[i].k.length; j++)
+                    if (u.indexOf(list[i].k[j]) !== -1) return list[i].n;
+            return '';
+        }
+
+        function esc(s) {
+            var d = document.createElement('div');
+            d.appendChild(document.createTextNode(s));
+            return d.innerHTML;
+        }
+
+        // ===== 上传按钮 =====
+        uploadBtnEl.addEventListener('click', function() {
+            hideNudge();
+            var fi = document.createElement('input');
+            fi.type = 'file';
+            fi.accept = 'video/*,image/*,.mp4,.mov,.avi,.mkv';
+            fi.onchange = function(e) {
+                var f = e.target.files[0];
+                if (!f) return;
+                if (f.type.startsWith('image/')) {
+                    refImage = f;
+                    uploadedFile = null;
+                } else {
+                    uploadedFile = f;
+                    refImage = null;
+                }
+                liveLink = '';
+                renderAttachBar();
+            };
+            fi.click();
         });
 
-        // ===== 工具栏链接按钮 =====
-        document.getElementById('linkBtn').addEventListener('click', function() {
-            if (currentSkill === 'livestream') {
-                // 聚焦 Action Slot 里的链接输入
-                var li = document.getElementById('linkBarInput');
-                if (li) { li.focus(); return; }
-            }
+        // ===== 链接按钮 =====
+        linkBtnEl.addEventListener('click', function() {
+            hideNudge();
             var url = prompt('请粘贴视频/直播链接：');
             if (url && url.trim()) {
-                if (currentSkill === 'livestream') {
-                    liveLink = url.trim();
-                    renderLinkBar();
-                } else {
-                    inputEl.value = (inputEl.value ? inputEl.value + '\n' : '') + '🔗 ' + url.trim();
-                    charCount.textContent = inputEl.value.length;
-                }
+                liveLink = url.trim();
+                uploadedFile = null;
+                refImage = null;
+                renderAttachBar();
             }
         });
-
-        // ===== 初始渲染 =====
-        renderSkill(currentSkill);
 
     })();
     </script>
+    <!-- 用户菜单 -->
     <script>
     (function() {
         var avatar = document.getElementById('userAvatar');
@@ -1508,26 +1577,22 @@
             }
         }
 
-        // 点击头像切换下拉
         avatar.addEventListener('click', function(e) {
             e.stopPropagation();
             dropdown.classList.toggle('show');
         });
 
-        // 点击外部关闭
         document.addEventListener('click', function(e) {
             if (!dropdown.contains(e.target) && e.target !== avatar) {
                 dropdown.classList.remove('show');
             }
         });
 
-        // 登录按钮
         loginBtn.addEventListener('click', function(e) {
             e.preventDefault();
             window.location.href = 'login.html';
         });
 
-        // 退出登录
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
             localStorage.removeItem('tideo_user');
@@ -1535,10 +1600,8 @@
             dropdown.classList.remove('show');
         });
 
-        // 初始化
         updateUserUI();
 
-        // 监听 storage 变化（跨标签页同步）
         window.addEventListener('storage', function(e) {
             if (e.key === 'tideo_user') updateUserUI();
         });

@@ -1,14 +1,16 @@
 ---
-description: 自动发布到 Tideo GitHub Pages
-globs: **/*
+description: 
 alwaysApply: true
+enabled: true
+updatedAt: 2026-03-19T07:55:05.599Z
+provider: 
 ---
 
-# 自动发布到 Tideo GitHub Pages
+# 发布到 Tideo GitHub Pages
 
 ## 规则
 
-每次完成代码修改后，**自动执行以下发布流程**（无需用户额外指令）：
+**仅在用户明确要求发布/推送时**才执行以下流程，不要自动发布。
 
 ### 发布步骤
 
@@ -42,6 +44,6 @@ alwaysApply: true
 
 ### 注意事项
 
-- 每次修改完成后**自动执行**，不需要用户说"发布"或"推送"
+- **不要自动发布**，等用户说"发布"、"推送"、"push"等指令时才执行
 - 如果有多个文件改动，合并为一次 commit
 - **只推送到 origin（Tideo）**，绝不推送到 studio-backup / framex 等备份仓库

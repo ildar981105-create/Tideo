@@ -100,7 +100,7 @@ h1, h2, h3, h4, h5, h6,
     left: 0; top: 0; bottom: 0;
     width: var(--sidebar-width);
     background: rgba(10,10,18,0.92);
-    border-right: 1px solid var(--glass-border);
+    border-right: none;
     display: flex;
     flex-direction: column;
     padding: 20px 12px;
@@ -167,13 +167,11 @@ h1, h2, h3, h4, h5, h6,
     border-radius: 0 3px 3px 0;
 }
 .nav-divider {
-    height: 1px;
-    background: var(--glass-border);
-    margin: 8px 12px;
+    display: none;
 }
 .sidebar-bottom {
     padding-top: 12px;
-    border-top: 1px solid var(--glass-border);
+    border-top: none;
 }
 .user-card {
     display: flex;
@@ -215,12 +213,16 @@ h1, h2, h3, h4, h5, h6,
     align-items: center;
     justify-content: space-between;
     padding: 24px 0;
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: none;
     margin-bottom: 0;
 }
 .page-title {
     font-size: 1.4rem;
     font-weight: 700;
+    background: linear-gradient(135deg, #f1f5f9 0%, rgba(148,163,184,0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 .topbar-left {
     display: flex;
@@ -3940,13 +3942,19 @@ body.imm-editor-mode #phaseEditor { height: 100%; }
 }
 
 /* ============================================
-   Creator Layout — 创作者风格布局
-   参考即梦风格：极简图标侧边栏 + 内容驱动首页
+   Creator Layout — 高级暗色风格布局
+   参考即梦/Dreamina：极简图标侧边栏 + 氛围光背景
    ============================================ */
 
 /* 启用创作者布局时的 body 样式 */
 .creator-layout {
-    --icon-sidebar-width: 120px;
+    --icon-sidebar-width: 72px;
+    background:
+        radial-gradient(ellipse 90% 70% at 50% -5%, rgba(124, 58, 237, 0.1) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 85% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 15% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(168, 85, 247, 0.02) 0%, transparent 60%),
+        #08080d;
 }
 
 /* --- 侧边栏 --- */
@@ -3956,14 +3964,15 @@ body.imm-editor-mode #phaseEditor { height: 100%; }
     top: 0;
     bottom: 0;
     width: var(--icon-sidebar-width);
-    background: rgba(10, 10, 18, 0.95);
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(8, 8, 14, 0.6);
+    border-right: none;
     display: flex;
     flex-direction: column;
-    padding: 16px 10px;
+    align-items: center;
+    padding: 16px 0;
     z-index: 100;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
 }
 
 /* Logo 保留顶部 */
@@ -3972,10 +3981,10 @@ body.imm-editor-mode #phaseEditor { height: 100%; }
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 3px;
     height: auto;
-    margin-bottom: 16px;
-    padding-top: 2px;
+    margin-bottom: 20px;
+    padding-top: 4px;
     border-radius: var(--radius-md);
     transition: all var(--duration-normal) var(--ease-out);
     flex-shrink: 0;
@@ -3983,15 +3992,15 @@ body.imm-editor-mode #phaseEditor { height: 100%; }
 }
 
 .icon-sidebar-logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.06);
 }
 
 .icon-sidebar-logo .logo-text {
     font-family: 'Space Grotesk', 'Inter', sans-serif;
-    font-size: 0.6rem;
+    font-size: 0.55rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+    letter-spacing: 0.14em;
+    background: linear-gradient(135deg, #c084fc 0%, #818cf8 50%, #22d3ee 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -4003,116 +4012,103 @@ body.imm-editor-mode #phaseEditor { height: 100%; }
 .icon-nav {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
     flex: 1;
+    align-items: center;
     justify-content: center;
 }
 
-/* 一级导航：图标 + 两字标题 */
+/* 导航项：纯图标 + 小文字竖排 */
 .icon-nav-item {
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    border-radius: var(--radius-md);
-    color: var(--text-muted);
+    justify-content: center;
+    gap: 3px;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border-radius: 14px;
+    color: rgba(148, 163, 184, 0.6);
     transition: all var(--duration-normal) var(--ease-out);
     cursor: pointer;
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: 500;
     white-space: nowrap;
 }
 
 .icon-nav-item svg {
     flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    transition: all var(--duration-normal) var(--ease-out);
 }
 
 /* 展开箭头 — 独立点击热区 */
 .icon-nav-item .nav-arrow {
-    margin-left: auto;
-    width: 14px;
-    height: 14px;
-    flex-shrink: 0;
-    transition: transform 0.25s var(--ease-out);
-    opacity: 0.4;
-    cursor: pointer;
-    padding: 6px;
-    margin: -6px -4px -6px auto;
-    border-radius: var(--radius-sm);
-}
-.icon-nav-item .nav-arrow:hover {
-    opacity: 0.9;
-    background: rgba(255, 255, 255, 0.06);
-}
-.icon-nav-item.expanded .nav-arrow {
-    transform: rotate(90deg);
-    opacity: 0.7;
+    display: none;
 }
 
 .icon-nav-item:hover {
     color: var(--text-primary);
-    background: var(--glass-hover);
+    background: rgba(255, 255, 255, 0.06);
 }
 
+/* 选中态：面性填充背景，无左侧竖条 */
 .icon-nav-item.active {
     color: #fff;
-    background: rgba(99, 102, 241, 0.15);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
 }
 
+.icon-nav-item.active svg {
+    filter: drop-shadow(0 0 6px rgba(168, 133, 247, 0.4));
+}
+
+/* 去掉旧的左侧竖条 */
 .icon-nav-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 20px;
-    background: var(--grad-main);
-    border-radius: 0 3px 3px 0;
+    display: none;
 }
 
-
-
+/* 分割线隐藏 */
 .icon-nav-divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.06);
-    margin: 6px 4px;
+    display: none;
 }
 
 /* 底部导航固定在底部 */
 .icon-nav-bottom {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    align-items: center;
+    gap: 4px;
+    padding-top: 0;
+    border-top: none;
     flex-shrink: 0;
 }
 
 .icon-nav-avatar {
     position: relative;
-    width: 30px;
-    height: 30px;
-    border-radius: var(--radius-sm);
-    background: var(--grad-main);
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: #fff;
     cursor: pointer;
     transition: all var(--duration-normal) var(--ease-out);
-    box-shadow: 0 0 16px rgba(99, 102, 241, 0.2);
-    margin-top: 6px;
-    margin-left: 10px;
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.2);
+    margin-top: 8px;
 }
 
 .icon-nav-avatar:hover {
     transform: scale(1.08);
-    box-shadow: 0 0 24px rgba(99, 102, 241, 0.35);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
 }
 
 /* --- Creator Main Content --- */

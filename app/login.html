@@ -35,7 +35,11 @@
 
     body {
         font-family: 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-        background: var(--bg-base);
+        background:
+            radial-gradient(ellipse 90% 70% at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 55%),
+            radial-gradient(ellipse 60% 50% at 80% 80%, rgba(99, 102, 241, 0.06) 0%, transparent 50%),
+            radial-gradient(ellipse 40% 30% at 20% 60%, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
+            #08080d;
         color: var(--text-primary);
         min-height: 100vh;
         display: flex;
@@ -55,26 +59,26 @@
         position: absolute;
         border-radius: 50%;
         filter: blur(120px);
-        opacity: 0.3;
+        opacity: 0.2;
         animation: orbFloat 20s ease-in-out infinite alternate;
     }
     .login-bg-orb:nth-child(1) {
-        width: 500px; height: 500px;
-        background: var(--purple);
+        width: 550px; height: 550px;
+        background: #7c3aed;
         top: -15%; left: -10%;
     }
     .login-bg-orb:nth-child(2) {
-        width: 400px; height: 400px;
-        background: var(--indigo);
+        width: 450px; height: 450px;
+        background: #4f46e5;
         bottom: -10%; right: -5%;
         animation-delay: -8s;
     }
     .login-bg-orb:nth-child(3) {
-        width: 300px; height: 300px;
-        background: var(--cyan);
+        width: 350px; height: 350px;
+        background: #0891b2;
         top: 40%; right: 20%;
         animation-delay: -15s;
-        opacity: 0.15;
+        opacity: 0.12;
     }
     @keyframes orbFloat {
         0% { transform: translate(0, 0) scale(1); }
@@ -88,13 +92,27 @@
         z-index: 1;
         width: 420px;
         max-width: 92vw;
-        background: rgba(15, 15, 26, 0.85);
-        backdrop-filter: blur(40px);
-        -webkit-backdrop-filter: blur(40px);
-        border: 1px solid var(--glass-border);
-        border-radius: 20px;
+        background: rgba(12, 12, 22, 0.7);
+        backdrop-filter: blur(48px) saturate(1.3);
+        -webkit-backdrop-filter: blur(48px) saturate(1.3);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 22px;
         padding: 40px 36px 36px;
-        box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 60px rgba(99,102,241,0.06);
+        box-shadow:
+            0 24px 80px rgba(0,0,0,0.5),
+            0 0 120px rgba(124,58,237,0.04),
+            inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .login-card::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 15%;
+        right: 15%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(124,58,237,0.4), transparent);
+        pointer-events: none;
+        border-radius: 1px;
     }
 
     /* Logo */
@@ -339,17 +357,30 @@
         font-weight: 700;
         font-family: inherit;
         color: #fff;
-        background: var(--grad-main);
+        background: linear-gradient(135deg, #7c3aed, #4f46e5);
         border: none;
         border-radius: var(--radius-md);
         cursor: pointer;
-        transition: all var(--duration-normal) var(--ease-out);
+        transition: all 0.3s var(--ease-out);
         position: relative;
         overflow: hidden;
     }
+    .login-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: left 0.5s;
+    }
+    .login-btn:hover::before {
+        left: 100%;
+    }
     .login-btn:hover {
         transform: translateY(-1px);
-        box-shadow: 0 6px 24px rgba(99,102,241,0.3);
+        box-shadow: 0 6px 28px rgba(79,70,229,0.3), 0 0 60px rgba(124,58,237,0.1);
     }
     .login-btn:active { transform: translateY(0); }
 
