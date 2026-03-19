@@ -164,12 +164,14 @@
     }
     .action-slot:empty { padding: 0; }
 
-    /* 视频译制 — 上传区 */
+    /* 视频译制 — 上传区（单行紧凑） */
     .action-upload-zone {
-        border: 2px dashed rgba(16,185,129,0.25);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px dashed rgba(16,185,129,0.25);
         border-radius: 12px;
-        padding: 20px 16px;
-        text-align: center;
+        padding: 8px 12px;
         cursor: pointer;
         transition: all 0.25s;
         background: rgba(16,185,129,0.03);
@@ -188,38 +190,39 @@
         display: none;
     }
     .upload-zone-icon {
-        font-size: 1.5rem;
-        margin-bottom: 6px;
-        opacity: 0.8;
+        font-size: 1rem;
+        flex-shrink: 0;
+        width: 28px;
+        text-align: center;
     }
     .upload-zone-text {
         font-size: 0.82rem;
         font-weight: 600;
         color: #34d399;
-        margin-bottom: 3px;
     }
     .upload-zone-hint {
         font-size: 0.68rem;
         color: var(--text-faint);
+        margin-left: auto;
     }
     /* 上传后文件预览 */
     .upload-file-preview {
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px 14px;
+        gap: 8px;
+        padding: 8px 12px;
         background: rgba(16,185,129,0.06);
         border: 1px solid rgba(16,185,129,0.2);
-        border-radius: 10px;
+        border-radius: 12px;
     }
     .upload-file-icon {
-        width: 36px; height: 36px;
-        border-radius: 8px;
+        width: 28px; height: 28px;
+        border-radius: 6px;
         background: rgba(16,185,129,0.12);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1rem;
+        font-size: 0.85rem;
         flex-shrink: 0;
     }
     .upload-file-info { flex: 1; min-width: 0; text-align: left; }
@@ -321,45 +324,53 @@
         flex-shrink: 0;
     }
 
-    /* AI 生成 — 参考图 */
+    /* AI 生成 — 参考图（单行紧凑） */
     .action-ref-upload {
-        display: inline-flex;
+        display: flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 16px;
+        padding: 8px 12px;
         border: 1px dashed rgba(168,85,247,0.25);
-        border-radius: 10px;
+        border-radius: 12px;
         cursor: pointer;
         transition: all 0.25s;
         background: rgba(168,85,247,0.03);
+        width: 100%;
     }
     .action-ref-upload:hover {
         border-color: rgba(168,85,247,0.45);
         background: rgba(168,85,247,0.06);
     }
     .action-ref-upload input[type="file"] { display: none; }
-    .ref-upload-icon { font-size: 1rem; }
+    .ref-upload-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+        width: 28px;
+        text-align: center;
+    }
     .ref-upload-text {
-        font-size: 0.78rem;
+        font-size: 0.82rem;
         font-weight: 500;
         color: #c084fc;
     }
     .ref-upload-hint {
-        font-size: 0.65rem;
+        font-size: 0.68rem;
         color: var(--text-faint);
+        margin-left: auto;
     }
     /* 参考图预览 */
     .ref-preview {
-        display: inline-flex;
+        display: flex;
         align-items: center;
         gap: 8px;
-        padding: 6px 10px;
+        padding: 8px 12px;
         background: rgba(168,85,247,0.06);
         border: 1px solid rgba(168,85,247,0.2);
-        border-radius: 10px;
+        border-radius: 12px;
+        width: 100%;
     }
     .ref-preview-thumb {
-        width: 40px; height: 40px;
+        width: 28px; height: 28px;
         border-radius: 6px;
         object-fit: cover;
     }
