@@ -1,10 +1,10 @@
 ---
-description: 自动发布到 FrameX Studio GitHub Pages
+description: 自动发布到 Tideo GitHub Pages
 globs: **/*
 alwaysApply: true
 ---
 
-# 自动发布到 FrameX Studio GitHub Pages
+# 自动发布到 Tideo GitHub Pages
 
 ## 规则
 
@@ -23,6 +23,7 @@ alwaysApply: true
    git commit -m "<简洁的中文描述>"
    ```
    - commit message 使用中文，简洁描述本次改动
+   - 格式：`feat: xxx`、`fix: xxx`、`refactor: xxx`
 
 3. **推送到 origin**
    ```bash
@@ -43,3 +44,4 @@ alwaysApply: true
 
 - 每次修改完成后**自动执行**，不需要用户说"发布"或"推送"
 - 如果有多个文件改动，合并为一次 commit
+- **不要主动推送到 framex 远程**（framex-app），除非用户明确要求
