@@ -46,4 +46,5 @@ alwaysApply: true
 
 - 产品改名路径：`av-saas` → `FrameX` → **`Tideo`**（2026-03-12）
 - 本项目从 `framex-app` (av-saas) 迁移而来（2026-03-11）
-- 旧项目已冻结归档，不再修改
+- 主仓库迁移：`framex-studio` → **`Tideo`**（2026-03-19）
+- 旧仓库（framex-studio / framex-app / av-saas）全部冻结备份，不再修改
