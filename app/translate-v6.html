@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>视频译制 V6 — FrameX</title>
+    <title>视频译制 V6 — Tideo</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -3109,7 +3109,7 @@
         color: #ef4444;
     }
 
-    /* FrameX 历史任务列表（内联） */
+    /* Tideo 历史任务列表（内联） */
     .tv2-import-history-list {
         display: flex;
         flex-direction: column;
@@ -5573,7 +5573,7 @@
 
     <!-- 侧边栏 -->
     <aside class="icon-sidebar">
-        <a href="create.html" class="icon-sidebar-logo" title="FrameX">
+        <a href="create.html" class="icon-sidebar-logo" title="Tideo">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="28" height="28" rx="8" stroke="url(#sLogo)" stroke-width="2.5"/><path d="M12 10L22 16L12 22V10Z" fill="url(#sLogo)"/><defs><linearGradient id="sLogo" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg>
         </a>
         <nav class="icon-nav">
@@ -5887,16 +5887,16 @@
                             </button>
                         </div>
 
-                        <!-- ── 第三段：FrameX 历史任务 ── -->
+                        <!-- ── 第三段：Tideo 历史任务 ── -->
                         <div class="tv2-import-section-header" style="margin-top:28px;">
-                            <span class="tv2-import-section-label">FrameX 历史任务</span>
+                            <span class="tv2-import-section-label">Tideo 历史任务</span>
                             <span class="tv2-import-section-line"></span>
                             <button class="tv2-import-info-btn" id="importHistoryInfoBtn" type="button" aria-label="说明">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="currentColor"/></svg>
                             </button>
                             <div class="tv2-import-tooltip" id="importHistoryTooltip">
                                 <div class="tv2-import-tooltip-arrow"></div>
-                                <div>在 FrameX 中已经处理完成的译制任务，直接选择即可进入精调模式。</div>
+                                <div>在 Tideo 中已经处理完成的译制任务，直接选择即可进入精调模式。</div>
                             </div>
                         </div>
                         <div class="tv2-import-history-list" id="tv2ImportHistoryList">
@@ -6470,7 +6470,7 @@
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                     </div>
                     <div>
-                        <h3>FrameX AI 助手</h3>
+                        <h3>Tideo AI 助手</h3>
                         <p>上传视频自动处理</p>
                     </div>
                 </div>
@@ -6480,7 +6480,7 @@
                     <div class="chat-bubble chat-bubble--ai" style="animation-delay:0.1s;">
                         <div class="bubble-avatar">
                             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                            FrameX AI
+                            Tideo AI
                         </div>
                         你好！请在左侧上传视频文件，我会自动分析并帮你配置译制参数。
                     </div>
@@ -6564,7 +6564,7 @@
                 </button>
                 <button class="task-import-tab" data-tab="framex">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M9 9L15 12L9 15V9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-                    FrameX 任务
+                    Tideo 任务
                 </button>
             </div>
             <!-- ========== ID 导入面板（默认显示） ========== -->
@@ -6602,11 +6602,11 @@
                     <span>粘贴任务 ID，即可查询并导入</span>
                 </div>
             </div>
-            <!-- ========== FrameX 任务列表面板 ========== -->
+            <!-- ========== Tideo 任务列表面板 ========== -->
             <div class="task-import-framex-panel" id="taskImportFramexPanel" style="display:none;">
                 <div class="task-import-search" id="taskImportSearchWrap">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="var(--text-faint)" stroke-width="1.3"/><path d="M10 10L13 13" stroke="var(--text-faint)" stroke-width="1.3" stroke-linecap="round"/></svg>
-                    <input id="taskImportSearch" type="text" placeholder="搜索 FrameX 任务…">
+                    <input id="taskImportSearch" type="text" placeholder="搜索 Tideo 任务…">
                 </div>
                 <div class="task-import-list" id="taskImportList">
                     <!-- JS 动态填充 -->
@@ -6935,7 +6935,7 @@
             Object.values(tabItems).forEach(tab => {
                 tab.className = 'tv2-tab-item locked';
             });
-            document.querySelector('.tv2-chat-header h3').textContent = 'FrameX AI 助手';
+            document.querySelector('.tv2-chat-header h3').textContent = 'Tideo AI 助手';
             document.querySelector('.tv2-chat-header p').textContent = '上传视频自动处理';
             phase = 'config';
             playing = false;
@@ -7013,7 +7013,7 @@
 
             // Build import chat
             chatFlow.innerHTML = '';
-            const platformLabels = { vod: '云点播', mps: 'MPS 视频处理', framex: 'FrameX' };
+            const platformLabels = { vod: '云点播', mps: 'MPS 视频处理', framex: 'Tideo' };
             const platformName = platformLabels[taskInfo.platform] || '云端';
 
             // User bubble
@@ -7379,7 +7379,7 @@
             scanEl.style.animationDelay = '0s';
             scanEl.innerHTML = `<div class="bubble-avatar">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                    FrameX AI
+                    Tideo AI
                 </div>
                 <div class="chat-scan-loading">
                     <div class="scan-dots"><span></span><span></span><span></span></div>
@@ -7414,7 +7414,7 @@
                 // Replace loading content with full result in the same bubble
                 scanEl.innerHTML = `<div class="bubble-avatar">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                    FrameX AI
+                    Tideo AI
                 </div>
                 <div class="chat-scan-result">
                     <span class="scan-check">
@@ -7461,7 +7461,7 @@
             voiceScanEl.style.animationDelay = '0s';
             voiceScanEl.innerHTML = `<div class="bubble-avatar">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                    FrameX AI
+                    Tideo AI
                 </div>
                 <div class="chat-scan-loading">
                     <div class="scan-dots"><span></span><span></span><span></span></div>
@@ -7487,7 +7487,7 @@
                 const step = 'voice';
                 voiceScanEl.innerHTML = `<div class="bubble-avatar">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                    FrameX AI
+                    Tideo AI
                 </div>
                 <div class="chat-scan-result">
                     <span class="scan-check">
@@ -7658,7 +7658,7 @@
             transScanEl.style.animationDelay = '0s';
             transScanEl.innerHTML = `<div class="bubble-avatar">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                    FrameX AI
+                    Tideo AI
                 </div>
                 <div class="chat-scan-loading">
                     <div class="scan-dots"><span></span><span></span><span></span></div>
@@ -7683,7 +7683,7 @@
                 const step = 'subtitle';
                 transScanEl.innerHTML = `<div class="bubble-avatar">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                    FrameX AI
+                    Tideo AI
                 </div>
                 <div class="chat-scan-result">
                     <span class="scan-check">
@@ -8308,7 +8308,7 @@
             if (type === 'ai') {
                 el.innerHTML = `<div class="bubble-avatar">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                    FrameX AI
+                    Tideo AI
                 </div>` + html;
             } else {
                 el.innerHTML = html;
@@ -9832,7 +9832,7 @@
             });
         }
 
-        // ===== V8: 导入面板 — FrameX 历史任务（内联列表） =====
+        // ===== V8: 导入面板 — Tideo 历史任务（内联列表） =====
         var historyListEl = document.getElementById('tv2ImportHistoryList');
         var historyGoBtn = document.getElementById('tv2ImportHistoryGoBtn');
         var selectedHistoryId = null;

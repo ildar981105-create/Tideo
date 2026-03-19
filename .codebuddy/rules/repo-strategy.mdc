@@ -1,0 +1,23 @@
+---
+description: 仓库策略 — 明确三个仓库的角色和操作约束
+globs: **/*
+alwaysApply: true
+---
+
+# 仓库策略
+
+## 三个仓库的角色
+
+| 仓库 | 用途 | 可否修改 |
+|------|------|---------|
+| `framex-studio`（origin） | **主开发仓库**，所有改动在这里进行 | ✅ 可以 |
+| `framex-app`（framex 远程） | **发布镜像 / 备份**，不主动修改 | ❌ 禁止，除非用户明确要求同步 |
+| `av-saas` | **已冻结归档**，不做任何修改 | ❌ 禁止 |
+
+## 规则
+
+1. **所有代码改动只在 `framex-studio` 中进行**
+2. 改完后只推送 `git push origin main`
+3. **不要主动同步到 `framex-app`**（`git push framex main`），只有用户明确说"同步"或"推到 app"时才执行
+4. 绝不修改 `av-saas` 项目中的任何文件
+5. `framex-studio` 已配置远程 `framex` 指向 `https://github.com/ildar981105-create/framex-app.git`
