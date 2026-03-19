@@ -164,31 +164,26 @@
     }
     .action-slot:empty { padding: 0; }
 
-    /* 视频译制 — 上传区（单行紧凑） */
+    /* 视频译制 — 上传区（单行紧凑，无边框） */
     .action-upload-zone {
         display: flex;
         align-items: center;
         gap: 8px;
-        border: 1px solid rgba(16,185,129,0.2);
-        border-radius: 12px;
-        padding: 0 12px;
+        padding: 0;
         height: 42px;
         cursor: pointer;
         transition: all 0.25s;
-        background: rgba(16,185,129,0.03);
-        position: relative;
     }
-    .action-upload-zone:hover {
-        border-color: rgba(16,185,129,0.45);
-        background: rgba(16,185,129,0.06);
-    }
-    .action-upload-zone.dragover {
-        border-color: rgba(16,185,129,0.6);
-        background: rgba(16,185,129,0.1);
-        box-shadow: 0 0 24px rgba(16,185,129,0.08);
+    .action-upload-zone:hover .upload-zone-text {
+        color: #6ee7b7;
     }
     .action-upload-zone input[type="file"] {
-        display: none;
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
     }
     .upload-zone-icon {
         display: flex;
@@ -260,21 +255,17 @@
         background: rgba(239,68,68,0.15);
     }
 
-    /* 直播剪辑 — 链接栏 */
+    /* 直播剪辑 — 链接栏（无边框） */
     .action-link-bar {
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 0 12px;
+        padding: 0;
         height: 42px;
-        border: 1px solid rgba(249,115,22,0.2);
-        border-radius: 12px;
-        background: rgba(249,115,22,0.03);
         transition: all 0.25s;
     }
-    .action-link-bar:focus-within {
-        border-color: rgba(249,115,22,0.4);
-        background: rgba(249,115,22,0.06);
+    .action-link-bar:focus-within .link-bar-input {
+        color: var(--text-primary);
     }
     .link-bar-icon {
         font-size: 1rem;
@@ -329,25 +320,28 @@
         flex-shrink: 0;
     }
 
-    /* AI 生成 — 参考图（单行紧凑） */
+    /* AI 生成 — 参考图（单行紧凑，无边框） */
     .action-ref-upload {
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 0 12px;
+        padding: 0;
         height: 42px;
-        border: 1px dashed rgba(168,85,247,0.25);
-        border-radius: 12px;
         cursor: pointer;
         transition: all 0.25s;
-        background: rgba(168,85,247,0.03);
         width: 100%;
     }
-    .action-ref-upload:hover {
-        border-color: rgba(168,85,247,0.45);
-        background: rgba(168,85,247,0.06);
+    .action-ref-upload:hover .ref-upload-text {
+        color: #d8b4fe;
     }
-    .action-ref-upload input[type="file"] { display: none; }
+    .action-ref-upload input[type="file"] {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+    }
     .ref-upload-icon {
         font-size: 1rem;
         flex-shrink: 0;
