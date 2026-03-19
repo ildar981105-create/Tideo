@@ -156,11 +156,242 @@
         border-color: rgba(168,85,247,0.35);
         box-shadow: 0 0 0 4px rgba(168,85,247,0.06), 0 0 40px rgba(168,85,247,0.05);
     }
+
+    /* ---- Action Slot ---- */
+    .action-slot {
+        padding: 14px 16px 0;
+        transition: all 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .action-slot:empty { padding: 0; }
+
+    /* 视频译制 — 上传区 */
+    .action-upload-zone {
+        border: 2px dashed rgba(16,185,129,0.25);
+        border-radius: 12px;
+        padding: 20px 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.25s;
+        background: rgba(16,185,129,0.03);
+        position: relative;
+    }
+    .action-upload-zone:hover {
+        border-color: rgba(16,185,129,0.45);
+        background: rgba(16,185,129,0.06);
+    }
+    .action-upload-zone.dragover {
+        border-color: rgba(16,185,129,0.6);
+        background: rgba(16,185,129,0.1);
+        box-shadow: 0 0 24px rgba(16,185,129,0.08);
+    }
+    .action-upload-zone input[type="file"] {
+        display: none;
+    }
+    .upload-zone-icon {
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+        opacity: 0.8;
+    }
+    .upload-zone-text {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #34d399;
+        margin-bottom: 3px;
+    }
+    .upload-zone-hint {
+        font-size: 0.68rem;
+        color: var(--text-faint);
+    }
+    /* 上传后文件预览 */
+    .upload-file-preview {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        background: rgba(16,185,129,0.06);
+        border: 1px solid rgba(16,185,129,0.2);
+        border-radius: 10px;
+    }
+    .upload-file-icon {
+        width: 36px; height: 36px;
+        border-radius: 8px;
+        background: rgba(16,185,129,0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    .upload-file-info { flex: 1; min-width: 0; text-align: left; }
+    .upload-file-name {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .upload-file-size {
+        font-size: 0.65rem;
+        color: var(--text-faint);
+        font-family: 'JetBrains Mono', monospace;
+    }
+    .upload-file-remove {
+        width: 28px; height: 28px;
+        border-radius: 6px;
+        border: none;
+        background: rgba(239,68,68,0.08);
+        color: #ef4444;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        font-family: inherit;
+    }
+    .upload-file-remove:hover {
+        background: rgba(239,68,68,0.15);
+    }
+
+    /* 直播剪辑 — 链接栏 */
+    .action-link-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border: 1px solid rgba(249,115,22,0.2);
+        border-radius: 12px;
+        background: rgba(249,115,22,0.03);
+        transition: all 0.25s;
+    }
+    .action-link-bar:focus-within {
+        border-color: rgba(249,115,22,0.4);
+        background: rgba(249,115,22,0.06);
+    }
+    .link-bar-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+        width: 28px;
+        text-align: center;
+    }
+    .link-bar-input {
+        flex: 1;
+        border: none;
+        background: none;
+        color: var(--text-primary);
+        font-size: 0.82rem;
+        font-family: 'JetBrains Mono', monospace;
+        outline: none;
+        min-width: 0;
+    }
+    .link-bar-input::placeholder {
+        color: var(--text-faint);
+        font-family: inherit;
+    }
+    .link-bar-paste-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 14px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #fb923c;
+        background: rgba(249,115,22,0.1);
+        border: 1px solid rgba(249,115,22,0.25);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .link-bar-paste-btn:hover {
+        background: rgba(249,115,22,0.18);
+        border-color: rgba(249,115,22,0.4);
+    }
+    .link-platform-tag {
+        font-size: 0.62rem;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 4px;
+        background: rgba(249,115,22,0.12);
+        color: #fb923c;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* AI 生成 — 参考图 */
+    .action-ref-upload {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border: 1px dashed rgba(168,85,247,0.25);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.25s;
+        background: rgba(168,85,247,0.03);
+    }
+    .action-ref-upload:hover {
+        border-color: rgba(168,85,247,0.45);
+        background: rgba(168,85,247,0.06);
+    }
+    .action-ref-upload input[type="file"] { display: none; }
+    .ref-upload-icon { font-size: 1rem; }
+    .ref-upload-text {
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: #c084fc;
+    }
+    .ref-upload-hint {
+        font-size: 0.65rem;
+        color: var(--text-faint);
+    }
+    /* 参考图预览 */
+    .ref-preview {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        background: rgba(168,85,247,0.06);
+        border: 1px solid rgba(168,85,247,0.2);
+        border-radius: 10px;
+    }
+    .ref-preview-thumb {
+        width: 40px; height: 40px;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+    .ref-preview-name {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        max-width: 140px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .ref-preview-remove {
+        width: 24px; height: 24px;
+        border-radius: 5px;
+        border: none;
+        background: rgba(239,68,68,0.08);
+        color: #ef4444;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+    .ref-preview-remove:hover { background: rgba(239,68,68,0.15); }
+
+    /* ---- Textarea ---- */
     .create-input-textarea {
         width: 100%;
-        min-height: 88px;
-        max-height: 180px;
-        padding: 16px 18px 6px;
+        min-height: 72px;
+        max-height: 160px;
+        padding: 12px 18px 6px;
         background: transparent;
         border: none;
         color: var(--text-primary);
@@ -172,12 +403,124 @@
     }
     .create-input-textarea::placeholder { color: var(--text-faint); }
 
+    /* ---- Config Capsules 配置胶囊 ---- */
+    .config-capsules {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 4px 16px 10px;
+        transition: all 0.3s;
+    }
+    .config-capsule {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 12px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 100px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+        user-select: none;
+    }
+    .config-capsule:hover {
+        color: var(--text-primary);
+        border-color: rgba(255,255,255,0.18);
+        background: rgba(255,255,255,0.06);
+    }
+    .config-capsule.modified {
+        border-color: rgba(99,102,241,0.35);
+        color: var(--text-primary);
+        background: rgba(99,102,241,0.06);
+    }
+    .skill-translate .config-capsule.modified {
+        border-color: rgba(16,185,129,0.35);
+        background: rgba(16,185,129,0.06);
+        color: #34d399;
+    }
+    .skill-livestream .config-capsule.modified {
+        border-color: rgba(249,115,22,0.35);
+        background: rgba(249,115,22,0.06);
+        color: #fb923c;
+    }
+    .skill-generate .config-capsule.modified {
+        border-color: rgba(168,85,247,0.35);
+        background: rgba(168,85,247,0.06);
+        color: #c084fc;
+    }
+    .capsule-value {
+        font-weight: 600;
+    }
+    .capsule-arrow {
+        font-size: 0.55rem;
+        opacity: 0.5;
+        transition: transform 0.2s;
+    }
+    .config-capsule.open .capsule-arrow {
+        transform: rotate(180deg);
+    }
+
+    /* Capsule Dropdown */
+    .capsule-dropdown {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 120px;
+        background: rgba(15,15,26,0.96);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 4px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    }
+    .capsule-dropdown.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+    .capsule-dropdown-item {
+        display: block;
+        width: 100%;
+        padding: 7px 12px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        background: none;
+        border: none;
+        border-radius: 7px;
+        cursor: pointer;
+        transition: all 0.15s;
+        text-align: left;
+        white-space: nowrap;
+        font-family: inherit;
+    }
+    .capsule-dropdown-item:hover {
+        color: var(--text-primary);
+        background: rgba(255,255,255,0.06);
+    }
+    .capsule-dropdown-item.selected {
+        color: #a78bfa;
+        background: rgba(99,102,241,0.08);
+    }
+
     /* Toolbar 底栏 */
     .create-input-toolbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 6px 14px 10px;
+        border-top: 1px solid rgba(255,255,255,0.04);
     }
     .create-input-left {
         display: flex;
@@ -287,95 +630,6 @@
         transform: translateX(0);
     }
 
-    /* ---- 默认配置折叠面板 ---- */
-    .create-config-toggle {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 16px;
-        font-size: 0.72rem;
-        font-weight: 500;
-        color: var(--text-faint);
-        background: none;
-        border: 1px solid rgba(255,255,255,0.06);
-        border-radius: 100px;
-        cursor: pointer;
-        transition: all 0.2s;
-        font-family: inherit;
-        margin-bottom: 12px;
-    }
-    .create-config-toggle:hover {
-        color: var(--text-muted);
-        border-color: rgba(255,255,255,0.12);
-    }
-    .create-config-toggle svg {
-        transition: transform 0.3s;
-    }
-    .create-config-toggle.open svg {
-        transform: rotate(180deg);
-    }
-
-    .create-config-panel {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
-        opacity: 0;
-    }
-    .create-config-panel.open {
-        max-height: 300px;
-        opacity: 1;
-    }
-    .create-config-inner {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 16px 0;
-    }
-    .create-config-item {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        text-align: left;
-    }
-    .create-config-item label {
-        font-size: 0.65rem;
-        font-weight: 600;
-        color: var(--text-faint);
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-    }
-    .create-config-item select {
-        padding: 7px 10px;
-        font-size: 0.78rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 10px;
-        outline: none;
-        appearance: none;
-        font-family: inherit;
-        cursor: pointer;
-        transition: all 0.2s;
-        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23636e82' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        padding-right: 28px;
-    }
-    .create-config-item select:hover {
-        border-color: rgba(255,255,255,0.15);
-    }
-    .create-config-item select:focus {
-        border-color: rgba(99,102,241,0.4);
-        box-shadow: 0 0 0 3px rgba(99,102,241,0.06);
-    }
-    .create-config-item select option {
-        background: #0f0f1a;
-        color: #e2e8f0;
-    }
-
     /* ---- 底部能力标签 ---- */
     .create-caps {
         display: flex;
@@ -402,10 +656,10 @@
         .create-hero h1 { font-size: 1.5rem; }
         .skill-selector { gap: 6px; }
         .skill-pill { padding: 7px 14px; font-size: 0.75rem; }
-        .create-config-inner { grid-template-columns: repeat(2, 1fr); }
+        .config-capsules { gap: 5px; }
+        .config-capsule { padding: 4px 10px; font-size: 0.68rem; }
     }
     @media (max-width: 480px) {
-        .create-config-inner { grid-template-columns: 1fr; }
         .create-caps { flex-wrap: wrap; gap: 12px; }
     }
 
@@ -583,10 +837,16 @@
                     </button>
                 </div>
 
-                <!-- 统一输入框 -->
+                <!-- 统一输入框（任务卡） -->
                 <div class="create-input-wrap">
                     <div class="create-input-box skill-translate" id="createInputBox">
+                        <!-- Action Slot：根据 Skill 动态变化 -->
+                        <div class="action-slot" id="actionSlot"></div>
+                        <!-- 文本输入 -->
                         <textarea class="create-input-textarea" id="createInput" placeholder="上传一段视频，翻译成英语..."></textarea>
+                        <!-- 配置胶囊 -->
+                        <div class="config-capsules" id="configCapsules"></div>
+                        <!-- 底栏 -->
                         <div class="create-input-toolbar">
                             <div class="create-input-left">
                                 <button class="create-input-icon-btn" id="uploadBtn" title="上传文件">
@@ -613,17 +873,6 @@
                     </div>
                 </div>
 
-                <!-- 默认配置折叠 -->
-                <button class="create-config-toggle" id="configToggle">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    高级配置
-                </button>
-                <div class="create-config-panel" id="configPanel">
-                    <div class="create-config-inner" id="configInner">
-                        <!-- 动态根据 skill 填充 -->
-                    </div>
-                </div>
-
                 <!-- 能力标签 -->
                 <div class="create-caps" id="createCaps">
                     <span class="create-cap"><span class="create-cap-dot"></span> 口型同步</span>
@@ -640,12 +889,12 @@
     <script>
     (function() {
         // ===== Skill 定义 =====
-        const skills = {
+        var skills = {
             translate: {
                 name: '视频译制',
                 url: 'translate-v6.html',
                 inputClass: 'skill-translate',
-                placeholder: '上传一段视频，翻译成英语...',
+                placeholder: '补充说明，如"翻译成英文，保留原声字幕"...',
                 prompts: [
                     { icon: '🌐', text: '把我的视频翻译成英文', params: { lang: 'en' } },
                     { icon: '🇯🇵', text: '翻译成日语，保留原声字幕', params: { lang: 'ja', keepOriginal: true } },
@@ -660,22 +909,22 @@
                         { value: 'pt', text: '葡萄牙语' }, { value: 'ar', text: '阿拉伯语' },
                         { value: 'ru', text: '俄语' }, { value: 'th', text: '泰语' }
                     ]},
-                    { key: 'voiceStyle', label: '配音音色', options: [
+                    { key: 'voiceStyle', label: '音色', options: [
                         { value: 'auto', text: '自动匹配' }, { value: 'female', text: '自然女声' },
                         { value: 'male', text: '自然男声' }, { value: 'clone', text: '声音克隆' }
                     ]},
-                    { key: 'subtitle', label: '字幕样式', options: [
-                        { value: 'bottom', text: '底部居中' }, { value: 'bilingual', text: '中英双语' },
+                    { key: 'subtitle', label: '字幕', options: [
+                        { value: 'bottom', text: '底部字幕' }, { value: 'bilingual', text: '双语字幕' },
                         { value: 'none', text: '不加字幕' }
                     ]},
-                    { key: 'lipSync', label: '口型同步', options: [
-                        { value: 'on', text: '开启' }, { value: 'off', text: '关闭' }
+                    { key: 'lipSync', label: '口型', options: [
+                        { value: 'on', text: '同步:开' }, { value: 'off', text: '同步:关' }
                     ]},
-                    { key: 'quality', label: '输出画质', options: [
+                    { key: 'quality', label: '画质', options: [
                         { value: '720', text: '720p' }, { value: '1080', text: '1080p' },
                         { value: '4k', text: '4K' }
                     ]},
-                    { key: 'speed', label: '处理速度', options: [
+                    { key: 'speed', label: '速度', options: [
                         { value: 'fast', text: '极速' }, { value: 'standard', text: '标准' },
                         { value: 'quality', text: '质量优先' }
                     ]}
@@ -688,7 +937,7 @@
                 name: '直播剪辑',
                 url: 'livestream.html',
                 inputClass: 'skill-livestream',
-                placeholder: '粘贴直播链接，或描述你想要的剪辑方式...',
+                placeholder: '补充说明，如"只要高光片段，竖屏输出"...',
                 prompts: [
                     { icon: '🔴', text: '监控抖音直播，自动剪辑精彩片段', params: { platform: 'douyin' } },
                     { icon: '✂️', text: '把直播录像剪成 3 分钟短视频', params: { duration: 180 } },
@@ -696,28 +945,28 @@
                     { icon: '🏆', text: '自动识别游戏直播高光时刻', params: { mode: 'highlight' } }
                 ],
                 config: [
-                    { key: 'platform', label: '直播平台', options: [
+                    { key: 'platform', label: '平台', options: [
                         { value: 'douyin', text: '抖音' }, { value: 'kuaishou', text: '快手' },
                         { value: 'bilibili', text: 'B站' }, { value: 'taobao', text: '淘宝直播' },
                         { value: 'other', text: '其他' }
                     ]},
-                    { key: 'clipDuration', label: '片段时长', options: [
+                    { key: 'clipDuration', label: '时长', options: [
                         { value: '30', text: '30秒' }, { value: '60', text: '1分钟' },
                         { value: '180', text: '3分钟' }, { value: '300', text: '5分钟' }
                     ]},
-                    { key: 'clipCount', label: '片段数量', options: [
-                        { value: '3', text: '3 个' }, { value: '5', text: '5 个' },
-                        { value: '10', text: '10 个' }, { value: 'auto', text: '自动' }
+                    { key: 'clipCount', label: '数量', options: [
+                        { value: '3', text: '3个' }, { value: '5', text: '5个' },
+                        { value: '10', text: '10个' }, { value: 'auto', text: '自动' }
                     ]},
-                    { key: 'ratio', label: '输出比例', options: [
-                        { value: '9:16', text: '9:16 竖屏' }, { value: '16:9', text: '16:9 横屏' },
-                        { value: '1:1', text: '1:1 方形' }
+                    { key: 'ratio', label: '比例', options: [
+                        { value: '9:16', text: '9:16竖屏' }, { value: '16:9', text: '16:9横屏' },
+                        { value: '1:1', text: '1:1方形' }
                     ]},
-                    { key: 'quality', label: '输出画质', options: [
+                    { key: 'quality', label: '画质', options: [
                         { value: '720', text: '720p' }, { value: '1080', text: '1080p' }
                     ]},
-                    { key: 'addCaption', label: '自动加字幕', options: [
-                        { value: 'on', text: '开启' }, { value: 'off', text: '关闭' }
+                    { key: 'addCaption', label: '字幕', options: [
+                        { value: 'on', text: '加字幕' }, { value: 'off', text: '不加' }
                     ]}
                 ],
                 caps: [
@@ -728,7 +977,7 @@
                 name: 'AI 生成',
                 url: 'generate.html',
                 inputClass: 'skill-generate',
-                placeholder: '描述你想生成的视频，或上传参考图片...',
+                placeholder: '描述你想生成的视频内容...',
                 prompts: [
                     { icon: '📦', text: '用产品图生成 15 秒广告视频', params: { mode: 'product' } },
                     { icon: '🎬', text: '写一个温暖的咖啡店故事短片', params: { mode: 'story' } },
@@ -736,28 +985,28 @@
                     { icon: '✈️', text: '生成一段旅行 Vlog 风格视频', params: { style: 'vlog' } }
                 ],
                 config: [
-                    { key: 'style', label: '视频风格', options: [
+                    { key: 'style', label: '风格', options: [
                         { value: 'cinematic', text: '电影感' }, { value: 'realistic', text: '写实' },
                         { value: 'anime', text: '动画' }, { value: 'cyber', text: '赛博朋克' },
-                        { value: 'watercolor', text: '水彩画' }, { value: '3d', text: '3D 渲染' }
+                        { value: 'watercolor', text: '水彩画' }, { value: '3d', text: '3D渲染' }
                     ]},
-                    { key: 'ratio', label: '画面比例', options: [
-                        { value: '16:9', text: '16:9 横屏' }, { value: '9:16', text: '9:16 竖屏' },
-                        { value: '1:1', text: '1:1 方形' }
+                    { key: 'ratio', label: '比例', options: [
+                        { value: '16:9', text: '16:9横屏' }, { value: '9:16', text: '9:16竖屏' },
+                        { value: '1:1', text: '1:1方形' }
                     ]},
-                    { key: 'duration', label: '视频时长', options: [
+                    { key: 'duration', label: '时长', options: [
                         { value: '15', text: '15秒' }, { value: '30', text: '30秒' },
                         { value: '60', text: '1分钟' }, { value: '180', text: '3分钟' }
                     ]},
-                    { key: 'quality', label: '输出画质', options: [
+                    { key: 'quality', label: '画质', options: [
                         { value: '720', text: '720p' }, { value: '1080', text: '1080p' },
                         { value: '4k', text: '4K' }
                     ]},
-                    { key: 'bgm', label: '背景音乐', options: [
+                    { key: 'bgm', label: '配乐', options: [
                         { value: 'auto', text: '自动配乐' }, { value: 'none', text: '无' },
                         { value: 'upbeat', text: '轻快' }, { value: 'cinematic', text: '大气' }
                     ]},
-                    { key: 'voice', label: '旁白配音', options: [
+                    { key: 'voice', label: '旁白', options: [
                         { value: 'none', text: '无旁白' }, { value: 'female', text: '女声旁白' },
                         { value: 'male', text: '男声旁白' }
                     ]}
@@ -768,17 +1017,20 @@
             }
         };
 
-        let currentSkill = 'translate';
+        var currentSkill = 'translate';
+        var uploadedFile = null;   // 视频译制上传的文件
+        var refImage = null;       // AI 生成参考图
+        var liveLink = '';         // 直播剪辑链接
+        var configValues = {};     // 当前胶囊的选中值
 
         // ===== DOM =====
-        const inputBox = document.getElementById('createInputBox');
-        const inputEl = document.getElementById('createInput');
-        const charCount = document.getElementById('createCharCount');
-        const promptsChips = document.getElementById('promptsChips');
-        const configInner = document.getElementById('configInner');
-        const capsEl = document.getElementById('createCaps');
-        const configToggle = document.getElementById('configToggle');
-        const configPanel = document.getElementById('configPanel');
+        var inputBox = document.getElementById('createInputBox');
+        var inputEl = document.getElementById('createInput');
+        var charCount = document.getElementById('createCharCount');
+        var actionSlot = document.getElementById('actionSlot');
+        var configCapsules = document.getElementById('configCapsules');
+        var promptsChips = document.getElementById('promptsChips');
+        var capsEl = document.getElementById('createCaps');
 
         // ===== 字符计数 =====
         inputEl.addEventListener('input', function() {
@@ -793,53 +1045,283 @@
                 document.querySelectorAll('.skill-pill').forEach(function(p) { p.classList.remove('active'); });
                 this.classList.add('active');
                 currentSkill = sk;
+                uploadedFile = null;
+                refImage = null;
+                liveLink = '';
                 renderSkill(sk);
             });
         });
 
         function renderSkill(sk) {
             var skill = skills[sk];
-            // 输入框样式
             inputBox.className = 'create-input-box ' + skill.inputClass;
             inputEl.placeholder = skill.placeholder;
             inputEl.value = '';
             charCount.textContent = '0';
-            // 提示词
+            renderActionSlot(sk);
+            renderCapsules(skill.config);
             renderPrompts(skill.prompts);
-            // 配置
-            renderConfig(skill.config);
-            // 能力标签
             renderCaps(skill.caps);
         }
 
+        // ===== Action Slot =====
+        function renderActionSlot(sk) {
+            actionSlot.innerHTML = '';
+            if (sk === 'translate') {
+                renderUploadZone();
+            } else if (sk === 'livestream') {
+                renderLinkBar();
+            } else if (sk === 'generate') {
+                renderRefUpload();
+            }
+        }
+
+        // -- 视频译制：上传区 --
+        function renderUploadZone() {
+            if (uploadedFile) {
+                renderUploadPreview();
+                return;
+            }
+            actionSlot.innerHTML = 
+                '<div class="action-upload-zone" id="uploadZone">' +
+                    '<input type="file" accept="video/*,.mp4,.mov,.avi,.mkv,.flv,.wmv" id="uploadZoneInput">' +
+                    '<div class="upload-zone-icon">📁</div>' +
+                    '<div class="upload-zone-text">点击或拖拽上传视频</div>' +
+                    '<div class="upload-zone-hint">支持 MP4 / MOV / AVI · 最大 2GB</div>' +
+                '</div>';
+            var zone = document.getElementById('uploadZone');
+            var fileInput = document.getElementById('uploadZoneInput');
+            zone.addEventListener('click', function() { fileInput.click(); });
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files[0]) {
+                    uploadedFile = e.target.files[0];
+                    renderUploadPreview();
+                }
+            });
+            // 拖拽
+            zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+            zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
+            zone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                zone.classList.remove('dragover');
+                var f = e.dataTransfer.files[0];
+                if (f && f.type.startsWith('video/')) {
+                    uploadedFile = f;
+                    renderUploadPreview();
+                }
+            });
+        }
+
+        function renderUploadPreview() {
+            var sizeMB = (uploadedFile.size / 1048576).toFixed(1);
+            actionSlot.innerHTML = 
+                '<div class="upload-file-preview">' +
+                    '<div class="upload-file-icon">🎬</div>' +
+                    '<div class="upload-file-info">' +
+                        '<div class="upload-file-name">' + escHTML(uploadedFile.name) + '</div>' +
+                        '<div class="upload-file-size">' + sizeMB + ' MB</div>' +
+                    '</div>' +
+                    '<button class="upload-file-remove" id="uploadRemoveBtn" title="移除">' +
+                        '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+                    '</button>' +
+                '</div>';
+            document.getElementById('uploadRemoveBtn').addEventListener('click', function() {
+                uploadedFile = null;
+                renderUploadZone();
+            });
+        }
+
+        // -- 直播剪辑：链接栏 --
+        function renderLinkBar() {
+            actionSlot.innerHTML = 
+                '<div class="action-link-bar">' +
+                    '<span class="link-bar-icon" id="linkPlatformIcon">🔗</span>' +
+                    '<input type="url" class="link-bar-input" id="linkBarInput" placeholder="粘贴直播/录像链接..." value="' + escHTML(liveLink) + '">' +
+                    '<span class="link-platform-tag" id="linkPlatformTag" style="display:none"></span>' +
+                    '<button class="link-bar-paste-btn" id="linkBarPasteBtn">' +
+                        '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="1" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 4V10.5C1 11.0523 1.44772 11.5 2 11.5H7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>' +
+                        ' 粘贴' +
+                    '</button>' +
+                '</div>';
+            var linkInput = document.getElementById('linkBarInput');
+            var pasteBtn = document.getElementById('linkBarPasteBtn');
+            
+            linkInput.addEventListener('input', function() {
+                liveLink = this.value;
+                detectPlatform(this.value);
+            });
+            
+            pasteBtn.addEventListener('click', function() {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    navigator.clipboard.readText().then(function(text) {
+                        if (text && text.trim()) {
+                            linkInput.value = text.trim();
+                            liveLink = text.trim();
+                            detectPlatform(text.trim());
+                        }
+                    }).catch(function() {
+                        linkInput.focus();
+                    });
+                } else {
+                    linkInput.focus();
+                }
+            });
+
+            if (liveLink) detectPlatform(liveLink);
+        }
+
+        function detectPlatform(url) {
+            var icon = document.getElementById('linkPlatformIcon');
+            var tag = document.getElementById('linkPlatformTag');
+            if (!url) { icon.textContent = '🔗'; tag.style.display = 'none'; return; }
+            var u = url.toLowerCase();
+            var platforms = [
+                { keys: ['douyin', 'iesdouyin'], icon: '📱', name: '抖音' },
+                { keys: ['kuaishou', 'gifshow'], icon: '📹', name: '快手' },
+                { keys: ['bilibili', 'b23.tv'], icon: '📺', name: 'B站' },
+                { keys: ['taobao', 'tbopen'], icon: '🛒', name: '淘宝' },
+                { keys: ['youtube', 'youtu.be'], icon: '▶️', name: 'YouTube' },
+                { keys: ['twitch'], icon: '🟣', name: 'Twitch' }
+            ];
+            for (var i = 0; i < platforms.length; i++) {
+                for (var j = 0; j < platforms[i].keys.length; j++) {
+                    if (u.indexOf(platforms[i].keys[j]) !== -1) {
+                        icon.textContent = platforms[i].icon;
+                        tag.textContent = platforms[i].name;
+                        tag.style.display = 'inline';
+                        return;
+                    }
+                }
+            }
+            icon.textContent = '🔗';
+            tag.style.display = 'none';
+        }
+
+        // -- AI 生成：参考图上传 --
+        function renderRefUpload() {
+            if (refImage) {
+                renderRefPreview();
+                return;
+            }
+            actionSlot.innerHTML = 
+                '<div class="action-ref-upload" id="refUploadZone">' +
+                    '<input type="file" accept="image/*" id="refFileInput">' +
+                    '<span class="ref-upload-icon">🖼️</span>' +
+                    '<span class="ref-upload-text">上传参考图</span>' +
+                    '<span class="ref-upload-hint">（可选）</span>' +
+                '</div>';
+            var refZone = document.getElementById('refUploadZone');
+            var refInput = document.getElementById('refFileInput');
+            refZone.addEventListener('click', function() { refInput.click(); });
+            refInput.addEventListener('change', function(e) {
+                if (e.target.files[0]) {
+                    refImage = e.target.files[0];
+                    renderRefPreview();
+                }
+            });
+        }
+
+        function renderRefPreview() {
+            var url = URL.createObjectURL(refImage);
+            actionSlot.innerHTML = 
+                '<div class="ref-preview">' +
+                    '<img class="ref-preview-thumb" src="' + url + '" alt="参考图">' +
+                    '<span class="ref-preview-name">' + escHTML(refImage.name) + '</span>' +
+                    '<button class="ref-preview-remove" id="refRemoveBtn" title="移除">' +
+                        '<svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+                    '</button>' +
+                '</div>';
+            document.getElementById('refRemoveBtn').addEventListener('click', function() {
+                refImage = null;
+                renderRefUpload();
+            });
+        }
+
+        // ===== Config Capsules 胶囊渲染 =====
+        function renderCapsules(config) {
+            configValues = {};
+            config.forEach(function(c) {
+                configValues[c.key] = c.options[0].value;
+            });
+            configCapsules.innerHTML = config.map(function(c, idx) {
+                return '<div class="config-capsule" data-key="' + c.key + '" data-idx="' + idx + '">' +
+                    '<span class="capsule-value">' + c.options[0].text + '</span>' +
+                    '<span class="capsule-arrow">▾</span>' +
+                    '<div class="capsule-dropdown" id="capsuleDrop_' + c.key + '">' +
+                        c.options.map(function(o, oi) {
+                            return '<button class="capsule-dropdown-item' + (oi === 0 ? ' selected' : '') + '" data-value="' + o.value + '" data-text="' + escHTML(o.text) + '">' + escHTML(o.text) + '</button>';
+                        }).join('') +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            // 绑定胶囊点击
+            configCapsules.querySelectorAll('.config-capsule').forEach(function(capsule) {
+                capsule.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var dropdown = capsule.querySelector('.capsule-dropdown');
+                    var isOpen = dropdown.classList.contains('show');
+                    // 关闭所有
+                    closeAllDropdowns();
+                    if (!isOpen) {
+                        dropdown.classList.add('show');
+                        capsule.classList.add('open');
+                    }
+                });
+                // 下拉选项点击
+                capsule.querySelectorAll('.capsule-dropdown-item').forEach(function(item) {
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var key = capsule.dataset.key;
+                        var val = item.dataset.value;
+                        var txt = item.dataset.text;
+                        configValues[key] = val;
+                        capsule.querySelector('.capsule-value').textContent = txt;
+                        // 标记已修改（非默认值）
+                        var config = skills[currentSkill].config;
+                        var cfgItem = config.find(function(c) { return c.key === key; });
+                        if (cfgItem && val !== cfgItem.options[0].value) {
+                            capsule.classList.add('modified');
+                        } else {
+                            capsule.classList.remove('modified');
+                        }
+                        // 更新选中态
+                        capsule.querySelectorAll('.capsule-dropdown-item').forEach(function(d) { d.classList.remove('selected'); });
+                        item.classList.add('selected');
+                        closeAllDropdowns();
+                    });
+                });
+            });
+        }
+
+        function closeAllDropdowns() {
+            document.querySelectorAll('.capsule-dropdown.show').forEach(function(d) { d.classList.remove('show'); });
+            document.querySelectorAll('.config-capsule.open').forEach(function(c) { c.classList.remove('open'); });
+        }
+
+        // 点击外部关闭胶囊下拉
+        document.addEventListener('click', function() { closeAllDropdowns(); });
+
+        // ===== 渲染快捷提示词 =====
         function renderPrompts(prompts) {
             promptsChips.innerHTML = prompts.map(function(p) {
                 return '<button class="create-prompt-chip" data-text="' + escHTML(p.text) + '">' + 
                     p.icon + ' ' + escHTML(p.text) + 
                     '<span class="chip-arrow">→</span></button>';
             }).join('');
-            // 绑定点击
             promptsChips.querySelectorAll('.create-prompt-chip').forEach(function(chip) {
                 chip.addEventListener('click', function() {
                     inputEl.value = this.dataset.text;
                     charCount.textContent = inputEl.value.length;
                     inputEl.focus();
-                    // 添加点击反馈动画
                     this.style.transform = 'scale(0.95)';
-                    setTimeout(function() { chip.style.transform = ''; }, 150);
+                    var c = chip;
+                    setTimeout(function() { c.style.transform = ''; }, 150);
                 });
             });
         }
 
-        function renderConfig(config) {
-            configInner.innerHTML = config.map(function(c) {
-                var opts = c.options.map(function(o) {
-                    return '<option value="' + o.value + '">' + o.text + '</option>';
-                }).join('');
-                return '<div class="create-config-item"><label>' + c.label + '</label><select data-key="' + c.key + '">' + opts + '</select></div>';
-            }).join('');
-        }
-
+        // ===== 渲染能力标签 =====
         function renderCaps(caps) {
             capsEl.innerHTML = caps.map(function(c) {
                 return '<span class="create-cap"><span class="create-cap-dot"></span> ' + c + '</span>';
@@ -852,12 +1334,6 @@
             return div.innerHTML;
         }
 
-        // ===== 配置面板折叠 =====
-        configToggle.addEventListener('click', function() {
-            this.classList.toggle('open');
-            configPanel.classList.toggle('open');
-        });
-
         // ===== 意图识别 + 路由跳转 =====
         document.getElementById('createSubmitBtn').addEventListener('click', handleSubmit);
         inputEl.addEventListener('keydown', function(e) {
@@ -869,12 +1345,9 @@
 
         function handleSubmit() {
             var text = inputEl.value.trim();
-            // 没有输入也允许跳转（可以直接去功能页）
             var skill = skills[currentSkill];
-            // 尝试意图识别
             var detectedSkill = detectIntent(text);
             if (detectedSkill && detectedSkill !== currentSkill) {
-                // 用户输入和当前选中的 Skill 不一致，切换到识别到的
                 currentSkill = detectedSkill;
                 skill = skills[detectedSkill];
                 document.querySelectorAll('.skill-pill').forEach(function(p) { p.classList.remove('active'); });
@@ -882,17 +1355,18 @@
                 renderSkill(detectedSkill);
             }
 
-            // 构建跳转 URL
             var url = skill.url;
             var params = [];
             if (text) params.push('prompt=' + encodeURIComponent(text));
-            // 收集配置
-            configInner.querySelectorAll('select').forEach(function(sel) {
-                params.push(sel.dataset.key + '=' + encodeURIComponent(sel.value));
+            // 收集胶囊配置值
+            Object.keys(configValues).forEach(function(key) {
+                params.push(key + '=' + encodeURIComponent(configValues[key]));
             });
+            // 直播链接
+            if (currentSkill === 'livestream' && liveLink) {
+                params.push('liveUrl=' + encodeURIComponent(liveLink));
+            }
             if (params.length) url += '?' + params.join('&');
-
-            // 跳转
             window.location.href = url;
         }
 
@@ -900,11 +1374,8 @@
         function detectIntent(text) {
             if (!text) return null;
             var t = text.toLowerCase();
-            // 译制相关关键词
             var translateKw = ['翻译', '译制', '多语言', '配音', '字幕', '本地化', '英文', '日文', '英语', '日语', '韩语', '法语', '德语', '西班牙语', 'translate', 'dub'];
-            // 直播相关关键词
             var liveKw = ['直播', '监控', '剪辑', '录像', '高光', '精彩片段', '抖音', '快手', 'bilibili', 'b站', '带货', '商品讲解', 'livestream', 'live'];
-            // 生成相关关键词
             var genKw = ['生成', '创作', '脚本', '广告', '故事', '产品图', 'vlog', '文案', '制作视频', '做一个视频', 'generate', 'create'];
 
             var scores = { translate: 0, livestream: 0, generate: 0 };
@@ -919,27 +1390,66 @@
             return 'generate';
         }
 
-        // ===== 上传按钮（模拟） =====
+        // ===== 工具栏上传按钮（作为备用入口） =====
         document.getElementById('uploadBtn').addEventListener('click', function() {
-            var fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'video/*,image/*';
-            fileInput.onchange = function(e) {
-                var file = e.target.files[0];
-                if (file) {
-                    inputEl.value = (inputEl.value ? inputEl.value + '\n' : '') + '📎 ' + file.name;
-                    charCount.textContent = inputEl.value.length;
-                }
-            };
-            fileInput.click();
+            if (currentSkill === 'translate') {
+                // 触发 Action Slot 里的上传
+                var zoneInput = document.getElementById('uploadZoneInput');
+                if (zoneInput) { zoneInput.click(); return; }
+                // 如果已有文件，创建新的
+                var fi = document.createElement('input');
+                fi.type = 'file';
+                fi.accept = 'video/*,.mp4,.mov,.avi,.mkv,.flv,.wmv';
+                fi.onchange = function(e) {
+                    if (e.target.files[0]) {
+                        uploadedFile = e.target.files[0];
+                        renderUploadPreview();
+                    }
+                };
+                fi.click();
+            } else if (currentSkill === 'generate') {
+                var ri = document.getElementById('refFileInput');
+                if (ri) { ri.click(); return; }
+                var fi2 = document.createElement('input');
+                fi2.type = 'file';
+                fi2.accept = 'image/*';
+                fi2.onchange = function(e) {
+                    if (e.target.files[0]) {
+                        refImage = e.target.files[0];
+                        renderRefPreview();
+                    }
+                };
+                fi2.click();
+            } else {
+                var fi3 = document.createElement('input');
+                fi3.type = 'file';
+                fi3.accept = 'video/*,image/*';
+                fi3.onchange = function(e) {
+                    if (e.target.files[0]) {
+                        inputEl.value = (inputEl.value ? inputEl.value + '\n' : '') + '📎 ' + e.target.files[0].name;
+                        charCount.textContent = inputEl.value.length;
+                    }
+                };
+                fi3.click();
+            }
         });
 
-        // ===== 链接按钮 =====
+        // ===== 工具栏链接按钮 =====
         document.getElementById('linkBtn').addEventListener('click', function() {
+            if (currentSkill === 'livestream') {
+                // 聚焦 Action Slot 里的链接输入
+                var li = document.getElementById('linkBarInput');
+                if (li) { li.focus(); return; }
+            }
             var url = prompt('请粘贴视频/直播链接：');
             if (url && url.trim()) {
-                inputEl.value = (inputEl.value ? inputEl.value + '\n' : '') + '🔗 ' + url.trim();
-                charCount.textContent = inputEl.value.length;
+                if (currentSkill === 'livestream') {
+                    liveLink = url.trim();
+                    renderLinkBar();
+                } else {
+                    inputEl.value = (inputEl.value ? inputEl.value + '\n' : '') + '🔗 ' + url.trim();
+                    charCount.textContent = inputEl.value.length;
+                }
             }
         });
 
