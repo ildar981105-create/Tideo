@@ -415,6 +415,21 @@
             landingView.style.display = 'block';
         }
 
+        // ===== 从首页带参数进来 → 自动进入沉浸式工作台 =====
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var urlLiveUrl = params.get('liveUrl');
+            var urlPrompt = params.get('prompt');
+            if (urlLiveUrl && liveInput) {
+                liveInput.value = urlLiveUrl;
+                setTimeout(function() { startMonitor(); }, 200);
+            } else if (urlPrompt && liveInput) {
+                // 有文案意图但没链接，填入 prompt 作为提示但不自动启动
+                liveInput.value = '';
+                liveInput.setAttribute('placeholder', urlPrompt);
+            }
+        })();
+
         // === Elapsed Time ===
         function startTimers() {
             elapsedTimer = setInterval(function() {

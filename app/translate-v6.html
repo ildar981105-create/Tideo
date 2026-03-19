@@ -9738,6 +9738,31 @@
             switchPathTab('new');
         }
 
+        // ===== 从首页带 prompt 进来 → 直接进入沉浸式编辑器 =====
+        var urlPrompt = new URLSearchParams(window.location.search).get('prompt');
+        if (urlPrompt) {
+            // 从 sessionStorage 读取首页上传的文件信息
+            var pendingFileJson = sessionStorage.getItem('tideo_pending_file');
+            var pendingFileInfo = pendingFileJson ? JSON.parse(pendingFileJson) : null;
+            sessionStorage.removeItem('tideo_pending_file');
+
+            setTimeout(function() {
+                landing.style.transition = 'opacity 0.3s, transform 0.3s';
+                landing.style.opacity = '0';
+                landing.style.transform = 'translateY(-20px)';
+                setTimeout(function() {
+                    landing.style.display = 'none';
+                    if (topbar) topbar.style.display = '';
+                    if (main) main.style.display = '';
+                    document.body.classList.add('tv2-immersive');
+                    // 如果首页带了文件，直接调用 handleFile 进入处理流程
+                    if (pendingFileInfo && typeof window.handleFile === 'function') {
+                        window.handleFile({ name: pendingFileInfo.name });
+                    }
+                }, 300);
+            }, 100);
+        }
+
         // ===== V8: 导入面板 — 通过任务 ID 导入（两步式：查询 → 预览 → 进入精调） =====
         var importIdInput = document.getElementById('tv2ImportIdInput');
         var importIdBtn = document.getElementById('tv2ImportIdBtn');

@@ -1405,16 +1405,13 @@
 
             // ===== 智能引导：检查是否缺少必要素材 =====
             if (sk === 'translate' && !uploadedFile) {
-                // 视频译制需要视频文件
                 showNudge('translate', '📹', '请先上传一个视频文件', '上传视频', triggerUpload);
                 return;
             }
             if (sk === 'livestream' && !liveLink) {
-                // 直播剪辑需要直播链接
                 showNudge('livestream', '🔗', '请先添加直播链接', '添加链接', triggerLinkInput);
                 return;
             }
-            // AI 生成只需要文案，不需要额外素材
 
             // ===== 一切就绪，直接跳转 =====
             goToSkill(sk, detectedSubMode);
@@ -1433,6 +1430,18 @@
             var m = mode || detectedSubMode;
             if (sk === 'translate' && m) params.push('mode=' + m);
             if (sk === 'livestream' && liveLink) params.push('liveUrl=' + encodeURIComponent(liveLink));
+
+            // 将上传的文件信息存入 sessionStorage，供目标页面读取
+            if (uploadedFile) {
+                sessionStorage.setItem('tideo_pending_file', JSON.stringify({
+                    name: uploadedFile.name,
+                    size: uploadedFile.size,
+                    type: uploadedFile.type
+                }));
+            } else {
+                sessionStorage.removeItem('tideo_pending_file');
+            }
+
             if (params.length) url += '?' + params.join('&');
             window.location.href = url;
         }

@@ -1252,6 +1252,19 @@
             startParsing(text);
         }
 
+        // ===== 从首页带 prompt 进来 → 自动填入并启动创作 =====
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            var urlPrompt = params.get('prompt');
+            if (urlPrompt && landingInput) {
+                landingInput.value = urlPrompt;
+                // 更新字数显示
+                if (charCount) charCount.textContent = urlPrompt.length;
+                // 短延迟后自动进入沉浸式工作区
+                setTimeout(function() { startCreation(); }, 300);
+            }
+        })();
+
         // ===== Helpers =====
         function addBubble(type, html) {
             const bubble = document.createElement('div');
