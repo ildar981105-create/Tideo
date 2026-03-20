@@ -716,6 +716,104 @@
         background: rgba(249,115,22,0.4);
     }
 
+    /* ===== 内联链接输入面板 ===== */
+    .link-input-panel {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%) translateY(8px);
+        width: min(440px, calc(100% - 20px));
+        padding: 12px 14px;
+        background: rgba(15,15,26,0.95);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(249,115,22,0.3);
+        border-radius: 16px;
+        box-shadow: 0 12px 48px rgba(0,0,0,0.4), 0 0 40px rgba(249,115,22,0.06);
+        z-index: 55;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    .link-input-panel.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+    }
+    .link-input-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .link-input-title {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #fb923c;
+    }
+    .link-input-close {
+        width: 22px; height: 22px;
+        display: flex; align-items: center; justify-content: center;
+        border: none; background: rgba(255,255,255,0.06);
+        color: var(--text-faint); font-size: 0.7rem;
+        border-radius: 6px; cursor: pointer;
+        transition: all 0.2s;
+    }
+    .link-input-close:hover {
+        background: rgba(255,255,255,0.12); color: var(--text-primary);
+    }
+    .link-input-row {
+        display: flex;
+        gap: 8px;
+    }
+    .link-input-field {
+        flex: 1;
+        padding: 10px 14px;
+        background: rgba(255,255,255,0.04);
+        border: 1.5px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        color: var(--text-primary);
+        font-size: 0.85rem;
+        font-family: inherit;
+        outline: none;
+        transition: all 0.2s;
+    }
+    .link-input-field:focus {
+        border-color: rgba(249,115,22,0.4);
+        box-shadow: 0 0 0 3px rgba(249,115,22,0.08);
+    }
+    .link-input-field::placeholder { color: var(--text-faint); }
+    .link-input-confirm {
+        padding: 10px 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
+        white-space: nowrap;
+        box-shadow: 0 0 16px rgba(249,115,22,0.2);
+    }
+    .link-input-confirm:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 24px rgba(249,115,22,0.35);
+    }
+    .link-input-confirm:disabled {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+    .link-input-hint {
+        margin-top: 6px;
+        font-size: 0.68rem;
+        color: var(--text-faint);
+        min-height: 16px;
+    }
+    .link-input-hint.success { color: #34d399; }
+    .link-input-hint.error { color: #fca5a5; }
+
     /* 按钮高亮引导脉冲 */
     .input-icon-btn.nudge-pulse {
         animation: nudgePulse 1.5s ease-in-out 3;
@@ -944,6 +1042,19 @@
                         <span class="nudge-toast-icon" id="nudgeIcon"></span>
                         <span class="nudge-toast-text" id="nudgeText"></span>
                         <button class="nudge-toast-btn" id="nudgeBtn"></button>
+                    </div>
+
+                    <!-- 内联链接输入面板（替代 prompt） -->
+                    <div class="link-input-panel" id="linkInputPanel">
+                        <div class="link-input-header">
+                            <span class="link-input-title">🔗 粘贴链接</span>
+                            <button class="link-input-close" id="linkInputClose">✕</button>
+                        </div>
+                        <div class="link-input-row">
+                            <input type="text" class="link-input-field" id="linkInputField" placeholder="粘贴直播/视频链接..." autocomplete="off">
+                            <button class="link-input-confirm" id="linkInputConfirm">确认</button>
+                        </div>
+                        <div class="link-input-hint" id="linkInputHint"></div>
                     </div>
 
                     <!-- 输入框 -->
@@ -1326,6 +1437,99 @@
         var linkBtnEl = document.getElementById('linkBtn');
         var nudgeTimer = null;
 
+        // ===== 内联链接输入面板（替代 prompt） =====
+        var linkPanel = document.getElementById('linkInputPanel');
+        var linkField = document.getElementById('linkInputField');
+        var linkConfirmBtn = document.getElementById('linkInputConfirm');
+        var linkCloseBtn = document.getElementById('linkInputClose');
+        var linkHint = document.getElementById('linkInputHint');
+        var linkPanelAutoSubmit = false; // 确认后是否自动提交
+
+        function showLinkPanel(autoSubmitAfter) {
+            linkPanelAutoSubmit = !!autoSubmitAfter;
+            linkField.value = '';
+            linkHint.innerHTML = '';
+            linkPanel.classList.add('show');
+            setTimeout(function() { linkField.focus(); }, 80);
+        }
+
+        function hideLinkPanel() {
+            linkPanel.classList.remove('show');
+            linkField.value = '';
+            linkHint.innerHTML = '';
+        }
+
+        function confirmLinkPanel() {
+            var url = linkField.value.trim();
+            if (!url) {
+                linkField.style.borderColor = 'rgba(239,68,68,0.6)';
+                linkField.setAttribute('placeholder', '请粘贴链接后确认');
+                setTimeout(function() {
+                    linkField.style.borderColor = '';
+                    linkField.setAttribute('placeholder', '粘贴直播/视频链接...');
+                }, 1500);
+                return;
+            }
+            // 验证基本 URL 格式
+            if (url.indexOf('.') === -1 && url.indexOf(':') === -1) {
+                linkHint.innerHTML = '<span style="color:#f87171;">⚠ 请输入有效的链接地址</span>';
+                return;
+            }
+            liveLink = url;
+            uploadedFile = null;
+            refImage = null;
+            renderAttachBar();
+            hideLinkPanel();
+            if (linkPanelAutoSubmit) {
+                setTimeout(function() { handleSubmit(); }, 100);
+            }
+        }
+
+        // 确认按钮
+        linkConfirmBtn.addEventListener('click', confirmLinkPanel);
+
+        // 关闭按钮
+        linkCloseBtn.addEventListener('click', hideLinkPanel);
+
+        // Enter 键确认
+        linkField.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                confirmLinkPanel();
+            }
+            if (e.key === 'Escape') {
+                hideLinkPanel();
+            }
+        });
+
+        // 实时输入 / 粘贴 → 平台检测提示
+        linkField.addEventListener('input', updateLinkHint);
+        linkField.addEventListener('paste', function() {
+            // paste 事件触发时 value 还没更新，延迟读取
+            setTimeout(updateLinkHint, 50);
+        });
+
+        function updateLinkHint() {
+            var v = linkField.value.trim();
+            if (!v) { linkHint.innerHTML = ''; return; }
+            var pName = detectPlatform(v);
+            if (pName) {
+                var icons = { '抖音': '🎵', '快手': '⚡', 'B站': '📺', '淘宝': '🛒', 'YouTube': '▶️', 'Twitch': '🎮' };
+                var icon = icons[pName] || '🔗';
+                linkHint.innerHTML = '<span style="color:#34d399;">检测到 ' + icon + ' ' + pName + ' 链接</span>';
+            } else {
+                linkHint.innerHTML = '<span style="color:var(--text-faint);">支持 抖音 / 快手 / B站 / 淘宝 / YouTube / Twitch</span>';
+            }
+        }
+
+        // 点击面板外部关闭
+        document.addEventListener('click', function(e) {
+            if (linkPanel.classList.contains('show') && !linkPanel.contains(e.target) &&
+                e.target !== linkBtnEl && !linkBtnEl.contains(e.target)) {
+                hideLinkPanel();
+            }
+        });
+
         submitBtn.addEventListener('click', handleSubmit);
         inputEl.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -1381,6 +1585,8 @@
                 refImage = null;
                 liveLink = '';
                 renderAttachBar();
+                // 文件已选择，自动继续提交流程
+                setTimeout(function() { handleSubmit(); }, 100);
             };
             fi.click();
         }
@@ -1388,14 +1594,8 @@
         function triggerLinkInput() {
             hideNudge();
             pulseBtn(linkBtnEl, 'nudge-pulse--orange');
-            // 自动弹出链接输入
-            var url = prompt('请粘贴直播链接：');
-            if (url && url.trim()) {
-                liveLink = url.trim();
-                uploadedFile = null;
-                refImage = null;
-                renderAttachBar();
-            }
+            // 使用内联面板替代 prompt()
+            showLinkPanel(true);
         }
 
         function handleSubmit() {
@@ -1441,6 +1641,13 @@
             } else {
                 sessionStorage.removeItem('tideo_pending_file');
             }
+
+            // ★ 写入任务定义到 sessionStorage，供功能页的任务清单面板读取
+            sessionStorage.setItem('tideo_tasks', JSON.stringify({
+                skill: sk,
+                config: configValues,
+                prompt: text
+            }));
 
             if (params.length) url += '?' + params.join('&');
             window.location.href = url;
@@ -1538,13 +1745,7 @@
         // ===== 链接按钮 =====
         linkBtnEl.addEventListener('click', function() {
             hideNudge();
-            var url = prompt('请粘贴视频/直播链接：');
-            if (url && url.trim()) {
-                liveLink = url.trim();
-                uploadedFile = null;
-                refImage = null;
-                renderAttachBar();
-            }
+            showLinkPanel(false);
         });
 
     })();

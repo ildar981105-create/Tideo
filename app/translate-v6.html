@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>视频译制 V6 — Tideo</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="task-panel.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
     /* ==============================================
@@ -1047,7 +1048,7 @@
     .tv2-chat-body {
         flex: 1;
         overflow-y: auto;
-        padding: 16px 16px 300px;
+        padding: 16px 16px 16px;
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -6993,6 +6994,11 @@
             uploadedFileName = file ? file.name : 'demo_video.mp4';
             document.getElementById('topbarFilename').textContent = '— ' + uploadedFileName;
             uploadOverlay.classList.add('hidden');
+            // 任务进度：上传完成 → 配置中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('upload', 'done');
+                TideoTaskPanel.markStep('config', 'active');
+            }
             document.getElementById('videoScrubber').classList.add('visible');
             phaseIndicator.classList.remove('hidden');
             phaseDot.className = 'tv2-phase-dot live';
@@ -7430,6 +7436,12 @@
             const meta = stepMeta[step];
             const stepNum = currentStep + 1;
             const totalSteps = activeSteps.length;
+
+            // 任务进度：配置完成（首次进入步骤时）+ 当前步骤 active
+            if (window.TideoTaskPanel) {
+                if (currentStep === 0) TideoTaskPanel.markStep('config', 'done');
+                TideoTaskPanel.markStep(step, 'active');
+            }
 
             // Show a brief step header bubble, then auto-start AI scan
             const bubbleHtml = `
@@ -7897,6 +7909,11 @@
 
         function confirmStep(step, enabled) {
             features[step] = enabled;
+
+            // 任务进度：步骤完成
+            if (window.TideoTaskPanel && enabled) {
+                TideoTaskPanel.markStep(step, 'done');
+            }
 
             // Track script availability
             if (step === 'subtitle' && enabled) scriptReady = true;
@@ -8423,6 +8440,10 @@
         /* ===== Processing ===== */
         function startProcessing() {
             phase = 'processing';
+            // 任务进度：渲染中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('render', 'active');
+            }
             processingOverlay.classList.add('active');
             phaseDot.className = 'tv2-phase-dot processing';
             phaseLabel.textContent = '处理中 · 请耐心等待...';
@@ -8467,6 +8488,10 @@
         /* ===== Result ===== */
         function showResult() {
             phase = 'done';
+            // 任务进度：渲染完成
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('render', 'done');
+            }
             processingOverlay.classList.remove('active');
             subtitleOverlay.classList.add('active');
             phaseDot.className = 'tv2-phase-dot live';
@@ -10559,6 +10584,262 @@
 
         window.addEventListener('storage', function(e) {
             if (e.key === 'tideo_user') updateUserUI();
+        });
+    })();
+    </script>
+
+    <!-- 任务清单 + 底部输入框 -->
+    <script src="task-panel.js"></script>
+    <script>
+    (function() {
+        // 初始化底部面板（进度 + 输入框一体化）
+        TideoPageInput.init('translate');
+        TideoTaskPanel.init('translate');
+
+        // 监听底部输入框指令 — 根据子意图真正处理
+        document.addEventListener('tideo:pageinput', function(e) {
+            var text = e.detail.text;
+            var action = e.detail.action || 'chat';
+            var subType = e.detail.subType || null;
+            var chatFlow = document.getElementById('chatFlow');
+            if (!chatFlow) return;
+
+            // 1. 先追加用户气泡
+            var userBubble = document.createElement('div');
+            userBubble.className = 'chat-bubble chat-bubble--user';
+            userBubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 5V8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor"/></svg>你</div>' + text;
+            chatFlow.appendChild(userBubble);
+            chatFlow.scrollTop = chatFlow.scrollHeight;
+
+            // 2. 根据 action 分派处理
+            if (action === 'new-task') {
+                // ——— 同技能追加新任务（如「翻译成日语」）———
+                setTimeout(function() {
+                    // 提取目标语言
+                    var targetLang = _extractTargetLang(text);
+                    var aiReply = '好的，我来将视频翻译成<strong>' + targetLang + '</strong>。' +
+                                  '当前视频素材保持不变，开始新的译制任务。';
+                    var aiBubble = document.createElement('div');
+                    aiBubble.className = 'chat-bubble chat-bubble--ai';
+                    aiBubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div>' + aiReply;
+                    chatFlow.appendChild(aiBubble);
+                    chatFlow.scrollTop = chatFlow.scrollHeight;
+
+                    // 重置任务进度（跳过上传步骤）
+                    if (window.TideoTaskPanel) {
+                        TideoTaskPanel.reset({ skipUpload: true });
+                        // 自动推进到 config → 然后模拟执行全流程
+                        TideoTaskPanel.markStep('config', 'active', '配置 → ' + targetLang);
+                    }
+
+                    // 更新顶栏标签
+                    var phaseLabel = document.getElementById('phaseLabel');
+                    var phaseIndicator = document.getElementById('phaseIndicator');
+                    var phaseDot = document.getElementById('phaseDot');
+                    if (phaseLabel) phaseLabel.textContent = '译制中 · → ' + targetLang;
+                    if (phaseIndicator) {
+                        phaseIndicator.className = 'tv2-phase-indicator phase-processing';
+                    }
+                    if (phaseDot) phaseDot.className = 'tv2-phase-dot processing';
+
+                    // 模拟新一轮执行流程
+                    _simulateNewTranslateRound(targetLang, chatFlow);
+
+                }, 500);
+
+            } else if (action === 'finetune') {
+                // ——— 精调：配音/字幕样式 ———
+                setTimeout(function() {
+                    var msgs = {
+                        voiceChange: '收到！正在切换配音音色，稍等一下...',
+                        styleAdj: '好的，正在调整字幕样式...'
+                    };
+                    var msg = msgs[subType] || '收到！正在按你的要求调整...';
+                    var aiBubble = document.createElement('div');
+                    aiBubble.className = 'chat-bubble chat-bubble--ai';
+                    aiBubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div>' + msg;
+                    chatFlow.appendChild(aiBubble);
+                    chatFlow.scrollTop = chatFlow.scrollHeight;
+
+                    // 模拟短暂处理后完成
+                    setTimeout(function() {
+                        var doneBubble = document.createElement('div');
+                        doneBubble.className = 'chat-bubble chat-bubble--ai';
+                        doneBubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div>✅ 调整完成！已更新到预览中，你可以播放查看效果。';
+                        chatFlow.appendChild(doneBubble);
+                        chatFlow.scrollTop = chatFlow.scrollHeight;
+                    }, 2000);
+                }, 500);
+
+            } else if (action === 'redo') {
+                // ——— 重做某步骤 ———
+                setTimeout(function() {
+                    var aiBubble = document.createElement('div');
+                    aiBubble.className = 'chat-bubble chat-bubble--ai';
+                    aiBubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div>好的，正在重新执行相关步骤...';
+                    chatFlow.appendChild(aiBubble);
+                    chatFlow.scrollTop = chatFlow.scrollHeight;
+
+                    // 重置进度并重新推进
+                    if (window.TideoTaskPanel) {
+                        TideoTaskPanel.reset({ skipUpload: true });
+                        TideoTaskPanel.markStep('config', 'done');
+                        TideoTaskPanel.markStep('erase', 'active', '重新执行中');
+                    }
+
+                    _simulateRedoFlow(chatFlow);
+                }, 500);
+
+            } else {
+                // ——— 普通对话（无法识别子意图）———
+                setTimeout(function() {
+                    var aiBubble = document.createElement('div');
+                    aiBubble.className = 'chat-bubble chat-bubble--ai';
+                    aiBubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div>' +
+                        '收到你的指令。你可以试试：<br>' +
+                        '<span style="color:#64748b;font-size:0.72rem;">' +
+                        '• 「翻译成日语」— 追加新语种翻译<br>' +
+                        '• 「换成男声配音」— 调整配音<br>' +
+                        '• 「字幕字号调大」— 调整样式<br>' +
+                        '• 「重新擦一遍字幕」— 重跑步骤</span>';
+                    chatFlow.appendChild(aiBubble);
+                    chatFlow.scrollTop = chatFlow.scrollHeight;
+                }, 500);
+            }
+        });
+
+        // ——— 辅助函数 ———
+
+        /** 从用户文本中提取目标语言 */
+        function _extractTargetLang(text) {
+            var langMap = {
+                '日语': '日语', '日文': '日语',
+                '韩语': '韩语', '韩文': '韩语',
+                '法语': '法语', '法文': '法语',
+                '德语': '德语', '德文': '德语',
+                '西班牙语': '西班牙语', '西班牙文': '西班牙语',
+                '葡萄牙语': '葡萄牙语', '葡萄牙文': '葡萄牙语',
+                '阿拉伯语': '阿拉伯语', '阿拉伯文': '阿拉伯语',
+                '俄语': '俄语', '俄文': '俄语',
+                '泰语': '泰语', '泰文': '泰语',
+                '越南语': '越南语', '越南文': '越南语',
+                '印尼语': '印尼语', '印尼文': '印尼语',
+                '意大利语': '意大利语', '意大利文': '意大利语',
+                '英语': '英语', '英文': '英语'
+            };
+            var lower = text.toLowerCase();
+            for (var key in langMap) {
+                if (lower.indexOf(key) !== -1) return langMap[key];
+            }
+            return '目标语言';
+        }
+
+        /** 模拟新一轮翻译流程（config → erase → subtitle → voice → render） */
+        function _simulateNewTranslateRound(targetLang, chatFlow) {
+            var steps = [
+                { id: 'config', delay: 1200, msg: '✅ 配置完成：保留原视频素材，目标语言设为 <strong>' + targetLang + '</strong>' },
+                { id: 'erase',  delay: 2500, msg: '🧹 原字幕擦除完成' },
+                { id: 'subtitle', delay: 3500, msg: '📝 语音识别 + ' + targetLang + '字幕翻译完成' },
+                { id: 'voice',  delay: 3000, msg: '🎙 ' + targetLang + ' AI 配音合成完成' },
+                { id: 'render', delay: 2000, msg: null }
+            ];
+
+            var elapsed = 0;
+            steps.forEach(function(step, idx) {
+                elapsed += step.delay;
+
+                setTimeout(function() {
+                    // 标记上一步完成
+                    if (window.TideoTaskPanel) {
+                        TideoTaskPanel.markStep(step.id, 'done');
+                        // 标记下一步开始
+                        if (idx + 1 < steps.length) {
+                            TideoTaskPanel.markStep(steps[idx + 1].id, 'active');
+                        }
+                    }
+
+                    // 追加对话气泡
+                    if (step.msg) {
+                        var bubble = document.createElement('div');
+                        bubble.className = 'chat-bubble chat-bubble--ai';
+                        bubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div>' + step.msg;
+                        chatFlow.appendChild(bubble);
+                        chatFlow.scrollTop = chatFlow.scrollHeight;
+                    }
+
+                    // 最后一步：渲染完成
+                    if (idx === steps.length - 1) {
+                        setTimeout(function() {
+                            if (window.TideoTaskPanel) {
+                                TideoTaskPanel.markStep('render', 'done');
+                            }
+                            var phaseLabel = document.getElementById('phaseLabel');
+                            var phaseIndicator = document.getElementById('phaseIndicator');
+                            var phaseDot = document.getElementById('phaseDot');
+                            if (phaseLabel) phaseLabel.textContent = '译制完成 · → ' + targetLang;
+                            if (phaseIndicator) phaseIndicator.className = 'tv2-phase-indicator phase-done';
+                            if (phaseDot) phaseDot.className = 'tv2-phase-dot live';
+
+                            var doneMsg = '🎬 ' + targetLang + '版本译制完成！视频已准备就绪。' +
+                                '<div class="chat-result-actions"><div class="chat-result-actions-row">' +
+                                '<button class="ra-btn-export" onclick="alert(\'导出中...\')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2V9M8 9L11 6M8 9L5 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 11V13C3 13.5523 3.44772 14 4 14H12C12.5523 14 13 13.5523 13 13V11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>导出视频</button>' +
+                                '</div></div>';
+                            var doneBubble = document.createElement('div');
+                            doneBubble.className = 'chat-bubble chat-bubble--ai';
+                            doneBubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div>' + doneMsg;
+                            chatFlow.appendChild(doneBubble);
+                            chatFlow.scrollTop = chatFlow.scrollHeight;
+                        }, 1500);
+                    }
+                }, elapsed);
+            });
+        }
+
+        /** 模拟重做流程 */
+        function _simulateRedoFlow(chatFlow) {
+            var redoSteps = [
+                { id: 'erase', delay: 2000, msg: '🧹 字幕重新擦除完成' },
+                { id: 'subtitle', delay: 3000, msg: '📝 字幕重新识别翻译完成' },
+                { id: 'voice', delay: 2500, msg: '🎙 配音重新合成完成' },
+                { id: 'render', delay: 2000, msg: '🎬 渲染完成！已更新到预览。' }
+            ];
+
+            var elapsed = 0;
+            redoSteps.forEach(function(step, idx) {
+                elapsed += step.delay;
+                setTimeout(function() {
+                    if (window.TideoTaskPanel) {
+                        TideoTaskPanel.markStep(step.id, 'done');
+                        if (idx + 1 < redoSteps.length) {
+                            TideoTaskPanel.markStep(redoSteps[idx + 1].id, 'active');
+                        }
+                    }
+                    var bubble = document.createElement('div');
+                    bubble.className = 'chat-bubble chat-bubble--ai';
+                    bubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div>' + step.msg;
+                    chatFlow.appendChild(bubble);
+                    chatFlow.scrollTop = chatFlow.scrollHeight;
+                }, elapsed);
+            });
+        }
+
+        // 监听停止按钮
+        document.addEventListener('tideo:stop', function() {
+            var chatFlow = document.getElementById('chatFlow');
+            if (!chatFlow) return;
+            if (window.TideoTaskPanel) {
+                var tasks = TideoTaskPanel._tasks;
+                for (var i = 0; i < tasks.length; i++) {
+                    if (tasks[i].status === 'active') {
+                        TideoTaskPanel.markStep(tasks[i].id, 'done', '已停止');
+                    }
+                }
+            }
+            var bubble = document.createElement('div');
+            bubble.className = 'chat-bubble chat-bubble--ai';
+            bubble.innerHTML = '<div class="bubble-avatar"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Tideo AI</div><p>⏹ 已停止当前任务。你可以继续输入新的指令。</p>';
+            chatFlow.appendChild(bubble);
+            chatFlow.scrollTop = chatFlow.scrollHeight;
         });
     })();
     </script>

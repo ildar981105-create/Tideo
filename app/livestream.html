@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>直播剪辑 — Tideo</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="task-panel.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body class="creator-layout">
@@ -363,6 +364,145 @@
         let inpointTime = null;
         let outpointTime = null;
         let autoClipTimer = null;
+        let isConnecting = false; // 连接中锁
+
+        // ========================================
+        //  平台检测配置
+        // ========================================
+        var PLATFORM_RULES = [
+            { id: 'douyin',  name: '抖音直播',  icon: '🎵', pattern: /live\.douyin\.com|douyin\.com\/live/i, streamer: '抖音主播' },
+            { id: 'kuaishou',name: '快手直播',  icon: '📺', pattern: /live\.kuaishou\.com|kuaishou\.com\/live/i, streamer: '快手主播' },
+            { id: 'bilibili',name: 'B站直播',   icon: '📡', pattern: /live\.bilibili\.com|b23\.tv/i, streamer: 'B站主播' },
+            { id: 'taobao',  name: '淘宝直播',  icon: '🛒', pattern: /taobao\.com\/live|live\.taobao\.com|tbopen/i, streamer: '淘宝主播' },
+            { id: 'douyu',   name: '斗鱼直播',  icon: '🎮', pattern: /douyu\.com/i, streamer: '斗鱼主播' },
+            { id: 'huya',    name: '虎牙直播',  icon: '🐯', pattern: /huya\.com/i, streamer: '虎牙主播' }
+        ];
+
+        /**
+         * 检测 URL 对应的平台
+         * @param {string} url
+         * @returns {object|null} — { id, name, icon, streamer } or null
+         */
+        function detectPlatform(url) {
+            if (!url || typeof url !== 'string') return null;
+            url = url.trim();
+            // 基本 URL 格式校验
+            if (!/^https?:\/\//i.test(url) && !/^[a-zA-Z0-9].*\.(com|cn|tv|cc)/i.test(url)) return null;
+            for (var i = 0; i < PLATFORM_RULES.length; i++) {
+                if (PLATFORM_RULES[i].pattern.test(url)) {
+                    return PLATFORM_RULES[i];
+                }
+            }
+            return null;
+        }
+
+        // ========================================
+        //  输入框状态反馈 UI
+        // ========================================
+        var inputBox = document.querySelector('.ls-input-box');
+        var inputStatusEl = null; // 动态创建的状态提示行
+
+        function showInputStatus(html, type) {
+            // type: 'detecting' | 'success' | 'error' | 'connecting'
+            if (!inputStatusEl) {
+                inputStatusEl = document.createElement('div');
+                inputStatusEl.className = 'ls-input-status';
+                var inputGroup = document.querySelector('.ls-input-group');
+                if (inputGroup) {
+                    // 插到 .ls-input-box 和 .ls-input-platforms 之间
+                    var platforms = inputGroup.querySelector('.ls-input-platforms');
+                    if (platforms) {
+                        inputGroup.insertBefore(inputStatusEl, platforms);
+                    } else {
+                        inputGroup.appendChild(inputStatusEl);
+                    }
+                }
+            }
+            inputStatusEl.innerHTML = html;
+            inputStatusEl.className = 'ls-input-status ls-input-status--' + type;
+            inputStatusEl.style.display = 'flex';
+        }
+
+        function hideInputStatus() {
+            if (inputStatusEl) {
+                inputStatusEl.style.display = 'none';
+                inputStatusEl.innerHTML = '';
+            }
+        }
+
+        function showInputError(msg) {
+            showInputStatus(
+                '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 4V8M7 9.5V10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>' +
+                '<span>' + msg + '</span>',
+                'error'
+            );
+            // 输入框震动反馈
+            if (inputBox) {
+                inputBox.classList.add('ls-input-box--shake');
+                setTimeout(function() { inputBox.classList.remove('ls-input-box--shake'); }, 500);
+            }
+        }
+
+        // ========================================
+        //  粘贴 & 输入实时检测
+        // ========================================
+        if (liveInput) {
+            // 粘贴事件 — 自动检测平台
+            liveInput.addEventListener('paste', function() {
+                var self = this;
+                // 需要 setTimeout 才能拿到粘贴后的值
+                setTimeout(function() {
+                    var url = self.value.trim();
+                    if (!url) return;
+                    var platform = detectPlatform(url);
+                    if (platform) {
+                        showInputStatus(
+                            '<span class="ls-status-dot ls-status-dot--success"></span>' +
+                            '<span>检测到 <strong>' + platform.icon + ' ' + platform.name + '</strong>，点击「开始监控」连接直播信号</span>',
+                            'success'
+                        );
+                        // 高亮输入框为成功态
+                        if (inputBox) inputBox.classList.add('ls-input-box--detected');
+                    } else {
+                        // 有内容但不是已知平台
+                        if (/^https?:\/\//i.test(url)) {
+                            showInputStatus(
+                                '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M7 4V8M7 9.5V10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>' +
+                                '<span>暂不支持此平台，请检查链接是否正确</span>',
+                                'error'
+                            );
+                        }
+                    }
+                }, 50);
+            });
+
+            // 输入时实时检测
+            liveInput.addEventListener('input', function() {
+                var url = this.value.trim();
+                if (!url) {
+                    hideInputStatus();
+                    if (inputBox) inputBox.classList.remove('ls-input-box--detected');
+                    return;
+                }
+                var platform = detectPlatform(url);
+                if (platform) {
+                    showInputStatus(
+                        '<span class="ls-status-dot ls-status-dot--success"></span>' +
+                        '<span>检测到 <strong>' + platform.icon + ' ' + platform.name + '</strong></span>',
+                        'success'
+                    );
+                    if (inputBox) inputBox.classList.add('ls-input-box--detected');
+                } else {
+                    hideInputStatus();
+                    if (inputBox) inputBox.classList.remove('ls-input-box--detected');
+                }
+            });
+
+            // Enter 键提交
+            liveInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') validateAndConnect();
+            });
+        }
 
         // === Config Toggle ===
         let configOpen = false;
@@ -374,18 +514,81 @@
             });
         }
 
-        // === Enter key to start ===
-        if (liveInput) {
-            liveInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') startMonitor();
-            });
-        }
-
         // === Start / Stop ===
-        if (startBtn) startBtn.addEventListener('click', startMonitor);
+        if (startBtn) startBtn.addEventListener('click', validateAndConnect);
         if (stopBtn) stopBtn.addEventListener('click', stopMonitor);
 
-        function startMonitor() {
+        /**
+         * 校验 → 检测平台 → 连接动画 → 进入工作台
+         */
+        function validateAndConnect() {
+            if (isConnecting) return; // 防重复
+            var url = liveInput ? liveInput.value.trim() : '';
+
+            // 1. 空输入
+            if (!url) {
+                showInputError('请粘贴直播链接后再开始监控');
+                if (liveInput) liveInput.focus();
+                return;
+            }
+
+            // 2. 检测平台
+            var platform = detectPlatform(url);
+            if (!platform) {
+                showInputError('未识别到支持的直播平台，请检查链接');
+                return;
+            }
+
+            // 3. 锁定状态 → 显示连接动画
+            isConnecting = true;
+            if (startBtn) {
+                startBtn.disabled = true;
+                startBtn.innerHTML = '<span class="ls-btn-spinner"></span><span>连接中...</span>';
+                startBtn.classList.add('ls-input-go--connecting');
+            }
+
+            // 任务进度：连接中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('connect', 'active', '连接 ' + platform.name + '...');
+            }
+
+            showInputStatus(
+                '<span class="ls-status-spinner"></span>' +
+                '<span>正在连接 <strong>' + platform.icon + ' ' + platform.name + '</strong> 信号源...</span>',
+                'connecting'
+            );
+
+            // 4. 模拟连接过程（1.5s 检测 + 1s 连接）
+            setTimeout(function() {
+                showInputStatus(
+                    '<span class="ls-status-spinner"></span>' +
+                    '<span>信号握手成功，正在初始化监控画面...</span>',
+                    'connecting'
+                );
+
+                setTimeout(function() {
+                    // 5. 连接成功 → 进入工作台
+                    isConnecting = false;
+                    hideInputStatus();
+                    if (startBtn) {
+                        startBtn.disabled = false;
+                        startBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>开始监控</span>';
+                        startBtn.classList.remove('ls-input-go--connecting');
+                    }
+                    if (inputBox) inputBox.classList.remove('ls-input-box--detected');
+
+                    startMonitor(platform);
+                }, 1000);
+            }, 1500);
+        }
+        // 暴露给外部（底部输入框的🔗按钮需要调用）
+        window.validateAndConnect = validateAndConnect;
+
+        /**
+         * 真正进入沉浸式工作台
+         * @param {object} platform — 已检测到的平台信息
+         */
+        function startMonitor(platform) {
             isMonitoring = true;
             elapsed = 0;
             clips = [];
@@ -395,6 +598,20 @@
             landingView.style.display = 'none';
             workView.style.display = 'flex';
             document.body.classList.add('fullscreen-mode');
+
+            // 更新顶部栏标题
+            if (platform) {
+                var titleEl = document.getElementById('workTitle');
+                if (titleEl) titleEl.textContent = platform.icon + ' ' + platform.name;
+                var nameEl = document.getElementById('streamerName');
+                if (nameEl) nameEl.textContent = platform.streamer + ' 直播中';
+            }
+
+            // 任务进度：连接完成 → 监控中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('connect', 'done', platform ? platform.name + ' 已连接' : '已连接');
+                TideoTaskPanel.markStep('monitor', 'active', '实时监控中');
+            }
 
             initLiveCanvas();
             startTimers();
@@ -413,6 +630,11 @@
             document.body.classList.remove('fullscreen-mode');
             workView.style.display = 'none';
             landingView.style.display = 'block';
+
+            // 重置任务进度
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.reset({});
+            }
         }
 
         // ===== 从首页带参数进来 → 自动进入沉浸式工作台 =====
@@ -422,7 +644,8 @@
             var urlPrompt = params.get('prompt');
             if (urlLiveUrl && liveInput) {
                 liveInput.value = urlLiveUrl;
-                setTimeout(function() { startMonitor(); }, 200);
+                // 自动触发连接流程
+                setTimeout(function() { validateAndConnect(); }, 300);
             } else if (urlPrompt && liveInput) {
                 // 有文案意图但没链接，填入 prompt 作为提示但不自动启动
                 liveInput.value = '';
@@ -623,6 +846,13 @@
             };
             clips.push(clip);
 
+            // 任务进度：手动剪辑 → clip active
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('clip', 'active');
+                // 如果 detect 还没完成，也标记为 done
+                TideoTaskPanel.markStep('detect', 'done');
+            }
+
             // Show alert
             clipAlert.classList.add('active');
             setTimeout(function() { clipAlert.classList.remove('active'); }, 2000);
@@ -683,6 +913,16 @@
 
         function addAutoClipSegment(start, end) {
             autoClipId++;
+
+            // 任务进度：首次自动片段 → 标记 AI 识别完成
+            if (window.TideoTaskPanel) {
+                if (autoClipId === 1) {
+                    TideoTaskPanel.markStep('monitor', 'done');
+                    TideoTaskPanel.markStep('detect', 'done');
+                }
+                TideoTaskPanel.markStep('clip', 'active');
+            }
+
             var total = 600;
             var pct = (start % total) / total * 100;
             var widthPct = ((end - start) % total) / total * 100;
@@ -1083,6 +1323,114 @@
         border-radius: 6px;
         font-size: 0.7rem;
         color: var(--text-muted);
+    }
+
+    /* === 链接检测状态反馈 === */
+    .ls-input-status {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        padding: 8px 14px;
+        font-size: 0.78rem;
+        border-radius: 10px;
+        animation: lsStatusIn 0.3s ease-out;
+        transition: all 0.3s;
+    }
+    @keyframes lsStatusIn {
+        from { opacity: 0; transform: translateY(-4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .ls-input-status--success {
+        background: rgba(16,185,129,0.08);
+        border: 1px solid rgba(16,185,129,0.2);
+        color: #6ee7b7;
+    }
+    .ls-input-status--error {
+        background: rgba(239,68,68,0.08);
+        border: 1px solid rgba(239,68,68,0.2);
+        color: #fca5a5;
+    }
+    .ls-input-status--connecting {
+        background: rgba(99,102,241,0.08);
+        border: 1px solid rgba(99,102,241,0.2);
+        color: #a5b4fc;
+    }
+    .ls-input-status--detecting {
+        background: rgba(245,158,11,0.08);
+        border: 1px solid rgba(245,158,11,0.2);
+        color: #fcd34d;
+    }
+    .ls-input-status strong {
+        font-weight: 700;
+        color: inherit;
+    }
+
+    /* 状态小圆点 */
+    .ls-status-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    .ls-status-dot--success {
+        background: #10b981;
+        box-shadow: 0 0 8px rgba(16,185,129,0.5);
+        animation: lsStatusDotPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes lsStatusDotPulse {
+        0%, 100% { box-shadow: 0 0 4px rgba(16,185,129,0.3); }
+        50% { box-shadow: 0 0 10px rgba(16,185,129,0.6); }
+    }
+
+    /* 旋转 spinner */
+    .ls-status-spinner {
+        width: 14px; height: 14px;
+        border: 2px solid rgba(99,102,241,0.2);
+        border-top-color: #818cf8;
+        border-radius: 50%;
+        animation: lsSpinnerSpin 0.8s linear infinite;
+        flex-shrink: 0;
+    }
+    .ls-btn-spinner {
+        width: 14px; height: 14px;
+        border: 2px solid rgba(255,255,255,0.2);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: lsSpinnerSpin 0.8s linear infinite;
+        flex-shrink: 0;
+    }
+    @keyframes lsSpinnerSpin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* 输入框检测成功态 */
+    .ls-input-box--detected {
+        border-color: rgba(16,185,129,0.4) !important;
+        box-shadow: 0 0 0 4px rgba(16,185,129,0.06), 0 0 30px rgba(16,185,129,0.08) !important;
+    }
+    .ls-input-box--detected .ls-input-dot {
+        background: #10b981;
+        animation-name: lsStatusDotPulse;
+    }
+
+    /* 输入框震动 */
+    .ls-input-box--shake {
+        animation: lsShake 0.4s ease-out;
+    }
+    @keyframes lsShake {
+        0%, 100% { transform: translateX(0); }
+        20% { transform: translateX(-6px); }
+        40% { transform: translateX(5px); }
+        60% { transform: translateX(-4px); }
+        80% { transform: translateX(2px); }
+    }
+
+    /* 按钮连接中状态 */
+    .ls-input-go--connecting {
+        background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+        box-shadow: 0 0 24px rgba(99,102,241,0.3) !important;
+        pointer-events: none;
+        opacity: 0.85;
     }
 
     /* === Config Section === */
@@ -2201,6 +2549,85 @@
 
         window.addEventListener('storage', function(e) {
             if (e.key === 'tideo_user') updateUserUI();
+        });
+    })();
+    </script>
+
+    <!-- 任务清单 + 底部输入框 -->
+    <script src="task-panel.js"></script>
+    <script>
+    (function() {
+        // 初始化底部面板（进度 + 输入框一体化）
+        TideoPageInput.init('livestream');
+        TideoTaskPanel.init('livestream');
+
+        // 共享消息区域 + addMsg 函数（供多个 handler 使用）
+        var msgArea = null;
+
+        function ensureMsgArea() {
+            if (msgArea) return msgArea;
+            msgArea = document.getElementById('lsMsgArea');
+            if (msgArea) return msgArea;
+
+            msgArea = document.createElement('div');
+            msgArea.id = 'lsMsgArea';
+            msgArea.style.cssText = 'padding:8px 12px;max-height:200px;overflow-y:auto;';
+
+            var aside = document.querySelector('.ls-aside');
+            if (!aside) return msgArea;
+            var pbiW = aside.querySelector('#pbiWrapper');
+            if (pbiW) {
+                aside.insertBefore(msgArea, pbiW);
+            } else {
+                aside.appendChild(msgArea);
+            }
+            return msgArea;
+        }
+
+        function addMsg(html, isUser) {
+            ensureMsgArea();
+            if (!msgArea) return;
+            var div = document.createElement('div');
+            div.style.cssText = 'padding:6px 0;font-size:0.75rem;color:' + (isUser ? '#e2e8f0' : '#94a3b8') + ';border-bottom:1px solid rgba(255,255,255,0.04);';
+            div.innerHTML = (isUser ? '<strong>你：</strong>' : '<strong>Tideo AI：</strong>') + html;
+            msgArea.appendChild(div);
+            msgArea.scrollTop = msgArea.scrollHeight;
+        }
+
+        // 监听底部输入框指令
+        document.addEventListener('tideo:pageinput', function(e) {
+            var text = e.detail.text;
+            var action = e.detail.action || 'chat';
+
+            addMsg(text, true);
+
+            if (action === 'new-task') {
+                setTimeout(function() {
+                    addMsg('好的，继续录制中。AI 将持续监控直播流并自动识别新的精彩片段...', false);
+                    if (window.TideoTaskPanel) {
+                        TideoTaskPanel.reset({});
+                        TideoTaskPanel.markStep('connect', 'done');
+                        TideoTaskPanel.markStep('monitor', 'active', '持续监控中');
+                    }
+                }, 500);
+            } else {
+                setTimeout(function() {
+                    addMsg('收到你的指令。你可以试试：<br><span style="color:#64748b;">• 「继续录制更多片段」<br>• 「只保留带货片段」<br>• 「换成竖屏比例」</span>', false);
+                }, 500);
+            }
+        });
+
+        // 监听停止事件
+        document.addEventListener('tideo:stop', function() {
+            if (window.TideoTaskPanel) {
+                var tasks = TideoTaskPanel._tasks;
+                for (var i = 0; i < tasks.length; i++) {
+                    if (tasks[i].status === 'active') {
+                        TideoTaskPanel.markStep(tasks[i].id, 'done', '已停止');
+                    }
+                }
+            }
+            addMsg('⏹ 已停止当前任务。你可以继续输入新的指令。', false);
         });
     })();
     </script>

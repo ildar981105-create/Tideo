@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 生成视频 — Tideo</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="task-panel.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
     /* ==============================================
@@ -179,6 +180,62 @@
         width: 4px; height: 4px;
         border-radius: 50%;
         background: rgba(99,102,241,0.4);
+    }
+
+    /* ===== 工作区顶栏 ===== */
+    .gen-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        background: rgba(10,10,22,0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        flex-shrink: 0;
+        z-index: 100;
+    }
+    .gen-topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .gen-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .gen-back-link:hover { color: var(--text-primary); }
+    .gen-topbar-divider {
+        width: 1px;
+        height: 18px;
+        background: rgba(255,255,255,0.08);
+    }
+    .gen-topbar-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    .gen-topbar-badge {
+        font-size: 0.68rem;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 6px;
+        background: rgba(168,85,247,0.12);
+        color: #c084fc;
+        display: none;
+    }
+    .gen-topbar-badge.show {
+        display: inline-block;
+    }
+    .gen-topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     /* ===== 工作区：左右分栏 ===== */
@@ -498,7 +555,7 @@
     .gen-chat-body {
         flex: 1;
         overflow-y: auto;
-        padding: 16px 16px 200px;
+        padding: 16px 16px 16px;
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -793,78 +850,249 @@
         border-color: rgba(99,102,241,0.4);
     }
 
-    /* Chat input */
-    .gen-chat-input-area {
+
+    /* ===== Middle: Finetune Panel ===== */
+    .gen-middle {
+        width: 0;
+        flex-shrink: 0;
+        background: rgba(12,12,20,0.97);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(255,255,255,0.06);
+        display: flex;
+        flex-direction: column;
+        z-index: 45;
+        overflow: hidden;
+        opacity: 0;
+        transition: width 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+    }
+    .gen-middle.active {
+        width: 360px;
+        opacity: 1;
+    }
+    .gen-middle-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, rgba(168,85,247,0.1) 0%, rgba(99,102,241,0.06) 100%);
+        border-bottom: 1px solid rgba(168,85,247,0.15);
+    }
+    .gen-middle-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .gen-middle-header-icon {
+        width: 28px; height: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(168,85,247,0.12);
+        color: #a855f7;
+    }
+    .gen-middle-header h3 { font-size: 0.85rem; font-weight: 600; }
+    .gen-middle-header p { font-size: 0.68rem; color: var(--text-muted); }
+    .gen-middle-close {
+        width: 28px; height: 28px;
+        border-radius: 8px;
+        border: none;
+        background: rgba(255,255,255,0.04);
+        color: var(--text-faint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .gen-middle-close:hover {
+        background: rgba(255,255,255,0.08);
+        color: var(--text-primary);
+    }
+    .gen-middle-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-height: 0;
+    }
+    .gen-middle-body::-webkit-scrollbar { width: 4px; }
+    .gen-middle-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
+
+    /* Finetune clip card */
+    .gen-ft-card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+    .gen-ft-card.active {
+        border-color: rgba(168,85,247,0.4);
+        box-shadow: 0 0 20px rgba(168,85,247,0.1);
+    }
+    .gen-ft-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .gen-ft-card-head:hover { background: rgba(255,255,255,0.02); }
+    .gen-ft-card-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 6px;
+        font-size: 0.68rem;
+        font-weight: 600;
+    }
+    .gen-ft-card-dur {
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+    }
+    .gen-ft-card-body {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .gen-ft-card-body.collapsed {
+        display: none;
+    }
+    .gen-ft-thumb {
+        width: 100%;
+        height: 100px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.06);
+    }
+    .gen-ft-thumb canvas {
+        width: 100%; height: 100%; display: block;
+    }
+    .gen-ft-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .gen-ft-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--text-faint);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+    .gen-ft-textarea {
+        width: 100%;
+        min-height: 52px;
+        padding: 8px 10px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 0.78rem;
+        font-family: inherit;
+        outline: none;
+        resize: vertical;
+        line-height: 1.5;
+        transition: border-color 0.2s;
+    }
+    .gen-ft-textarea:focus { border-color: rgba(168,85,247,0.4); }
+    .gen-ft-dur-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .gen-ft-dur-slider {
+        flex: 1;
+        -webkit-appearance: none;
+        height: 3px;
+        border-radius: 2px;
+        background: rgba(255,255,255,0.08);
+        outline: none;
+    }
+    .gen-ft-dur-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 14px; height: 14px;
+        border-radius: 50%;
+        background: #a855f7;
+        cursor: pointer;
+        box-shadow: 0 0 6px rgba(168,85,247,0.4);
+    }
+    .gen-ft-dur-value {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-family: 'JetBrains Mono', monospace;
+        min-width: 28px;
+        text-align: right;
+    }
+    .gen-ft-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    .gen-ft-action {
+        padding: 6px 12px;
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: #c084fc;
+        background: rgba(168,85,247,0.08);
+        border: 1px solid rgba(168,85,247,0.2);
+        border-radius: 100px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
+    }
+    .gen-ft-action:hover {
+        background: rgba(168,85,247,0.15);
+        border-color: rgba(168,85,247,0.4);
+    }
+
+    /* Middle footer */
+    .gen-middle-footer {
         padding: 12px 16px;
         border-top: 1px solid rgba(255,255,255,0.05);
         flex-shrink: 0;
-    }
-    .gen-chat-input-wrap {
         display: flex;
-        align-items: flex-end;
         gap: 8px;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 14px;
-        padding: 6px 6px 6px 14px;
-        transition: all 0.3s;
     }
-    .gen-chat-input-wrap:focus-within {
-        border-color: rgba(99,102,241,0.35);
-        box-shadow: 0 0 0 3px rgba(99,102,241,0.06);
-    }
-    .gen-chat-input {
+    .gen-middle-footer button {
         flex: 1;
-        background: none; border: none; outline: none;
-        font-size: 0.82rem; color: var(--text-primary);
-        padding: 8px 0; font-family: inherit;
-        min-width: 0;
-    }
-    .gen-chat-input::placeholder { color: var(--text-faint); }
-    .gen-chat-send {
-        width: 36px; height: 36px;
-        border-radius: 10px; border: none;
-        background: linear-gradient(135deg, #a855f7, #6366f1);
-        color: #fff;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; flex-shrink: 0;
-        transition: all 0.2s;
-        box-shadow: 0 0 16px rgba(99,102,241,0.25);
-    }
-    .gen-chat-send:hover { transform: scale(1.05); }
-
-    /* Pipeline bar (bottom of left) */
-    .gen-pipeline-bar {
-        display: none;
-        align-items: center;
-        justify-content: space-between;
         padding: 8px 16px;
-        background: rgba(255,255,255,0.025);
-        border-top: 1px solid rgba(255,255,255,0.04);
-        flex-shrink: 0;
+        font-size: 0.78rem;
+        font-weight: 600;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
     }
-    .gen-pipeline-bar.active { display: flex; }
-    .gen-pipeline-steps {
-        display: flex; gap: 4px;
+    .gen-ft-confirm {
+        color: #fff;
+        background: linear-gradient(135deg, #a855f7, #6366f1);
+        box-shadow: 0 0 16px rgba(168,85,247,0.2);
     }
-    .gen-pipe-step {
-        display: flex; align-items: center; gap: 4px;
-        padding: 4px 8px; border-radius: 7px;
-        font-size: 0.62rem; font-weight: 500;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.06);
-        color: var(--text-faint); transition: all 0.3s;
-        white-space: nowrap;
+    .gen-ft-confirm:hover { transform: translateY(-1px); box-shadow: 0 0 24px rgba(168,85,247,0.3); }
+    .gen-ft-cancel {
+        color: var(--text-muted);
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08) !important;
     }
-    .gen-pipe-step.active { color: #818cf8; background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.25); }
-    .gen-pipe-step.completed { color: #10b981; border-color: rgba(16,185,129,0.25); }
-    .gen-pipe-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-    .gen-pipe-step.active .gen-pipe-dot { animation: pulseDot 1.5s infinite; }
-    @keyframes pulseDot {
-        0%,100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); }
-        50% { box-shadow: 0 0 0 4px rgba(99,102,241,0); }
+    .gen-ft-cancel:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+
+    /* Finetune mode indicator on canvas */
+    .gen-canvas-container.finetune-active {
+        border-color: rgba(168,85,247,0.4);
+        box-shadow: 0 0 30px rgba(168,85,247,0.1);
     }
-    .gen-pipeline-actions { display: flex; gap: 6px; }
 
     /* Done banner in chat */
     .gen-done-banner {
@@ -883,6 +1111,7 @@
 
     @media (max-width: 768px) {
         .gen-right { width: 300px; }
+        .gen-middle.active { width: 100%; max-height: 40vh; }
     }
     @media (max-width: 600px) {
         .gen-workspace { flex-direction: column; }
@@ -1073,6 +1302,25 @@
             </div>
         </div>
 
+        <!-- ===== 工作区顶栏（沉浸式模式下显示） ===== -->
+        <header class="gen-topbar" id="genTopbar" style="display:none;">
+            <div class="gen-topbar-left">
+                <a href="create.html" class="gen-back-link">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    工作台
+                </a>
+                <div class="gen-topbar-divider"></div>
+                <span class="gen-topbar-title" id="genTopbarTitle">AI 视频生成</span>
+                <span class="gen-topbar-badge" id="genTopbarBadge"></span>
+            </div>
+            <div class="gen-topbar-right">
+                <div class="credits-badge">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8L10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    <span>剩余 47 次</span>
+                </div>
+            </div>
+        </header>
+
         <!-- ===== 工作区（左右分栏） ===== -->
         <div class="gen-workspace" id="genWorkspace">
             <!-- 左：画面内容 -->
@@ -1138,16 +1386,30 @@
                         </div>
                     </div>
                 </div>
+        </div>
 
-                <!-- Pipeline bar -->
-                <div class="gen-pipeline-bar" id="pipelineBar">
-                    <div class="gen-pipeline-steps" id="pipeSteps"></div>
-                    <div class="gen-pipeline-actions">
-                        <button class="toolbar-btn toolbar-btn-export" id="exportBtn" style="display:none;">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V8M7 8L10 5M7 8L4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M2 9V11C2 11.5523 2.44772 12 3 12H11C11.5523 12 12 11.5523 12 11V9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-                            导出
-                        </button>
+            <!-- Middle: 精调面板（点击片段时滑出） -->
+            <div class="gen-middle" id="genMiddle">
+                <div class="gen-middle-header">
+                    <div class="gen-middle-header-left">
+                        <div class="gen-middle-header-icon">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4H14M2 8H10M2 12H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        </div>
+                        <div>
+                            <h3>精调模式</h3>
+                            <p id="genMiddleDesc">编辑片段详情</p>
+                        </div>
                     </div>
+                    <button class="gen-middle-close" id="genMiddleClose" title="关闭精调面板">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </button>
+                </div>
+                <div class="gen-middle-body" id="genMiddleBody">
+                    <!-- 片段编辑卡片由 JS 填充 -->
+                </div>
+                <div class="gen-middle-footer">
+                    <button class="gen-ft-cancel" id="genFtCancel">取消</button>
+                    <button class="gen-ft-confirm" id="genFtConfirm">✓ 应用修改</button>
                 </div>
             </div>
 
@@ -1165,14 +1427,7 @@
                 <div class="gen-chat-body" id="chatBody">
                     <!-- Chat messages populated by JS -->
                 </div>
-                <div class="gen-chat-input-area">
-                    <div class="gen-chat-input-wrap">
-                        <input class="gen-chat-input" id="chatInput" type="text" placeholder="输入修改意见..." autocomplete="off">
-                        <button class="gen-chat-send" id="chatSend">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </button>
-                    </div>
-                </div>
+
             </aside>
         </div>
     </main>
@@ -1214,7 +1469,6 @@
         const genLanding = document.getElementById('genLanding');
         const genWorkspace = document.getElementById('genWorkspace');
         const chatBody = document.getElementById('chatBody');
-        const chatInput = document.getElementById('chatInput');
 
         // ===== Char count =====
         landingInput.addEventListener('input', () => {
@@ -1247,6 +1501,7 @@
             userText = text;
             genLanding.style.display = 'none';
             document.getElementById('mainTopbar').style.display = 'none';
+            document.getElementById('genTopbar').style.display = '';
             document.body.classList.add('fullscreen-mode');
             genWorkspace.classList.add('active');
             startParsing(text);
@@ -1313,32 +1568,31 @@
             document.getElementById('emptySub').textContent = sub;
         }
 
-        function updatePipeline() {
-            const bar = document.getElementById('pipelineBar');
-            const steps = document.getElementById('pipeSteps');
-            bar.classList.add('active');
-            const pipePhases = ['parsing', 'textConfirm', 'styleConfig', 'storyboard', 'synth'];
-            const currentIdx = pipePhases.indexOf(phase);
-            if (phase === 'player') {
-                steps.innerHTML = STEP_LABELS.map(l => `<div class="gen-pipe-step completed"><span class="gen-pipe-dot"></span>${l}</div>`).join('');
-            } else {
-                steps.innerHTML = STEP_LABELS.map((l, i) => {
-                    let cls = 'gen-pipe-step';
-                    if (i === currentIdx) cls += ' active';
-                    else if (i < currentIdx) cls += ' completed';
-                    return `<div class="${cls}"><span class="gen-pipe-dot"></span>${l}</div>`;
-                }).join('');
-            }
-        }
 
         // ===========================================================
         //  步骤 1/5 — 文案解析
         // ===========================================================
+        // ===== Topbar Badge 辅助 =====
+        function updateTopbarBadge(text) {
+            var badge = document.getElementById('genTopbarBadge');
+            if (!badge) return;
+            if (text) {
+                badge.textContent = text;
+                badge.classList.add('show');
+            } else {
+                badge.classList.remove('show');
+            }
+        }
+
         function startParsing(text) {
             phase = 'parsing';
+            updateTopbarBadge('解析中...');
+            // 任务进度：解析文案中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('parse', 'active');
+            }
             setLeftPhase('phaseEmpty');
             updateEmptyState('等待文案解析完成', 'AI 正在分析你的文案结构...');
-            updatePipeline();
             chatBody.innerHTML = '';
 
             addBubble('user', `<p>${text.substring(0, 120)}${text.length > 120 ? '...' : ''}</p>`);
@@ -1366,9 +1620,13 @@
         // ===========================================================
         function showTextConfirm() {
             phase = 'textConfirm';
+            // 任务进度：解析完成 → 文案确认中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('parse', 'done');
+                TideoTaskPanel.markStep('textConfirm', 'active');
+            }
             setLeftPhase('phaseEmpty');
             updateEmptyState('等待确认文案', '确认文案后将进入风格选择');
-            updatePipeline();
 
             let segs = '<div class="gen-text-segments">';
             clips.forEach((c, i) => {
@@ -1397,9 +1655,13 @@
         // ===========================================================
         function showStyleConfig() {
             phase = 'styleConfig';
+            // 任务进度：文案确认完成 → 选择风格中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('textConfirm', 'done');
+                TideoTaskPanel.markStep('style', 'active');
+            }
             setLeftPhase('phaseEmpty');
             updateEmptyState('等待选择风格', '选择视频风格后将开始生成分镜画面');
-            updatePipeline();
 
             addBubble('ai', `<p>🎨 接下来请选择视频的风格、比例和画质。</p>${buildStepperHTML(2)}<div class="gen-config-card"><div class="gen-config-label">视频风格</div><div class="gen-style-grid" id="chatStyleGrid"><button class="gen-style-card active" data-style="cinematic"><span class="icon">🎬</span><span class="name">电影感</span></button><button class="gen-style-card" data-style="realistic"><span class="icon">📷</span><span class="name">写实</span></button><button class="gen-style-card" data-style="anime"><span class="icon">🎨</span><span class="name">动画</span></button><button class="gen-style-card" data-style="cyber"><span class="icon">🌆</span><span class="name">赛博朋克</span></button><button class="gen-style-card" data-style="watercolor"><span class="icon">🖌️</span><span class="name">水彩画</span></button><button class="gen-style-card" data-style="3d"><span class="icon">💎</span><span class="name">3D 渲染</span></button></div><div class="gen-config-label">画面比例</div><div class="gen-ratio-row" id="chatRatioRow"><button class="gen-ratio-chip active" data-ratio="16:9">16:9 横屏</button><button class="gen-ratio-chip" data-ratio="9:16">9:16 竖屏</button><button class="gen-ratio-chip" data-ratio="1:1">1:1 方形</button></div><div class="gen-config-label">画质</div><div class="gen-ratio-row" id="chatQualityRow"><button class="gen-ratio-chip" data-q="720">720p</button><button class="gen-ratio-chip active" data-q="1080">1080p</button><button class="gen-ratio-chip" data-q="4k">4K</button></div></div><button class="gen-confirm-config" id="confirmStyleBtn">确认设置，生成分镜 →</button>`);
 
@@ -1441,8 +1703,12 @@
         // ===========================================================
         function enterStoryboard() {
             phase = 'storyboard';
+            // 任务进度：风格选择完成 → 生成分镜中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('style', 'done');
+                TideoTaskPanel.markStep('storyboard', 'active');
+            }
             setLeftPhase('phaseSB');
-            updatePipeline();
             renderStoryboardLoading();
 
             const sn = { cinematic:'电影感', realistic:'写实', anime:'动画', cyber:'赛博朋克', watercolor:'水彩画', '3d':'3D 渲染' };
@@ -1480,6 +1746,10 @@
         }
 
         function showStoryboardEditors() {
+            // 任务进度：分镜生成完成
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('storyboard', 'done');
+            }
             addBubble('ai', `<p>👍 所有分镜画面已生成！点击片段可联动左侧预览，也可编辑描述。</p><p style="font-size:0.78rem;color:#94a3b8;margin-top:4px;">确认无误后，点击 <strong>"开始合成"</strong> 生成完整视频。</p>`);
 
             setTimeout(() => {
@@ -1487,7 +1757,7 @@
                 clips.forEach((c, i) => {
                     h += `<div class="gen-clip-editor" data-clip-idx="${i}"><div class="gen-clip-editor-head"><span class="gen-clip-editor-badge" style="background:${c.color}15;color:${c.color};border:1px solid ${c.color}30;">片段 ${c.id} · ${c.title}</span><span class="gen-clip-editor-dur">${c.duration}s</span></div><div class="gen-clip-editor-body"><div class="gen-clip-thumb"><canvas width="160" height="100" data-thumb-idx="${i}"></canvas></div><div class="gen-clip-desc-wrap"><textarea class="gen-clip-desc-input" data-clip-idx="${i}" placeholder="描述画面...">${c.desc}</textarea></div></div></div>`;
                 });
-                h += `<div class="gen-chat-actions" style="margin-top:10px;"><button class="gen-chat-action" id="chatStartGen" style="background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.4);font-weight:600;">✨ 确认并开始合成视频</button><button class="gen-chat-action" id="chatAiOptimize">🔮 AI 优化描述</button></div>`;
+                h += `<div class="gen-chat-actions" style="margin-top:10px;"><button class="gen-chat-action" id="chatStartGen" style="background:rgba(99,102,241,0.15);border-color:rgba(99,102,241,0.4);font-weight:600;">✨ 确认并开始合成视频</button><button class="gen-chat-action" id="chatAiOptimize">🔮 AI 优化描述</button><button class="gen-chat-action" id="chatOpenFinetune" style="background:rgba(168,85,247,0.08);color:#c084fc;border-color:rgba(168,85,247,0.2);">✏️ 精调模式</button></div>`;
                 addBubble('ai', h);
 
                 clips.forEach((c, i) => {
@@ -1511,6 +1781,9 @@
                     sbCards.forEach(c => c.classList.remove('selected'));
                     if (sbCards[idx]) { sbCards[idx].classList.add('selected'); sbCards[idx].scrollIntoView({ behavior:'smooth', block:'nearest' }); }
                 });
+                editor.addEventListener('dblclick', () => {
+                    if (window._openFinetunePanel) window._openFinetunePanel(idx);
+                });
                 editor.addEventListener('mouseenter', () => { const sc = document.querySelectorAll('.gen-sb-card'); if (sc[idx]) sc[idx].style.boxShadow = '0 0 24px ' + clips[idx].color + '40'; });
                 editor.addEventListener('mouseleave', () => { const sc = document.querySelectorAll('.gen-sb-card'); if (sc[idx]) sc[idx].style.boxShadow = ''; });
             });
@@ -1522,6 +1795,9 @@
                     document.querySelectorAll('.gen-clip-editor').forEach(e => e.classList.remove('highlighted'));
                     if (eds[idx]) { eds[idx].classList.add('highlighted'); eds[idx].scrollIntoView({ behavior:'smooth', block:'nearest' }); }
                 });
+                card.addEventListener('dblclick', () => {
+                    if (window._openFinetunePanel) window._openFinetunePanel(idx);
+                });
             });
             const sb = document.getElementById('chatStartGen');
             if (sb) sb.addEventListener('click', () => { addBubble('user','<p>确认分镜，开始合成视频</p>'); setTimeout(() => startSynth(), 300); });
@@ -1529,6 +1805,10 @@
             if (ob) ob.addEventListener('click', () => {
                 ob.textContent = '优化中...'; ob.style.opacity = '0.5';
                 setTimeout(() => { addBubble('ai','<p>✅ 已优化所有片段描述。确认后点击 <strong>"开始合成视频"</strong> 即可。</p>'); ob.textContent = '🔮 AI 优化描述'; ob.style.opacity = ''; }, 1200);
+            });
+            const fb = document.getElementById('chatOpenFinetune');
+            if (fb) fb.addEventListener('click', () => {
+                if (window._openFinetunePanel) window._openFinetunePanel();
             });
         }
 
@@ -1558,8 +1838,11 @@
         // ===========================================================
         function startSynth() {
             phase = 'synth';
+            // 任务进度：合成中
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('synth', 'active');
+            }
             setLeftPhase('phaseSynth');
-            updatePipeline();
             addBubble('ai', `<p>🚀 开始合成视频！正在逐个渲染片段…</p>${buildStepperHTML(4)}`);
 
             const dotsEl = document.getElementById('synthDots');
@@ -1601,14 +1884,27 @@
         // ===== Player =====
         function enterPlayer() {
             phase = 'player';
+            updateTopbarBadge('✓ 生成完成');
+            // 任务进度：合成完成 + 生成完成
+            if (window.TideoTaskPanel) {
+                TideoTaskPanel.markStep('synth', 'done');
+                TideoTaskPanel.markStep('done', 'done');
+            }
             setLeftPhase('phasePlayer');
-            updatePipeline();
-            document.getElementById('exportBtn').style.display = '';
             const sn = { cinematic:'电影感', realistic:'写实', anime:'动画', cyber:'赛博朋克', watercolor:'水彩画', '3d':'3D 渲染' };
-            addBubble('ai', `<div class="gen-done-banner"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="16" stroke="#10b981" stroke-width="2" opacity="0.3"/><path d="M13 20L18 25L28 15" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="gen-done-title">🎉 视频生成完成！</div><div class="gen-done-sub">总时长 ${totalDuration}s · ${clips.length} 个片段 · ${sn[selectedStyle]||selectedStyle} 风格</div><div class="gen-done-actions"><button class="gen-submit-btn" id="chatExportBtn" style="width:100%;"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V8M7 8L10 5M7 8L4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M2 9V11C2 11.5523 2.44772 12 3 12H11C11.5523 12 12 11.5523 12 11V9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>导出视频</button><button class="gen-confirm-config" id="chatSaveVodBtn" style="width:100%;background:rgba(6,182,212,0.15);color:#06b6d4;box-shadow:none;border:1px solid rgba(6,182,212,0.3);"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5C2 3.89543 2.89543 3 4 3H6.5L8 4.5H10C11.1046 4.5 12 5.39543 12 6.5V10C12 11.1046 11.1046 12 10 12H4C2.89543 12 2 11.1046 2 10V5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 6V10M7 10L9 8M7 10L5 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>保存到云点播</button><div class="gen-chat-actions"><button class="gen-chat-action" id="chatRegen">🔄 重新生成</button><button class="gen-chat-action" id="chatBackEdit">✏️ 返回编辑</button></div></div></div>`);
+            addBubble('ai', `<div class="gen-done-banner"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="16" stroke="#10b981" stroke-width="2" opacity="0.3"/><path d="M13 20L18 25L28 15" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="gen-done-title">🎉 视频生成完成！</div><div class="gen-done-sub">总时长 ${totalDuration}s · ${clips.length} 个片段 · ${sn[selectedStyle]||selectedStyle} 风格</div><div class="gen-done-actions"><button class="gen-submit-btn" id="chatExportBtn" style="width:100%;"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2V8M7 8L10 5M7 8L4 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M2 9V11C2 11.5523 2.44772 12 3 12H11C11.5523 12 12 11.5523 12 11V9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>导出视频</button><button class="gen-confirm-config" id="chatSaveVodBtn" style="width:100%;background:rgba(6,182,212,0.15);color:#06b6d4;box-shadow:none;border:1px solid rgba(6,182,212,0.3);"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5C2 3.89543 2.89543 3 4 3H6.5L8 4.5H10C11.1046 4.5 12 5.39543 12 6.5V10C12 11.1046 11.1046 12 10 12H4C2.89543 12 2 11.1046 2 10V5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 6V10M7 10L9 8M7 10L5 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>保存到云点播</button><div class="gen-chat-actions"><button class="gen-chat-action" id="chatRegen">🔄 重新生成</button><button class="gen-chat-action" id="chatBackEdit">✏️ 返回编辑</button><button class="gen-chat-action" id="chatTranslateEn" style="background:rgba(16,185,129,0.08);color:#34d399;border-color:rgba(16,185,129,0.25);">🌐 译制成英语</button></div></div></div>`);
 
             document.getElementById('chatRegen')?.addEventListener('click', () => { if (animFrame) cancelAnimationFrame(animFrame); startSynth(); });
             document.getElementById('chatBackEdit')?.addEventListener('click', () => { if (animFrame) cancelAnimationFrame(animFrame); enterStoryboard(); });
+            document.getElementById('chatExportBtn')?.addEventListener('click', () => {
+                addBubble('ai', '<p>📥 视频导出中... 格式 MP4 (H.264)、分辨率 1080p。完成后将自动下载。</p><p style="font-size:0.78rem;color:#94a3b8;margin-top:4px;">💡 你也可以点击「保存到云点播」将视频直接存入腾讯云点播。</p>');
+            });
+            document.getElementById('chatTranslateEn')?.addEventListener('click', () => {
+                if (window.TideoPageInput && window.TideoPageInput._saveContext) {
+                    window.TideoPageInput._saveContext('generate');
+                }
+                window.location.href = 'translate-v6.html?prompt=' + encodeURIComponent('翻译成英语');
+            });
             document.getElementById('chatSaveVodBtn')?.addEventListener('click', function() {
                 this.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 已保存到云点播';
                 this.style.background = 'rgba(16,185,129,0.15)';
@@ -1708,29 +2004,157 @@
             playTime = Math.max(0, Math.min(1, (e.clientX - rect.left)/rect.width)) * totalDuration;
         });
 
-        // ===== Chat input =====
-        function handleChatSend() {
-            const text = chatInput.value.trim();
-            if (!text) return;
-            chatInput.value = '';
-            addBubble('user', `<p>${text}</p>`);
-            setTimeout(() => {
-                const responses = [
-                    '好的，我来调整一下。已更新片段描述，左侧分镜已同步刷新。',
-                    '收到！我理解你的意思，画面风格已按你的要求微调。',
-                    '没问题，我帮你优化了这段的镜头运动。你可以在左侧查看更新后的预览。',
-                    '已收到修改意见，让我重新编排一下这个片段的画面节奏。'
-                ];
-                addBubble('ai', `<p>${responses[Math.floor(Math.random()*responses.length)]}</p>`);
-            }, 800);
-        }
-        chatInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleChatSend(); } });
-        document.getElementById('chatSend').addEventListener('click', handleChatSend);
+        // ===========================================================
+        //  精调面板 — gen-middle
+        // ===========================================================
+        let finetuneClipIdx = null;
 
-        // ===== Export =====
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            addBubble('ai', '<p>📥 视频导出中... 格式 MP4 (H.264)、分辨率 1080p。完成后将自动下载。</p><p style="font-size:0.78rem;color:#94a3b8;margin-top:4px;">💡 你也可以在上方点击「保存到云点播」将视频直接存入腾讯云点播。</p>');
+        function openFinetunePanel(clipIdx) {
+            const middle = document.getElementById('genMiddle');
+            const body = document.getElementById('genMiddleBody');
+            const container = document.getElementById('canvasContainer');
+            if (!middle || !body) return;
+
+            finetuneClipIdx = clipIdx !== undefined ? clipIdx : null;
+            document.getElementById('genMiddleDesc').textContent =
+                clipIdx !== undefined ? `编辑片段 ${clips[clipIdx].id}「${clips[clipIdx].title}」` : '编辑所有片段';
+
+            // 渲染片段卡片
+            let html = '';
+            clips.forEach((c, i) => {
+                const isActive = clipIdx === i;
+                html += `<div class="gen-ft-card${isActive ? ' active' : ''}" data-ft-idx="${i}">
+                    <div class="gen-ft-card-head" data-ft-toggle="${i}">
+                        <span class="gen-ft-card-badge" style="background:${c.color}15;color:${c.color};border:1px solid ${c.color}30;">片段 ${c.id} · ${c.title}</span>
+                        <span class="gen-ft-card-dur" data-ft-dur-display="${i}">${c.duration}s</span>
+                    </div>
+                    <div class="gen-ft-card-body${isActive ? '' : ' collapsed'}" data-ft-body="${i}">
+                        <div class="gen-ft-thumb"><canvas width="400" height="120" data-ft-canvas="${i}"></canvas></div>
+                        <div class="gen-ft-field">
+                            <span class="gen-ft-label">画面描述</span>
+                            <textarea class="gen-ft-textarea" data-ft-desc="${i}">${c.desc}</textarea>
+                        </div>
+                        <div class="gen-ft-field">
+                            <span class="gen-ft-label">时长</span>
+                            <div class="gen-ft-dur-row">
+                                <input type="range" class="gen-ft-dur-slider" data-ft-slider="${i}" min="2" max="15" value="${c.duration}">
+                                <span class="gen-ft-dur-value" data-ft-dur-val="${i}">${c.duration}s</span>
+                            </div>
+                        </div>
+                        <div class="gen-ft-actions">
+                            <button class="gen-ft-action" data-ft-regen="${i}">🔄 重新生成此片段</button>
+                            <button class="gen-ft-action" data-ft-ai="${i}">🔮 AI 优化描述</button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            body.innerHTML = html;
+
+            // 绘制缩略图
+            clips.forEach((c, i) => {
+                const cvs = document.querySelector(`canvas[data-ft-canvas="${i}"]`);
+                if (cvs) drawClipPreview(cvs, c, i);
+            });
+
+            // 绑定展开/折叠
+            body.querySelectorAll('[data-ft-toggle]').forEach(head => {
+                head.addEventListener('click', () => {
+                    const idx = parseInt(head.dataset.ftToggle);
+                    const cardBody = body.querySelector(`[data-ft-body="${idx}"]`);
+                    const card = head.closest('.gen-ft-card');
+                    if (cardBody) cardBody.classList.toggle('collapsed');
+                    if (card) card.classList.toggle('active');
+                });
+            });
+
+            // 绑定描述编辑
+            body.querySelectorAll('[data-ft-desc]').forEach(ta => {
+                ta.addEventListener('input', () => {
+                    const idx = parseInt(ta.dataset.ftDesc);
+                    if (clips[idx]) clips[idx].desc = ta.value;
+                });
+            });
+
+            // 绑定时长滑块
+            body.querySelectorAll('[data-ft-slider]').forEach(slider => {
+                slider.addEventListener('input', () => {
+                    const idx = parseInt(slider.dataset.ftSlider);
+                    const val = parseInt(slider.value);
+                    if (clips[idx]) clips[idx].duration = val;
+                    const durVal = body.querySelector(`[data-ft-dur-val="${idx}"]`);
+                    if (durVal) durVal.textContent = val + 's';
+                    const durDisplay = body.querySelector(`[data-ft-dur-display="${idx}"]`);
+                    if (durDisplay) durDisplay.textContent = val + 's';
+                });
+            });
+
+            // 绑定重生成 / AI 优化
+            body.querySelectorAll('[data-ft-regen]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(btn.dataset.ftRegen);
+                    btn.textContent = '⏳ 重新生成中...';
+                    btn.style.opacity = '0.5';
+                    setTimeout(() => {
+                        btn.textContent = '✅ 已重新生成';
+                        const cvs = document.querySelector(`canvas[data-ft-canvas="${idx}"]`);
+                        if (cvs) drawClipPreview(cvs, clips[idx], idx);
+                        addBubble('ai', `<p style="font-size:0.78rem;">✅ 片段 ${clips[idx].id}「${clips[idx].title}」已重新生成</p>`);
+                        setTimeout(() => { btn.textContent = '🔄 重新生成此片段'; btn.style.opacity = ''; }, 1500);
+                    }, 2000);
+                });
+            });
+            body.querySelectorAll('[data-ft-ai]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    btn.textContent = '⏳ 优化中...';
+                    btn.style.opacity = '0.5';
+                    setTimeout(() => {
+                        btn.textContent = '✅ 已优化';
+                        setTimeout(() => { btn.textContent = '🔮 AI 优化描述'; btn.style.opacity = ''; }, 1200);
+                    }, 1500);
+                });
+            });
+
+            // 打开面板
+            middle.classList.add('active');
+            if (container) container.classList.add('finetune-active');
+
+            // 如果指定了片段，滚动到对应卡片
+            if (clipIdx !== undefined) {
+                setTimeout(() => {
+                    const targetCard = body.querySelector(`[data-ft-idx="${clipIdx}"]`);
+                    if (targetCard) targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 300);
+            }
+        }
+
+        function closeFinetunePanel() {
+            const middle = document.getElementById('genMiddle');
+            const container = document.getElementById('canvasContainer');
+            if (middle) middle.classList.remove('active');
+            if (container) container.classList.remove('finetune-active');
+            finetuneClipIdx = null;
+            // 刷新分镜视图和右侧编辑器
+            totalDuration = clips.reduce((s, c) => s + c.duration, 0);
+        }
+
+        // 绑定关闭/取消/确认
+        document.getElementById('genMiddleClose')?.addEventListener('click', closeFinetunePanel);
+        document.getElementById('genFtCancel')?.addEventListener('click', closeFinetunePanel);
+        document.getElementById('genFtConfirm')?.addEventListener('click', () => {
+            closeFinetunePanel();
+            addBubble('ai', '<p>✅ 精调修改已应用！分镜预览已更新。</p>');
+            // 刷新分镜画面
+            if (phase === 'storyboard') {
+                const sbCards = document.querySelectorAll('.gen-sb-card canvas');
+                sbCards.forEach((cvs, i) => { if (clips[i]) drawClipPreview(cvs, clips[i], i); });
+                document.getElementById('sbInfo').textContent = `${clips.length} 个片段 · 总时长 ${totalDuration}s`;
+            }
         });
+
+        // 暴露给全局供 tideo:pageinput 调用
+        window._openFinetunePanel = openFinetunePanel;
 
     })();
     </script>
@@ -1799,6 +2223,131 @@
 
         window.addEventListener('storage', function(e) {
             if (e.key === 'tideo_user') updateUserUI();
+        });
+    })();
+    </script>
+
+    <!-- 任务清单 + 底部输入框 -->
+    <script src="task-panel.js"></script>
+    <script>
+    (function() {
+        // 初始化底部面板（进度 + 输入框一体化）
+        TideoPageInput.init('generate');
+        TideoTaskPanel.init('generate');
+
+        // 监听底部输入框指令 — 根据 action 真正处理
+        document.addEventListener('tideo:pageinput', function(e) {
+            var text = e.detail.text;
+            var action = e.detail.action || 'chat';
+            var chatBody = document.getElementById('chatBody');
+            if (!chatBody) return;
+
+            // 1. 用户气泡
+            var userBubble = document.createElement('div');
+            userBubble.className = 'gen-bubble gen-bubble--user';
+            userBubble.innerHTML = '<div class="gen-bubble-avatar">U</div><div class="gen-bubble-content"><p>' + text + '</p></div>';
+            chatBody.appendChild(userBubble);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // 2. 根据 action 处理
+            if (action === 'new-task') {
+                // 同技能追加新任务
+                setTimeout(function() {
+                    var aiBubble = document.createElement('div');
+                    aiBubble.className = 'gen-bubble gen-bubble--ai';
+                    aiBubble.innerHTML = '<div class="gen-bubble-avatar"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 4.5H12.5L9 7L10.5 10.5L7 8L3.5 10.5L5 7L1.5 4.5H5.5L7 1Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg></div><div class="gen-bubble-content"><p>好的，正在按新要求重新创作视频。保留之前的素材上下文，开始新一轮生成...</p></div>';
+                    chatBody.appendChild(aiBubble);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+
+                    // 重置进度
+                    if (window.TideoTaskPanel) {
+                        TideoTaskPanel.reset({});
+                        TideoTaskPanel.markStep('parse', 'active', '重新解析意图');
+                    }
+
+                    // 模拟生成流程
+                    var genSteps = [
+                        { id: 'parse', nextId: 'textConfirm', delay: 1500, msg: '✅ 文案意图解析完成' },
+                        { id: 'textConfirm', nextId: 'style', delay: 1200, msg: '✅ 文案分段已确认' },
+                        { id: 'style', nextId: 'storyboard', delay: 1800, msg: '✅ 视频风格已选定' },
+                        { id: 'storyboard', nextId: 'synth', delay: 3000, msg: '✅ 分镜画面生成完成' },
+                        { id: 'synth', nextId: 'done', delay: 3500, msg: '✅ 视频合成完成' },
+                        { id: 'done', nextId: null, delay: 0, msg: '🎬 新视频已生成完毕！你可以预览或导出。' }
+                    ];
+                    var elapsed = 1000;
+                    genSteps.forEach(function(step, idx) {
+                        elapsed += step.delay;
+                        setTimeout(function() {
+                            if (window.TideoTaskPanel) {
+                                TideoTaskPanel.markStep(step.id, 'done');
+                                if (step.nextId) TideoTaskPanel.markStep(step.nextId, 'active');
+                            }
+                            var bubble = document.createElement('div');
+                            bubble.className = 'gen-bubble gen-bubble--ai';
+                            bubble.innerHTML = '<div class="gen-bubble-avatar"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 4.5H12.5L9 7L10.5 10.5L7 8L3.5 10.5L5 7L1.5 4.5H5.5L7 1Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg></div><div class="gen-bubble-content"><p>' + step.msg + '</p></div>';
+                            chatBody.appendChild(bubble);
+                            chatBody.scrollTop = chatBody.scrollHeight;
+                        }, elapsed);
+                    });
+                }, 500);
+
+            } else if (action === 'finetune' || action === 'redo') {
+                // 精调或重做
+                setTimeout(function() {
+                    var aiBubble = document.createElement('div');
+                    aiBubble.className = 'gen-bubble gen-bubble--ai';
+                    aiBubble.innerHTML = '<div class="gen-bubble-avatar"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 4.5H12.5L9 7L10.5 10.5L7 8L3.5 10.5L5 7L1.5 4.5H5.5L7 1Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg></div><div class="gen-bubble-content"><p>收到！正在按你的要求调整参数...</p></div>';
+                    chatBody.appendChild(aiBubble);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+
+                    // 尝试从文本中解析片段号，打开精调面板
+                    var clipMatch = text.match(/第(\d+)/);
+                    var targetIdx = clipMatch ? parseInt(clipMatch[1]) - 1 : undefined;
+                    if (window._openFinetunePanel) {
+                        window._openFinetunePanel(targetIdx !== undefined && targetIdx >= 0 ? targetIdx : undefined);
+                    }
+
+                    setTimeout(function() {
+                        var doneBubble = document.createElement('div');
+                        doneBubble.className = 'gen-bubble gen-bubble--ai';
+                        doneBubble.innerHTML = '<div class="gen-bubble-avatar"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 4.5H12.5L9 7L10.5 10.5L7 8L3.5 10.5L5 7L1.5 4.5H5.5L7 1Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg></div><div class="gen-bubble-content"><p>✅ 调整完成！已更新到预览中。</p></div>';
+                        chatBody.appendChild(doneBubble);
+                        chatBody.scrollTop = chatBody.scrollHeight;
+                    }, 2500);
+                }, 500);
+
+            } else {
+                // 普通对话
+                setTimeout(function() {
+                    var aiBubble = document.createElement('div');
+                    aiBubble.className = 'gen-bubble gen-bubble--ai';
+                    aiBubble.innerHTML = '<div class="gen-bubble-avatar"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 4.5H12.5L9 7L10.5 10.5L7 8L3.5 10.5L5 7L1.5 4.5H5.5L7 1Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg></div><div class="gen-bubble-content"><p>收到你的指令。你可以试试：<br><span style="color:#94a3b8;font-size:0.75rem;">• 「换一种风格重新生成」<br>• 「时长延长到2分钟」<br>• 「换一段背景音乐」</span></p></div>';
+                    chatBody.appendChild(aiBubble);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }, 500);
+            }
+        });
+
+        // 监听停止按钮
+        document.addEventListener('tideo:stop', function() {
+            var chatBody = document.getElementById('chatBody');
+            if (!chatBody) return;
+
+            // 将所有 active 步骤标记为 done
+            if (window.TideoTaskPanel) {
+                var tasks = TideoTaskPanel._tasks;
+                for (var i = 0; i < tasks.length; i++) {
+                    if (tasks[i].status === 'active') {
+                        TideoTaskPanel.markStep(tasks[i].id, 'done', '已停止');
+                    }
+                }
+            }
+
+            var aiBubble = document.createElement('div');
+            aiBubble.className = 'gen-bubble gen-bubble--ai';
+            aiBubble.innerHTML = '<div class="gen-bubble-avatar"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 4.5H12.5L9 7L10.5 10.5L7 8L3.5 10.5L5 7L1.5 4.5H5.5L7 1Z" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/></svg></div><div class="gen-bubble-content"><p>⏹ 已停止当前任务。你可以继续输入新的指令。</p></div>';
+            chatBody.appendChild(aiBubble);
+            chatBody.scrollTop = chatBody.scrollHeight;
         });
     })();
     </script>
